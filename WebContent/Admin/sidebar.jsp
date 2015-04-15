@@ -11,11 +11,11 @@
 					<li><span class="icon color7"><i class="fa fa-circle-o"></i></span><a
 						href="addCategory.jsp">Add Category</a></li>
 					<li><span class="icon color7"><i class="fa fa-circle-o"></i></span><a
-						href="<%=request.getContextPath()%>/SubCategoryController?flag=load">Add SubCategory</a></li>
+						href="<%=request.getContextPath()%>/SubCategoryController?flag=loadCategories">Add SubCategory</a></li>
 					<li><span class="icon color7"><i class="fa fa-circle-o"></i></span><a
-						href="editCategory.jsp">Edit Categories</a></li>
+						href="<%=request.getContextPath()%>/CategoryController?flag=load">Edit Categories</a></li>
 					<li><span class="icon color7"><i class="fa fa-circle-o"></i></span><a
-						href="editSubCategory.jsp">Edit SubCategories</a></li>
+						href="<%=request.getContextPath()%>/SubCategoryController?flag=loadSubCategories">Edit SubCategories</a></li>
 				</ul></li>
 
 			<li><a href="#"><span class="icon color7"><i

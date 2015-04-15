@@ -1,3 +1,7 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<c:set var="firstname" value="${sessionScope.firstName }"></c:set>
+<c:set var="lastname" value="${sessionScope.lastName }"></c:set>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,7 +26,7 @@
 
 		<form class="searchform">
 			<input type="text" class="searchbox" id="searchbox"
-				placeholder="Search products..."> <span class="searchbutton"><i
+				placeholder="Search games..."> <span class="searchbutton"><i
 				class="fa fa-search"></i></span>
 		</form>
 
@@ -30,10 +34,12 @@
 
 			<li class="dropdown link"><a href="#" data-toggle="dropdown"
 				class="dropdown-toggle profilebox"><img src="img/prof_img_1.png"
-					alt="img"><b>Samarth Shah</b><span class="caret"></span></a>
+					alt="img">
+					<b><c:out value="${firstname } ${lastname }"></c:out></b>
+					<span class="caret"></span></a>
 				<ul class="dropdown-menu dropdown-menu-list dropdown-menu-right">
 					<li role="presentation" class="dropdown-header">Profile</li>
-					<li><a href="logout.jsp"><i class="fa falist fa-power-off"></i>
+					<li><a href="<%=request.getContextPath()%>/AdminLogoutServlet"><i class="fa falist fa-power-off"></i>
 							Logout</a></li>
 				</ul></li>
 		</ul>
