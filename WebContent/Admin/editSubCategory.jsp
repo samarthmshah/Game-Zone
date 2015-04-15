@@ -7,6 +7,19 @@
 <div class="content">
 	<div class="container-padding">
 		<div class="row">
+		<%
+			String msg = (String) session.getAttribute("msg");
+			if (msg != null) {
+				if (msg.equals("The subcategory is successfully deleted.")) {
+					response.setContentType("text/html");
+					out.println("<div class=\"col-md-12\">");
+					out.println("<p class=\"bg-success\">");
+					out.println(msg);
+					out.println("</p></div>");
+					session.removeAttribute("msg");
+				}
+			}
+		%>
 			<div class="col-md-12">
 				<div class="panel panel-default">
 					<div class="panel-title">Game SubCategories</div>
@@ -39,7 +52,7 @@
 													<i class="fa fa-edit"></i>
 												</button>
 											</a>
-                							<a href="">
+                							<a href="<%=request.getContextPath()%>/SubCategoryController?scat_id=${i.scat_id }&flag=delete">
                 								<button type="button" class="btn btn-square btn-danger btn-icon">
                 									<i class="fa fa-remove"></i>
                 								</button>

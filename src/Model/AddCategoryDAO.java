@@ -106,6 +106,27 @@ public class AddCategoryDAO {
 		}
 	}
 	
+	public static void delete(long cat_id){
+		setUp();
+		Session session = factory.openSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			GameCategoryVO gcvo = new GameCategoryVO();
+			gcvo.setCat_id(cat_id);
+			session.delete(gcvo);
+			tx.commit();
+		} 
+		catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} 
+		finally {
+			session.close();
+		}
+	}
+	
 	private static void setUp() {
 		try {
 			Configuration configuration = new Configuration();

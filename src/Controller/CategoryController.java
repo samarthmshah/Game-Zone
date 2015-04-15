@@ -45,6 +45,8 @@ public class CategoryController extends HttpServlet {
 				edit(request, response);
 			else if(flag.equals("update"))
 				update(request, response);
+			else if(flag.equals("delete"))
+				delete(request, response);
 		}
 	}
 
@@ -58,9 +60,6 @@ public class CategoryController extends HttpServlet {
 	
 	protected void load(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<GameCategoryVO> ls = AddCategoryDAO.showAll();
-//		request.setAttribute("load", ls);
-//		RequestDispatcher rd = getServletContext().getRequestDispatcher("/Admin/addSubCategory.jsp");
-//		rd.forward(request, response);
 		HttpSession sess = request.getSession();
 		sess.setAttribute("categoryList", ls);
 		response.sendRedirect(request.getContextPath()+"/Admin/editCategory.jsp");
@@ -72,8 +71,6 @@ public class CategoryController extends HttpServlet {
 		System.out.println(cat_name);
 		System.out.println(cat_description);
 		AddCategoryDAO.insert(cat_name, cat_description);
-//		request.setAttribute("msg", "The category has been added successfully.");
-//		getServletContext().getRequestDispatcher("/Admin/addCategory.jsp").forward(request, response);
 		HttpSession sess = request.getSession(true);
 		sess.setAttribute("msg", "The category has been added successfully.");
 		response.sendRedirect(request.getContextPath()+"/Admin/addCategory.jsp");
@@ -99,4 +96,11 @@ public class CategoryController extends HttpServlet {
 		response.sendRedirect(request.getContextPath()+"/Admin/addCategory.jsp");
 	}
 		
+	protected void delete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		long cat_id = Long.parseLong(request.getParameter("cat_id"));
+		AddCategoryDAO.delete(cat_id);
+		HttpSession session = request.getSession();
+		session.setAttribute("msg", "The category is successfully deleted.");
+		load(request, response);
+	}
 };

@@ -6,31 +6,32 @@
 <title>Game-Zone</title>
 
 <link href="css/root.css" rel="stylesheet">
-<style type="text/css">
-</style>
 </head>
 <!-- <CONTENT> -->
 <body>
-	
 	<div class="login-form">
-	<%
-		String msg = (String) session.getAttribute("msg");
-		if (msg == null) msg = "";
-		if(msg.equals("You have logged out successfully"))
-			out.print("<p class = \"bg-success text-center\">"+msg+"</p>");
-		else if(msg.length() != 0)
-			out.print("<p class = \"bg-danger text-center\">"+msg+"</p>");
-		session.removeAttribute("msg");
-		String loggedIn = (String) session.getAttribute("loggedIn");
-		if(loggedIn != null && loggedIn.equals("true")){
-			String firstName = (String) session.getAttribute("firstName");
-			String lastName = (String) session.getAttribute("lastName");
-			out.print("<p class=\"text-primary\">");
-			out.print("You are already logged in, "+firstName+" "+lastName);
-			out.print("</p>");
-		}
-		else{
-	%>
+		<%
+			String msg = (String) session.getAttribute("msg");
+			if (msg == null)
+				msg = "";
+			if (msg.equals("You have logged out successfully"))
+				out.print("<p class = \"bg-success text-center\">" + msg
+						+ "</p>");
+			else if (msg.length() != 0)
+				out.print("<p class = \"bg-danger text-center\">" + msg
+						+ "</p>");
+			session.removeAttribute("msg");
+			String loggedIn = (String) session.getAttribute("loggedIn");
+			if (loggedIn != null && loggedIn.equals("true")) {
+				String firstName = (String) session.getAttribute("firstName");
+				String lastName = (String) session.getAttribute("lastName");
+				out.print("<p class=\"text-primary\">");
+				out.print("You are already logged in, " + firstName + " "
+						+ lastName+". Go ");
+				out.println("<a href=\""+ request.getContextPath() +"/Admin/index.jsp\">Home.</a>");
+				out.print("</p>");
+			} else {
+		%>
 		<form action="<%=request.getContextPath()%>/AdminLoginServlet"
 			method="POST">
 			<div class="top">
@@ -56,7 +57,9 @@
 			</div>
 		</form>
 	</div>
-	<%} %>
+	<%
+		}
+	%>
 </body>
 <!-- </CONTENT> -->
 </html>

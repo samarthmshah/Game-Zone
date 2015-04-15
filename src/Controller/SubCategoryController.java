@@ -51,6 +51,8 @@ public class SubCategoryController extends HttpServlet {
 				edit(request, response);
 			else if(flag.equals("update"))
 				update(request, response);
+			else if(flag.equals("delete"))
+				delete(request, response);
 		}
 	}
 
@@ -134,5 +136,13 @@ public class SubCategoryController extends HttpServlet {
 		HttpSession session = request.getSession();
 		session.setAttribute("msg", "The subcategory is successfully updated.");
 		response.sendRedirect(request.getContextPath()+"/Admin/addSubCategory.jsp");
+	}
+	
+	protected void delete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		long scat_id = Long.parseLong(request.getParameter("scat_id"));
+		AddSubCategoryDAO.delete(scat_id);
+		HttpSession session = request.getSession();
+		session.setAttribute("msg", "The subcategory is successfully deleted.");
+		loadSubCategories(request, response);
 	}
 };
