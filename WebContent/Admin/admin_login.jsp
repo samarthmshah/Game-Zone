@@ -22,7 +22,7 @@
 			out.print("<p class = \"bg-danger text-center\">"+msg+"</p>");
 		session.removeAttribute("msg");
 		String loggedIn = (String) session.getAttribute("loggedIn");
-		if(loggedIn != null && loggedIn.equals(true)){
+		if(loggedIn != null && loggedIn.equals("true")){
 			String firstName = (String) session.getAttribute("firstName");
 			String lastName = (String) session.getAttribute("lastName");
 			out.print("<p class=\"text-primary\">");
@@ -55,14 +55,6 @@
 				<button type="reset" class="btn btn-block">RESET</button>
 			</div>
 		</form>
-		<!-- <div class="footer-links row">
-			<div class="col-xs-6">
-				<a href="#"><i class="fa fa-external-link"></i> Register Now</a>
-			</div>
-			<div class="col-xs-6 text-right">
-				<a href="#"><i class="fa fa-lock"></i> Forgot password</a>
-			</div>
-		</div> -->
 	</div>
 	<%} %>
 </body>

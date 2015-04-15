@@ -1,7 +1,9 @@
 package Controller;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
+
 
 //import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import Model.AddCategoryDAO;
 import Model.AddSubCategoryDAO;
 import VO.GameCategoryVO;
+import VO.GameSubCategoryVO;
 
 /**
  * Servlet implementation class SubCategoryController
@@ -38,10 +41,16 @@ public class SubCategoryController extends HttpServlet {
 		String flag = request.getParameter("flag");
 		System.out.println("the flag is "+flag);
 		if(flag != null){
-			if(flag.equals("load"))
-				load(request, response);
+			if(flag.equals("loadCategories"))
+				loadCategories(request, response);
 			else if(flag.equals("insert"))
 				insert(request, response);
+			else if(flag.equals("loadSubCategories"))
+				loadSubCategories(request, response);
+			else if(flag.equals("edit"))
+				edit(request, response);
+			else if(flag.equals("update"))
+				update(request, response);
 		}
 	}
 
@@ -52,7 +61,7 @@ public class SubCategoryController extends HttpServlet {
 		// TODO Auto-generated method stub
 	}
 	
-	protected void load(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void loadCategories(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		List<GameCategoryVO> ls = AddCategoryDAO.showAll();
 //		request.setAttribute("load", ls);
@@ -69,15 +78,61 @@ public class SubCategoryController extends HttpServlet {
 		String scat_description = request.getParameter("scat_description");
 		GameCategoryVO gcvo = new GameCategoryVO();
 		gcvo.setCat_id(cat_id);
-		System.out.println(cat_id);
-		System.out.println(scat_name);
-		System.out.println(scat_description);
 		AddSubCategoryDAO.insert(gcvo, scat_name, scat_description);
 //		request.setAttribute("msg", "The subcategory has been added successfully.");
 //		RequestDispatcher rd = getServletContext().getRequestDispatcher("/Admin/addSubCategory.jsp");
 //		rd.forward(request, response);
 		HttpSession sess = request.getSession();
 		sess.setAttribute("msg", "The subcategory has been added successfully.");
+		response.sendRedirect(request.getContextPath()+"/Admin/addSubCategory.jsp");
+	}
+	
+	protected void loadSubCategories(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		List<GameSubCategoryVO> ls = AddSubCategoryDAO.showAll();
+		
+/*		Iterator<GameSubCategoryVO> itr = ls.iterator();
+		while (itr.hasNext()) {
+			GameSubCategoryVO gameSubCategoryVO = (GameSubCategoryVO) itr.next();
+			System.out.println(gameSubCategoryVO.getCat_id().getCat_id()+" "+gameSubCategoryVO.getScat_name());
+		}
+*/		
+		HttpSession sess = request.getSession();
+		sess.setAttribute("subCategoryList", ls);
+		response.sendRedirect(request.getContextPath()+"/Admin/editSubCategory.jsp");
+	}
+	
+	protected void edit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		long cat_id = Integer.MIN_VALUE;
+		long scat_id = Long.parseLong(request.getParameter("scat_id"));
+		List<GameSubCategoryVO> ls = AddSubCategoryDAO.edit(scat_id);	//scat_id, gcvoObj, scat_name, scat_description in ls
+		Iterator<GameSubCategoryVO> itr = ls.iterator();
+		while (itr.hasNext()) {		//Assuming only one entry is returned which should be the case
+			GameSubCategoryVO gscvo = (GameSubCategoryVO) itr.next();
+			cat_id = gscvo.getCat_id().getCat_id();
+		}
+		List<GameCategoryVO> categoryDetails = AddCategoryDAO.edit(cat_id);	//Query = SELECT * FROM GCVO where cat_id = cat_id
+		//categoryList = cat_id, cat_name, cat_description
+		HttpSession session = request.getSession();
+		session.setAttribute("subcategory2bedited", ls);
+		session.setAttribute("categorydetails", categoryDetails);
+		response.sendRedirect(request.getContextPath()+"/Admin/addSubCategory.jsp");
+	}
+	
+	protected void update(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		long scat_id = Long.parseLong(request.getParameter("scat_id")),
+			 cat_id = Long.parseLong(request.getParameter("cat_id"));
+		
+		String scat_name = request.getParameter("scat_name"),
+			   scat_description = request.getParameter("scat_description");
+		
+		GameCategoryVO gcvo = new GameCategoryVO();
+		gcvo.setCat_id(cat_id);
+		
+		AddSubCategoryDAO.update(gcvo, scat_id, scat_name, scat_description);
+		
+		HttpSession session = request.getSession();
+		session.setAttribute("msg", "The subcategory is successfully updated.");
 		response.sendRedirect(request.getContextPath()+"/Admin/addSubCategory.jsp");
 	}
 };

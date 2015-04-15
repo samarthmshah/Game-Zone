@@ -1,6 +1,10 @@
 package Model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -31,7 +35,77 @@ public class AddSubCategoryDAO {
 			session.close();
 		}
 	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<GameSubCategoryVO> showAll(){
+		setUp();
+		Session session = factory.openSession();
+		Transaction tx = null;
+		List<GameSubCategoryVO> ls = new ArrayList<GameSubCategoryVO>();
+		try {
+			tx = session.beginTransaction();
+			Query q = session.createQuery("from GameSubCategoryVO");
+			ls = q.list();
+			tx.commit();
+		} 
+		catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} 
+		finally {
+			session.close();
+		}
+		return ls;
+	}
 
+	@SuppressWarnings("unchecked")
+	public static List<GameSubCategoryVO> edit(long scat_id){
+		setUp();
+		Session session = factory.openSession();
+		Transaction tx = null;
+		List<GameSubCategoryVO> ls = null;
+		try {
+			tx = session.beginTransaction();
+			Query q = session.createQuery("from GameSubCategoryVO where scat_id="+scat_id);
+			ls = q.list();
+			tx.commit();
+		} 
+		catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} 
+		finally {
+			session.close();
+		}
+		return ls;
+	}
+	
+	public static void update(GameCategoryVO cat_id, long scat_id, String scat_name, String scat_description) {
+		setUp();
+		Session session = factory.openSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			GameSubCategoryVO gscvo = new GameSubCategoryVO();
+			gscvo.setCat_id(cat_id);
+			gscvo.setScat_id(scat_id);
+			gscvo.setScat_name(scat_name);
+			gscvo.setScat_description(scat_description);
+			session.saveOrUpdate(gscvo);
+			tx.commit();
+		} 
+		catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} 
+		finally {
+			session.close();
+		}
+	}
+	
 	private static void setUp() {
 		try {
 			Configuration configuration = new Configuration();

@@ -1,6 +1,7 @@
 package Controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import Model.AddCategoryDAO;
+import VO.GameCategoryVO;
 
 
 /**
@@ -32,6 +34,39 @@ public class CategoryController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		String flag = request.getParameter("flag");
+		System.out.println("the flag is "+flag);
+		if(flag != null){
+			if(flag.equals("load"))
+				load(request, response);
+			else if(flag.equals("insert"))
+				insert(request, response);
+			else if(flag.equals("edit"))
+				edit(request, response);
+			else if(flag.equals("update"))
+				update(request, response);
+		}
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+//		String flag = request.getParameter("flag");
+	}
+	
+	protected void load(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		List<GameCategoryVO> ls = AddCategoryDAO.showAll();
+//		request.setAttribute("load", ls);
+//		RequestDispatcher rd = getServletContext().getRequestDispatcher("/Admin/addSubCategory.jsp");
+//		rd.forward(request, response);
+		HttpSession sess = request.getSession();
+		sess.setAttribute("categoryList", ls);
+		response.sendRedirect(request.getContextPath()+"/Admin/editCategory.jsp");
+	}
+	
+	protected void insert(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String cat_name = request.getParameter("cat_name").trim();
 		String cat_description = request.getParameter("cat_description").trim().replaceAll("\n", " ").replaceAll("\r",".");
 		System.out.println(cat_name);
@@ -43,13 +78,25 @@ public class CategoryController extends HttpServlet {
 		sess.setAttribute("msg", "The category has been added successfully.");
 		response.sendRedirect(request.getContextPath()+"/Admin/addCategory.jsp");
 	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-//		String flag = request.getParameter("flag");
+	
+	protected void edit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		long cat_id = Long.parseLong(request.getParameter("cat_id"));
+		List<GameCategoryVO> ls = AddCategoryDAO.edit(cat_id);
+		if(ls != null){
+			HttpSession session = request.getSession();
+			session.setAttribute("category2bedited", ls);
+			response.sendRedirect(request.getContextPath()+"/Admin/addCategory.jsp");
+		}
 	}
-
-}
+	
+	protected void update(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		long cat_id = Long.parseLong(request.getParameter("cat_id"));
+		String cat_name = request.getParameter("cat_name"),
+			   cat_description = request.getParameter("cat_description");
+		AddCategoryDAO.update(cat_id, cat_name, cat_description);
+		HttpSession session = request.getSession();
+		session.setAttribute("msg", "The category is successfully updated.");
+		response.sendRedirect(request.getContextPath()+"/Admin/addCategory.jsp");
+	}
+		
+};
