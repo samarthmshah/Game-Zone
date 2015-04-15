@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
+
+<hibernate-mapping>
+   <class name="VO.GameSubCategoryVO" table="gamesubcategoryvo_mst">
+      <meta attribute="class-description">
+         This is the master table for storing game subcategories.
+      </meta>
+      <id name="scat_id" type="long" column="scat_id">
+         <generator class="increment"/>
+      </id>
+      <many-to-one name="cat_id" class="VO.GameCategoryVO" column="cat_id" cascade="delete"/>
+      <property name="scat_name" column="scat_name" type="string"/>
+      <property name="scat_description" column="scat_description" type="string"/>
+   </class>
+</hibernate-mapping>

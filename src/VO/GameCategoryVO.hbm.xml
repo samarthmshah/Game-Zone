@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
+
+<hibernate-mapping>
+   <class name="VO.GameCategoryVO" table="gamecategoryvo_mst">
+      <meta attribute="class-description">
+         This is the master table for storing game categories.
+      </meta>
+      <id name="cat_id" type="long" column="cat_id">
+         <generator class="increment"/>
+      </id>
+      <property name="cat_name" column="cat_name" type="string"/>
+      <property name="cat_description" column="cat_description" type="string"/>
+   </class>
+</hibernate-mapping>
