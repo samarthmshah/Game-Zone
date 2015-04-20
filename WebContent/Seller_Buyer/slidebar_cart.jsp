@@ -18,7 +18,7 @@
 					<strong>1</strong> x <span class="price">$50</span>
 				</div></li>
 			<li class="item"><a href="#" class="product-image"><img
-					class="img-responsive" src="images/products/product-small.png"></a>
+					class="img-responsive" src="images/posters/no_image_available.png"></a>
 				<div class="product-details">
 					<a href="#" title="Remove This Item" class="btn-remove"><span
 						class="typcn typcn-times"></span></a>

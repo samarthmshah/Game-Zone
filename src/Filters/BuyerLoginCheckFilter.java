@@ -14,17 +14,17 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * Servlet Filter implementation class AdminLoginFilter
+ * Servlet Filter implementation class BuyerLoginCheckFilter
  */
-@WebFilter("/Admin/*")
-public class AdminLoginCheckFilter implements Filter {
+@WebFilter("/Seller_Buyer/*")
+public class BuyerLoginCheckFilter implements Filter {
 
-	/**
-	 * Default constructor.
-	 */
-	public AdminLoginCheckFilter() {
-		// TODO Auto-generated constructor stub
-	}
+    /**
+     * Default constructor. 
+     */
+    public BuyerLoginCheckFilter() {
+        // TODO Auto-generated constructor stub
+    }
 
 	/**
 	 * @see Filter#destroy()
@@ -36,8 +36,7 @@ public class AdminLoginCheckFilter implements Filter {
 	/**
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
-	public void doFilter(ServletRequest request, ServletResponse response,
-			FilterChain chain) throws IOException, ServletException {
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		// TODO Auto-generated method stub
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
@@ -45,18 +44,19 @@ public class AdminLoginCheckFilter implements Filter {
 		String uri = req.getRequestURI();
 		HttpSession sesh = req.getSession();
 		
-		if (uri.contains("admin_login.jsp")
+		if(uri.contains("/login.jsp") 
+				|| uri.contains("/registration_buyer.jsp") 
 				|| uri.contains("/css") 
 				|| uri.contains("/js")
 				|| uri.contains("/images")
 				|| uri.contains("/fonts"))
 			chain.doFilter(request, response);
-
-		else if (session == null
+		
+		else if(session == null
 				|| session.getAttribute("loggedIn") == null
 				|| !(((String) session.getAttribute("loggedIn")).equals("true"))){
 			sesh.setAttribute("msg", "Please log in again to continue.");
-			res.sendRedirect(req.getContextPath() + "/Admin/admin_login.jsp");
+			res.sendRedirect(req.getContextPath()+"/Seller_Buyer/login.jsp");
 		}
 
 		else
@@ -69,4 +69,5 @@ public class AdminLoginCheckFilter implements Filter {
 	public void init(FilterConfig fConfig) throws ServletException {
 		// TODO Auto-generated method stub
 	}
-};
+
+}

@@ -47,7 +47,7 @@ public class SBLoginServlet extends HttpServlet {
 			   msg = "",
 			   url = request.getContextPath()+"/Seller_Buyer/login.jsp",
 			   loggedIn = "false";
-		int status = 0;
+		BuyerVO bvo = null;
 		List<BuyerVO> buyerInfo = null;
 		HttpSession session = request.getSession();
 		
@@ -68,17 +68,27 @@ public class SBLoginServlet extends HttpServlet {
 		else{	// When all fields are filled.
 			if(usertype.equals("buyer")){
 				buyerInfo = BuyerDAO.checkUsernamePass(username, password);
-				Iterator<BuyerVO> itr = buyerInfo.iterator();
-				while(itr.hasNext()){
-					status = ((BuyerVO)itr.next()).getStatus();
-					if(status == 1){
-						url = request.getContextPath()+"/Seller_Buyer/index.jsp";
-						loggedIn = "true";
-						session.setAttribute("buyerInfo", buyerInfo);
+				if(buyerInfo != null){
+					Iterator<BuyerVO> itr = buyerInfo.iterator();
+					
+					while(itr.hasNext())
+						bvo = (BuyerVO) itr.next();
+					
+					if(bvo != null){
+						if(bvo.getStatus() == 1){
+							url = request.getContextPath()+"/Seller_Buyer/index.jsp";
+							loggedIn = "true";
+							session.setAttribute("buyerInfoObj", bvo);
+						}
+						else
+							msg = "The user has not been authenticated yet.";
 					}
 					else
-						msg = "The user has not been authenticated yet.";
+						msg = "Invalid username and/or password";
 				}
+				else
+					msg = "Invalid username and/or password";
+				
 			}
 			else if(usertype.equals("seller")){}
 		}

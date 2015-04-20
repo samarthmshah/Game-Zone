@@ -1,3 +1,10 @@
+<%@page import="VO.BuyerVO"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%
+	BuyerVO bvo = (BuyerVO) session.getAttribute("buyerInfoObj");
+	String firstname = bvo.getFirstname(),
+		   lastname = bvo.getLastname();
+%>
 <header id="header"  class="sb-slide">
 
   <div id="logo"><a href="index.jsp"><img src="images/logo.png"/></a></div>
@@ -19,12 +26,11 @@ onblur="if (this.value=='') this.value = this.defaultValue" >
 
     <div class="pull-right">
       <div id="toplinks">
-        <div class="btn-group hidden-xs"><a href="#" title="Account" class="dropdown-toggle"><span class="typcn typcn-user"></span>Samarth Shah</a>
+        <div class="btn-group hidden-xs"><a href="#" title="Account" class="dropdown-toggle"><span class="typcn typcn-user"></span><%=firstname %> <%=lastname %></a>
           <ul class="dropdown-menu">
             <li><a href="#">My Account</a></li>
             <li><a href="#">Wishlist</a></li>
-            <li><a href="page-login.html">Log Out</a></li>
-            <li><a href="page-login.html">Sign Up</a></li>
+            <li><a href="<%=request.getContextPath()%>/SBLogoutServlet">Log Out</a></li>
           </ul>
         </div>
       </div>
