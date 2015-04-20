@@ -47,10 +47,10 @@ public class AdminLoginServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String username = request.getParameter("username"), 
-				password = request.getParameter("password"), 
-				msg = "", 
-				url = request.getContextPath()+"/Admin/admin_login.jsp",
-				loggedIn = "false";
+			   password = request.getParameter("password"),
+			   msg = "", 
+			   url = request.getContextPath()+"/Admin/admin_login.jsp",
+			   loggedIn = "false";
 		HashMap<String, String> adminInfo = null;
 		
 		if (username == null)
