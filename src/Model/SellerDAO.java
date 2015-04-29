@@ -12,20 +12,20 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
-import VO.BuyerVO;
+import VO.SellerVO;
 
 
-public class BuyerDAO {
+public class SellerDAO {
 	private static SessionFactory factory;
 	private static ServiceRegistry serviceRegistry;
 
-	public static void insert(BuyerVO bvo) {
+	public static void insert(SellerVO svo) {
 		setUp();
 		Session session = factory.openSession();
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
-			session.save(bvo);
+			session.save(svo);
 			tx.commit();
 		} 
 		catch (HibernateException e) {
@@ -38,14 +38,14 @@ public class BuyerDAO {
 		}
 	}
 	@SuppressWarnings("unchecked")
-	public static List<BuyerVO> checkUsernamePass(String username, String password){
+	public static List<SellerVO> checkUsernamePass(String username, String password){
 		setUp();
 		Session session = factory.openSession();
 		Transaction tx = null;
-		List<BuyerVO> ls = new ArrayList<BuyerVO>();
+		List<SellerVO> ls = new ArrayList<SellerVO>();
 		try {
 			tx = session.beginTransaction();
-			Query q = session.createQuery("from BuyerVO where username='"+username+"' and password='"+password+"'");
+			Query q = session.createQuery("from SellerVO where username='"+username+"' and password='"+password+"'");
 			ls = q.list();
 			tx.commit();
 		} 
@@ -71,7 +71,7 @@ public class BuyerDAO {
 		
 		try {
 			tx = session.beginTransaction();
-			Query q = session.createQuery("SELECT buyer_id from BuyerVO where username='"+ username +"'");
+			Query q = session.createQuery("SELECT seller_id from SellerVO where username='"+ username +"'");
 			@SuppressWarnings("rawtypes")
 			List ls = q.list();
 			if(ls != null && ls.size() > 0 && conflictWithAdmin)

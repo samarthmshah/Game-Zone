@@ -24,9 +24,24 @@
 <div id="bottom-border"></div>
 <div id="fixed-bottom"  class="sb-slide"></div>
 
-<!--  Header -->
-<%@include file="header.jsp" %>
-<!--  END Header -->
+<%
+	String userType = (String) session.getAttribute("userType");
+	if(userType != null  &&  userType.equals("buyer")){
+%>
+	<!--  Header -->
+	<%@include file="header_buyer.jsp"%>
+	<!--  END Header -->
+<%		
+	}
+	
+	else{
+%>
+	<!--  Header -->
+	<%@include file="header_seller.jsp"%>
+	<!--  END Header -->
+<%
+	}
+%>
 
 <div id="sb-site">
   <div id="main">

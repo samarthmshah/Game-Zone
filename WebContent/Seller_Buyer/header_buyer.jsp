@@ -1,9 +1,9 @@
 <%@page import="VO.BuyerVO"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%
-	BuyerVO bvo = (BuyerVO) session.getAttribute("buyerInfoObj");
-	String firstname = bvo.getFirstname(),
-		   lastname = bvo.getLastname();
+BuyerVO bvo = (BuyerVO) session.getAttribute("userInfoObj");
+String firstname = bvo.getFirstname(),
+	   lastname = bvo.getLastname();
 %>
 <header id="header"  class="sb-slide">
 

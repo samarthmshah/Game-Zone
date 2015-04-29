@@ -17,6 +17,7 @@
 		<mapping resource="VO/GameCategoryVO.hbm.xml"></mapping>
 		<mapping resource="VO/GameSubCategoryVO.hbm.xml"></mapping>
 		<mapping resource="VO/BuyerVO.hbm.xml"></mapping>
+		<mapping resource="VO/SellerVO.hbm.xml"></mapping>
 
 	</session-factory>
 </hibernate-configuration>

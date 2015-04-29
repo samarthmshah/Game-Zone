@@ -45,7 +45,8 @@ public class BuyerLoginCheckFilter implements Filter {
 		HttpSession sesh = req.getSession();
 		
 		if(uri.contains("/login.jsp") 
-				|| uri.contains("/registration_buyer.jsp") 
+				|| uri.contains("/registration_buyer.jsp")
+				|| uri.contains("/registration_seller.jsp")
 				|| uri.contains("/css") 
 				|| uri.contains("/js")
 				|| uri.contains("/images")

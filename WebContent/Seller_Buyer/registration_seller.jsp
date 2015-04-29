@@ -45,10 +45,7 @@ label.error {
 					<div class="col-md-4"></div>
 					<div class="col-md-4">
 						<div style="float: left">
-							<a href="#reg">
 							<button type="submit" class="btn btn-md btn-default" style="padding: 0px 8px 0px 8px;">Registration</button>
-								<!-- <h2 class="dark-grey">Registration</h2> -->
-							</a>
 						</div>
 						<div style="float:right">
 							<a href="login.jsp">
@@ -60,10 +57,16 @@ label.error {
 					<div class="col-md-4"></div>
 				</div>
 
-				<form action="<%=request.getContextPath()%>/BuyerController?flag=insert" method="POST" id="regform">
+				<form action="<%=request.getContextPath()%>/SellerController?flag=insert" method="POST" id="regform">
 
 				<div class="row" style="margin-top: 30px">
 					<div class="col-md-6">
+						
+						<div class="form-group col-lg-12">
+							<label for="companyname">Company Name (required)</label> <input type="text"
+								id="companyname" name="companyname" class="form-control" placeholder="Company name goes here...">
+						</div>
+						
 						<div class="form-group col-lg-12">
 							<label for="firstname">First Name (required)</label> <input type="text"
 								id="firstname" name="firstname" class="form-control" placeholder="Your first name goes here...">
@@ -100,13 +103,15 @@ label.error {
 							<label for="remailid">Repeat Email Address</label> <input
 								type="email" name="remailid" class="form-control" id="remailid">
 						</div>
-					</div>
-					
-					<div class="col-md-6">
+						
 						<div class="form-group col-lg-12">
 							<label for="phno">Phone Number (required)</label> <input type="text"
 								name="phno" class="form-control" id="phno" placeholder="Your phone # goes here...">
 						</div>
+						
+					</div>
+					
+					<div class="col-md-6">
 
 						<div class="form-group col-lg-6">
 							<label for="dob">Date of Birth (required)</label> <input type="text"
@@ -129,6 +134,18 @@ label.error {
 						</div>
 						
 						<div class="form-group col-lg-12">
+							<label for="routingnumber">Routing Number (required)</label> <input type="text"
+								name="routingnumber" class="form-control js-routing-transit-number" id="routingnumber" 
+								pattern="\d*" x-autocompletetype="routing-transit-number" 
+								placeholder="Routing # goes here...">
+						</div>
+						
+						<div class="form-group col-lg-12">
+							<label for="accountnumber">Account Number (required)</label> <input type="text"
+								name="accountnumber" class="form-control" id="accountnumber" placeholder="Account # goes here...">
+						</div>
+						
+						<div class="form-group col-lg-12">
 							<label for="paypal">PayPal ID (required)</label> <input type="email"
 								name="paypal" class="form-control" id="paypal" placeholder="Paypal ID goes here...">
 						</div>
@@ -143,10 +160,8 @@ label.error {
 						<div class="col-md-4"></div>
 						<div class="col-md-4">
 						
-					<a id="reg">
 							<button type="submit" class="btn btn-block btn-success"
 								style="margin-top: 10px; margin-left: 15px">Register</button>
-					</a>
 						</div>
 						<div class="col-md-4"></div>
 					</div>
@@ -162,10 +177,13 @@ label.error {
 	<script src="js/jquery.maskedinput.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/bootbox.min.js"></script>
+	<script src="js/jquery.bank.js"></script>
+	
 	
 	<script type="text/javascript">
 		$('#phno').mask('999-999-9999');
 		$('#zip').mask('99999');
+		$('#routingnumber').mask('999999999');
 	</script>
 	
 	<script>
@@ -187,6 +205,7 @@ label.error {
 	$().ready(function(){
 		$('#regform').validate({
 			rules: {
+				'companyname': {required: true},
 				'firstname': {required: true},
 				'lastname': {required: true},
 				'username': {
@@ -220,6 +239,14 @@ label.error {
 				'address': {
 					required: true,
 					minlength: 10
+				},
+				'routingnumber':{
+					required: true,
+				},
+				'accountnumber':{
+					required: true,
+					maxlength: 17,
+					number: true,
 				},
 				'paypal': {
 					required: true,
