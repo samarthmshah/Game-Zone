@@ -48,12 +48,14 @@
 										<td>${i.cat_description }</td>
 										<td>
 											<a href="<%=request.getContextPath()%>/CategoryController?cat_id=${i.cat_id }&flag=edit">
-												<button type="button" class="btn btn-square btn-basic btn-icon">
+												<button type="button" class="btn btn-square btn-basic btn-icon" data-toggle="tooltip" 
+												data-placement="top" data-original-title="Edit">
 													<i class="fa fa-edit"></i>
 												</button>
 											</a>
                 							<a href="<%=request.getContextPath()%>/CategoryController?cat_id=${i.cat_id }&flag=delete">
-                								<button type="button" class="btn btn-square btn-danger btn-icon">
+                								<button type="button" class="btn btn-square btn-danger btn-icon" data-toggle="tooltip" 
+												data-placement="top" data-original-title="Delete">
                 									<i class="fa fa-remove"></i>
                 								</button>
                 							</a>

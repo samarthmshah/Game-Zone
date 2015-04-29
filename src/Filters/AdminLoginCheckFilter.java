@@ -53,8 +53,8 @@ public class AdminLoginCheckFilter implements Filter {
 			chain.doFilter(request, response);
 
 		else if (session == null
-				|| session.getAttribute("loggedIn") == null
-				|| !(((String) session.getAttribute("loggedIn")).equals("true"))){
+				|| session.getAttribute("adminLoggedIn") == null
+				|| !(((String) session.getAttribute("adminLoggedIn")).equals("true"))){
 			sesh.setAttribute("msg", "Please log in again to continue.");
 			res.sendRedirect(req.getContextPath() + "/Admin/admin_login.jsp");
 		}

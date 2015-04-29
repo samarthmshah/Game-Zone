@@ -30,7 +30,7 @@
 						class="fa fa-bars"></i></span>Sellers<span class="caret"></span></a>
 				<ul>
 					<li><span class="icon color7"><i class="fa fa-circle-o"></i></span><a
-						href="approveSeller.jsp">Approve/ Decline Sellers</a></li>
+						href="<%=request.getContextPath()%>/SellerController?flag=load">Approve/ Decline Sellers</a></li>
 					<li><span class="icon color7"><i class="fa fa-circle-o"></i></span><a
 						href="viewSellers.jsp">View Sellers</a></li>
 					<li><span class="icon color7"><i class="fa fa-circle-o"></i></span><a

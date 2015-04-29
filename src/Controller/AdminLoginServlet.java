@@ -86,7 +86,7 @@ public class AdminLoginServlet extends HttpServlet {
 		HttpSession sess = request.getSession(true);
 		
 		if (loggedIn.equals("true")) {
-			sess.setAttribute("loggedIn", adminInfo.get("loggedIn"));
+			sess.setAttribute("adminLoggedIn", "true");
 			sess.setAttribute("firstName", adminInfo.get("firstName"));
 			sess.setAttribute("lastName", adminInfo.get("lastName"));
 		}

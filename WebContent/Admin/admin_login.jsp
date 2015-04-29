@@ -21,8 +21,8 @@
 				out.print("<p class = \"bg-danger text-center\">" + msg
 						+ "</p>");
 			session.removeAttribute("msg");
-			String loggedIn = (String) session.getAttribute("loggedIn");
-			if (loggedIn != null && loggedIn.equals("true")) {
+			String adminLoggedIn = (String) session.getAttribute("adminLoggedIn");
+			if (adminLoggedIn != null && adminLoggedIn.equals("true")) {
 				String firstName = (String) session.getAttribute("firstName");
 				String lastName = (String) session.getAttribute("lastName");
 				out.print("<p class=\"text-primary\">");

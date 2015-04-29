@@ -37,11 +37,9 @@ public class SBLogoutServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		HttpSession session = request.getSession(false);
-		if(session != null)
-			session.invalidate();
-		HttpSession sesh = request.getSession();
-		sesh.setAttribute("msg", "You have logged out successfully");
+		HttpSession session = request.getSession();
+		session.removeAttribute("loggedIn");	// Makes it null
+		session.setAttribute("msg", "You have logged out successfully");
 		response.sendRedirect(request.getContextPath()+"/Seller_Buyer/login.jsp");
 	}
 };

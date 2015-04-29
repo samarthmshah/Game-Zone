@@ -1,6 +1,7 @@
 package Controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,6 +33,15 @@ public class SellerController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		String flag = request.getParameter("flag");
+		if(flag != null){
+			if(flag.equals("load"))
+				load(request, response);
+			else if(flag.equals("approve"))
+				approve(request, response);
+			else if(flag.equals("decline"))
+				decline(request, response);
+		}
 	}
 
 	/**
@@ -40,8 +50,10 @@ public class SellerController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String flag = request.getParameter("flag");
-		if(flag != null && flag.equals("insert"))
-			insert(request, response);
+		if(flag != null){
+			if(flag.equals("insert"))
+				insert(request, response);
+		}
 	}
 
 	protected void insert(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -77,5 +89,28 @@ public class SellerController extends HttpServlet {
 			HttpSession session = request.getSession();
 			session.setAttribute("msg", msg);
 			response.sendRedirect(request.getContextPath()+url);
+	}
+	
+	protected void load(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		List<SellerVO> ls = SellerDAO.showAll();
+		HttpSession session = request.getSession();
+		session.setAttribute("sellerList", ls);
+		response.sendRedirect(request.getContextPath()+"/Admin/seller_approval.jsp");
+	}
+	
+	protected void approve(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		long seller_id = Long.parseLong(request.getParameter("seller_id"));
+		SellerDAO.updateStatus(seller_id, "approve");
+		HttpSession session = request.getSession();
+		session.setAttribute("msg", "The seller has been successfully approved.");
+		load(request, response);
+	}
+	
+	protected void decline(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		long seller_id = Long.parseLong(request.getParameter("seller_id"));
+		SellerDAO.updateStatus(seller_id, "decline");
+		HttpSession session = request.getSession();
+		session.setAttribute("msg", "The seller has been declined.");
+		load(request, response);
 	}
 };

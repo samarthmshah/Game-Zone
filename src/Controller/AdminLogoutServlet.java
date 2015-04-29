@@ -40,12 +40,8 @@ public class AdminLogoutServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		session.removeAttribute("firstName");
 		session.removeAttribute("lastName");
-		session.removeAttribute("loggedIn");
-		session.invalidate();
-//		request.setAttribute("msg", "You have logged out successfully");
-//		getServletContext().getRequestDispatcher("/Admin/admin_login.jsp").forward(request, response);
-		HttpSession sess = request.getSession();
-		sess.setAttribute("msg", "You have logged out successfully");
+		session.removeAttribute("adminLoggedIn");	//Makes it null
+		session.setAttribute("msg", "You have logged out successfully");
 		response.sendRedirect(request.getContextPath()+"/Admin/admin_login.jsp");
 	}
 

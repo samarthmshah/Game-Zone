@@ -91,6 +91,53 @@ public class SellerDAO {
 		return isAvail;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public static List<SellerVO> showAll(){
+		setUp();
+		Session session = factory.openSession();
+		Transaction tx = null;
+		List<SellerVO> ls = new ArrayList<SellerVO>();
+		try {
+			tx = session.beginTransaction();
+			Query q = session.createQuery("from SellerVO");
+			ls = q.list();
+			tx.commit();
+		} 
+		catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} 
+		finally {
+			session.close();
+		}
+		return ls;
+	}
+	
+	public static void updateStatus(long seller_id, String action){
+		setUp();
+		Session session = factory.openSession();
+		Transaction tx = null;
+		Query q = null;
+		try {
+			tx = session.beginTransaction();
+			if(action.equals("approve"))
+				q=session.createQuery("UPDATE SellerVO SET status ='1' WHERE seller_id='"+seller_id+"'");
+			else
+				q=session.createQuery("UPDATE SellerVO SET status ='0' WHERE seller_id='"+seller_id+"'");
+			q.executeUpdate();
+			tx.commit();
+		} 
+		catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} 
+		finally {
+			session.close();
+		}
+	}
+	
 	private static void setUp() {
 		try {
 			Configuration configuration = new Configuration();
