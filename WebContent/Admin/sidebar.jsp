@@ -42,7 +42,7 @@
 						class="fa fa-bars"></i></span>Buyers<span class="caret"></span></a>
 				<ul>
 					<li><span class="icon color7"><i class="fa fa-circle-o"></i></span><a
-						href="viewBuyers.jsp">View Buyers</a></li>
+						href="<%=request.getContextPath()%>/BuyerController?flag=load">Approve/ Decline Buyers</a></li>
 					<li><span class="icon color7"><i class="fa fa-circle-o"></i></span><a
 						href="editBuyers">Edit Buyers</a></li>
 					<li><span class="icon color7"><i class="fa fa-circle-o"></i></span><a

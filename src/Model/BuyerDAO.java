@@ -69,10 +69,8 @@ public class BuyerDAO {
 				conflictWithAdmin = true,
 				conflictWithSeller = true;
 		
-		if(!(username.equals("sam") || username.equals("john"))){	// If the UN is not sam or john
-			System.out.println("There is no conflict with admin");
+		if(!(username.equals("sam") || username.equals("john")))	// If the UN is not sam or john
 			conflictWithAdmin = false;	// Then there is no conflict
-		}
 		
 		try {
 			tx = session.beginTransaction();
@@ -80,18 +78,14 @@ public class BuyerDAO {
 			Query q = session.createQuery("SELECT buyer_id from BuyerVO where username='"+ username +"'");
 			@SuppressWarnings("rawtypes")
 			List listOfBuyerWithSameUsername = q.list();
-			if(!(listOfBuyerWithSameUsername != null && listOfBuyerWithSameUsername.size()>0)){		// If the list is empty!
-				System.out.println("There is no conflict with buyer");	
+			if(!(listOfBuyerWithSameUsername != null && listOfBuyerWithSameUsername.size()>0))		// If the list is empty!
 				conflictWithBuyer = false;		// Then there is no conflict
-			}
 			
 			Query q1 = session.createQuery("SELECT seller_id from SellerVO where username='"+ username +"'");
 			@SuppressWarnings("rawtypes")
 			List listOfSellerWithSameUsername = q1.list();
-			if(!(listOfSellerWithSameUsername != null && listOfSellerWithSameUsername.size()>0)){ // If the list is empty
-				System.out.println("There is no conflict with Seller");	
+			if(!(listOfSellerWithSameUsername != null && listOfSellerWithSameUsername.size()>0)) // If the list is empty
 				conflictWithSeller = false;
-			}
 			
 			if(conflictWithBuyer || conflictWithAdmin || conflictWithSeller)
 				isAvail = false;
@@ -110,6 +104,53 @@ public class BuyerDAO {
 		return isAvail;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public static List<BuyerVO> showAll(){
+		setUp();
+		Session session = factory.openSession();
+		Transaction tx = null;
+		List<BuyerVO> ls = new ArrayList<BuyerVO>();
+		try {
+			tx = session.beginTransaction();
+			Query q = session.createQuery("from BuyerVO");
+			ls = q.list();
+			tx.commit();
+		} 
+		catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} 
+		finally {
+			session.close();
+		}
+		return ls;
+	}
+	
+	public static void updateStatus(long buyer_id, String action){
+		setUp();
+		Session session = factory.openSession();
+		Transaction tx = null;
+		Query q = null;
+		try {
+			tx = session.beginTransaction();
+			if(action.equals("approve"))
+				q=session.createQuery("UPDATE BuyerVO SET status ='1' WHERE buyer_id='"+buyer_id+"'");
+			else
+				q=session.createQuery("UPDATE BuyerVO SET status ='0' WHERE buyer_id='"+buyer_id+"'");
+			q.executeUpdate();
+			tx.commit();
+		} 
+		catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} 
+		finally {
+			session.close();
+		}
+	}
+	
 	private static void setUp() {
 		try {
 			Configuration configuration = new Configuration();
@@ -122,9 +163,5 @@ public class BuyerDAO {
 			t.printStackTrace();
 			throw new ExceptionInInitializerError(t);
 		}
-	}
-	
-	public static void main(String[] args) {
-		System.out.println(BuyerDAO.checkUsernameAvailability("samnex"));
 	}
 };
