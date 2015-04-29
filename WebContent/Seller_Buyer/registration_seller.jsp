@@ -1,4 +1,6 @@
 <!doctype html>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Map"%>
 <html>
 <head>
 <meta charset="utf-8">
@@ -39,6 +41,17 @@ label.error {
 
 	<div class="container">
 		<section class="container" style="margin-top: 5px;">
+		<%
+			String msg = (String) session.getAttribute("msg");
+			if (msg != null) {
+				response.setContentType("text/html");
+				out.println("<div class=\"col-md-12\">");
+				out.println("<p class=\"bg-danger text-center\">");
+				out.println("</strong>"+msg+"</strong>");
+				out.println("</p></div>");
+				session.removeAttribute("msg");
+			}
+		%>
 			<div class="container-page">
 
 				<div class="row">

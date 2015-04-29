@@ -72,23 +72,24 @@ public class SellerController extends HttpServlet {
 			   paypal = request.getParameter("paypal"),
 			   url = "/Seller_Buyer/registration_seller.jsp",
 			   msg = "";
-			boolean isAvailable = false;
+		boolean isAvailable = false;
 			
-			if(zip == null) zip = "";
+		if(zip == null) zip = "";
 			
-			isAvailable = SellerDAO.checkUsernameAvailability(username);
-			if(isAvailable){
-				SellerVO svo = new SellerVO(companyName, firstName, lastName, username, password, email, phNo, dob, address, zip, 
-											routingNumber, accountNumber, paypal, 0);
-				SellerDAO.insert(svo);
-				msg = "Account created successfully";
-				url = "/Seller_Buyer/login.jsp";
-			}
-			else
-				msg = "Username already taken.";
-			HttpSession session = request.getSession();
-			session.setAttribute("msg", msg);
-			response.sendRedirect(request.getContextPath()+url);
+		isAvailable = SellerDAO.checkUsernameAvailability(username);
+		if(isAvailable){
+			SellerVO svo = new SellerVO(companyName, firstName, lastName, username, password, email, phNo, dob, address, zip, 
+										routingNumber, accountNumber, paypal, 0);
+			SellerDAO.insert(svo);
+			msg = "Account created successfully";
+			url = "/Seller_Buyer/login.jsp";
+		}
+		else
+			msg = "Username already taken.";
+
+		HttpSession session = request.getSession();
+		session.setAttribute("msg", msg);
+		response.sendRedirect(request.getContextPath()+url);
 	}
 	
 	protected void load(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

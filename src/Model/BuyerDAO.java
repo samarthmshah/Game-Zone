@@ -65,16 +65,35 @@ public class BuyerDAO {
 		Session session = factory.openSession();
 		Transaction tx = null;
 		boolean isAvail = false,
-				conflictWithAdmin = true;
-		if(!(username.equals("sam") || username.equals("john")))
-			conflictWithAdmin = false;
+				conflictWithBuyer = true,
+				conflictWithAdmin = true,
+				conflictWithSeller = true;
+		
+		if(!(username.equals("sam") || username.equals("john"))){	// If the UN is not sam or john
+			System.out.println("There is no conflict with admin");
+			conflictWithAdmin = false;	// Then there is no conflict
+		}
 		
 		try {
 			tx = session.beginTransaction();
+			
 			Query q = session.createQuery("SELECT buyer_id from BuyerVO where username='"+ username +"'");
 			@SuppressWarnings("rawtypes")
-			List ls = q.list();
-			if(ls != null && ls.size() > 0 && conflictWithAdmin)
+			List listOfBuyerWithSameUsername = q.list();
+			if(!(listOfBuyerWithSameUsername != null && listOfBuyerWithSameUsername.size()>0)){		// If the list is empty!
+				System.out.println("There is no conflict with buyer");	
+				conflictWithBuyer = false;		// Then there is no conflict
+			}
+			
+			Query q1 = session.createQuery("SELECT seller_id from SellerVO where username='"+ username +"'");
+			@SuppressWarnings("rawtypes")
+			List listOfSellerWithSameUsername = q1.list();
+			if(!(listOfSellerWithSameUsername != null && listOfSellerWithSameUsername.size()>0)){ // If the list is empty
+				System.out.println("There is no conflict with Seller");	
+				conflictWithSeller = false;
+			}
+			
+			if(conflictWithBuyer || conflictWithAdmin || conflictWithSeller)
 				isAvail = false;
 			else
 				isAvail = true;
@@ -103,5 +122,9 @@ public class BuyerDAO {
 			t.printStackTrace();
 			throw new ExceptionInInitializerError(t);
 		}
+	}
+	
+	public static void main(String[] args) {
+		System.out.println(BuyerDAO.checkUsernameAvailability("samnex"));
 	}
 };

@@ -65,17 +65,38 @@ public class SellerDAO {
 		Session session = factory.openSession();
 		Transaction tx = null;
 		boolean isAvail = false,
-				conflictWithAdmin = true;
-		if(!(username.equals("sam") || username.equals("john")))
-			conflictWithAdmin = false;
+				conflictWithSeller = true,
+				conflictWithAdmin = true,
+				conflictWithBuyer = true;
+		
+		if(!(username.equals("sam") || username.equals("john"))){	// If the UN is not sam or john
+			System.out.println("There is no conflict with admin");
+			conflictWithAdmin = false;	// Then there is no conflict
+		}
 		
 		try {
 			tx = session.beginTransaction();
+			
 			Query q = session.createQuery("SELECT seller_id from SellerVO where username='"+ username +"'");
-			@SuppressWarnings("rawtypes")
-			List ls = q.list();
-			if(ls != null && ls.size() > 0 && conflictWithAdmin)
+			@SuppressWarnings("rawtypes")	// Testing for conflict with Seller
+			List listOfSellerWithSameUsername = q.list();
+			if(!(listOfSellerWithSameUsername != null && listOfSellerWithSameUsername.size() > 0)){	// If the list is empty
+				System.out.println("There is no conflict with Seller");	
+				conflictWithSeller = false;		// Then there is not conflict
+			}
+			
+			Query q1 = session.createQuery("SELECT buyer_id from BuyerVO where username='"+ username +"'");
+			@SuppressWarnings("rawtypes")	// Testing for conflict with Buyer
+			List listOfBuyerWithSameUsername = q1.list();
+			if(!(listOfBuyerWithSameUsername != null && listOfBuyerWithSameUsername.size()>0)){		// If the list is empty!
+				System.out.println("There is no conflict with buyer");	
+				conflictWithBuyer = false;		// Then there is no conflict
+			}
+			
+			if(conflictWithSeller || conflictWithAdmin || conflictWithBuyer){
 				isAvail = false;
+				System.out.println("There is some kind of conflict");
+			}
 			else
 				isAvail = true;
 			tx.commit(); 
@@ -150,5 +171,9 @@ public class SellerDAO {
 			t.printStackTrace();
 			throw new ExceptionInInitializerError(t);
 		}
+	}
+	
+	public static void main(String a[]){
+		System.out.println(SellerDAO.checkUsernameAvailability("samnex"));
 	}
 };
