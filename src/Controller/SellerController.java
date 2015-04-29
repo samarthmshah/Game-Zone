@@ -41,6 +41,8 @@ public class SellerController extends HttpServlet {
 				approve(request, response);
 			else if(flag.equals("decline"))
 				decline(request, response);
+			else if(flag.equals("delete"))
+				deleteSeller(request, response);
 		}
 	}
 
@@ -53,6 +55,8 @@ public class SellerController extends HttpServlet {
 		if(flag != null){
 			if(flag.equals("insert"))
 				insert(request, response);
+			else if(flag.equals("message"))
+				message(request, response);
 		}
 	}
 
@@ -96,7 +100,7 @@ public class SellerController extends HttpServlet {
 		List<SellerVO> ls = SellerDAO.showAll();
 		HttpSession session = request.getSession();
 		session.setAttribute("sellerList", ls);
-		response.sendRedirect(request.getContextPath()+"/Admin/seller_approval.jsp");
+		response.sendRedirect(request.getContextPath()+"/Admin/"+request.getParameter("url"));
 	}
 	
 	protected void approve(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -113,5 +117,32 @@ public class SellerController extends HttpServlet {
 		HttpSession session = request.getSession();
 		session.setAttribute("msg", "The seller has been declined.");
 		load(request, response);
+	}
+	
+	protected void deleteSeller(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		long seller_id = Long.parseLong(request.getParameter("seller_id"));
+		SellerDAO.deleteSeller(seller_id);
+		HttpSession session = request.getSession();
+		session.setAttribute("msg", "The seller has been deleted successfully.");
+		load(request, response);
+	}
+	
+	protected void message(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		if(request.getParameter("seller_id") != null){
+			long seller_id = Long.parseLong(request.getParameter("seller_id"));
+			String subject = request.getParameter("subject"),
+				   message = request.getParameter("message");
+			
+			System.out.println("ID "+seller_id);
+			System.out.println("Subject "+subject);
+			System.out.println("Message "+message);
+			HttpSession session = request.getSession();
+			session.setAttribute("msg", "The message has been sent successfully.");
+		}
+		else{
+			HttpSession session = request.getSession();
+			session.setAttribute("msg", "Please select a seller first!");
+		}
+		response.sendRedirect(request.getContextPath()+"/Admin/contact_sellers.jsp");
 	}
 };

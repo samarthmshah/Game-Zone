@@ -151,6 +151,27 @@ public class BuyerDAO {
 		}
 	}
 	
+	public static void deleteBuyer(long buyer_id){
+		setUp();
+		Session session = factory.openSession();
+		Transaction tx = null;
+		BuyerVO bvo = new BuyerVO();
+		bvo.setBuyer_id(buyer_id);
+		try {
+			tx = session.beginTransaction();
+			session.delete(bvo);
+			tx.commit();
+		} 
+		catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} 
+		finally {
+			session.close();
+		}
+	}
+	
 	private static void setUp() {
 		try {
 			Configuration configuration = new Configuration();

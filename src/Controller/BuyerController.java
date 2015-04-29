@@ -41,6 +41,8 @@ public class BuyerController extends HttpServlet {
 				approve(request, response);
 			else if(flag.equals("decline"))
 				decline(request, response);
+			else if(flag.equals("delete"))
+				deleteBuyer(request, response);
 		}
 	}
 
@@ -52,6 +54,8 @@ public class BuyerController extends HttpServlet {
 		String flag = request.getParameter("flag");
 		if(flag != null && flag.equals("insert"))
 			insert(request, response);
+		else if(flag.equals("message"))
+			message(request, response);
 		}
 	
 	protected void insert(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -89,7 +93,7 @@ public class BuyerController extends HttpServlet {
 		List<BuyerVO> ls = BuyerDAO.showAll();
 		HttpSession session = request.getSession();
 		session.setAttribute("buyerList", ls);
-		response.sendRedirect(request.getContextPath()+"/Admin/buyer_approval.jsp");
+		response.sendRedirect(request.getContextPath()+"/Admin/"+request.getParameter("url"));
 	}
 	
 	protected void approve(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -106,5 +110,32 @@ public class BuyerController extends HttpServlet {
 		HttpSession session = request.getSession();
 		session.setAttribute("msg", "The buyer has been declined.");
 		load(request, response);
+	}
+	
+	protected void deleteBuyer(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		long buyer_id = Long.parseLong(request.getParameter("buyer_id"));
+		BuyerDAO.deleteBuyer(buyer_id);
+		HttpSession session = request.getSession();
+		session.setAttribute("msg", "The buyer has been deleted successfully.");
+		load(request, response);
+	}
+	
+	protected void message(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		if(request.getParameter("buyer_id") != null){
+			long buyer_id = Long.parseLong(request.getParameter("buyer_id"));
+			String subject = request.getParameter("subject"),
+				   message = request.getParameter("message");
+			
+			System.out.println("ID "+buyer_id);
+			System.out.println("Subject "+subject);
+			System.out.println("Message "+message);
+			HttpSession session = request.getSession();
+			session.setAttribute("msg", "The message has been sent successfully.");
+		}
+		else{
+			HttpSession session = request.getSession();
+			session.setAttribute("msg", "Please select a buyer first!");
+		}
+		response.sendRedirect(request.getContextPath()+"/Admin/contact_buyers.jsp");
 	}
 };
