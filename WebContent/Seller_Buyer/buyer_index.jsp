@@ -24,25 +24,9 @@
 <div id="bottom-border"></div>
 <div id="fixed-bottom"  class="sb-slide"></div>
 
-<%
-	String userType = (String) session.getAttribute("userType");
-	if(userType != null  &&  userType.equals("buyer")){
-%>
 	<!--  Header -->
-	<%@include file="header_buyer.jsp"%>
+	<%@include file="buyer_header.jsp"%>
 	<!--  END Header -->
-<%		
-	}
-	
-	else{
-%>
-	<!--  Header -->
-	<%@include file="header_seller.jsp"%>
-	<!--  END Header -->
-<%
-	}
-%>
-
 <div id="sb-site">
   <div id="main">
     <div id="loadergif">
@@ -69,7 +53,7 @@
 <!-- End slidebar. -->
 
 <!--  The main menu will be showed here. This comes after the sb-site ends. -->
-<%@include file="main_menu.jsp" %>
+<%@include file="buyer_main_menu.jsp" %>
 <!-- End slidebar. -->
 
 <!-- Latest compiled and minified JavaScript --> 

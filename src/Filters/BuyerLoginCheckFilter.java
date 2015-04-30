@@ -43,6 +43,9 @@ public class BuyerLoginCheckFilter implements Filter {
 		HttpSession session = req.getSession(false);
 		String uri = req.getRequestURI();
 		HttpSession sesh = req.getSession();
+		String userInfoObjType = null;
+		if(session!= null && session.getAttribute("userInfoObj")!= null)
+			userInfoObjType = session.getAttribute("userInfoObj").getClass().getName();
 		
 		if(uri.contains("/login.jsp") 
 				|| uri.contains("/registration_buyer.jsp")
@@ -60,6 +63,18 @@ public class BuyerLoginCheckFilter implements Filter {
 			res.sendRedirect(req.getContextPath()+"/Seller_Buyer/login.jsp");
 		}
 
+		// Or if userInfoObj is of type Buyer but userType is seller then login.
+		else if(userInfoObjType != null && userInfoObjType.equals("VO.BuyerVO") && uri.indexOf("seller") > 0){
+			sesh.setAttribute("msg", "Please log in again to continue.");
+			res.sendRedirect(req.getContextPath()+"/Seller_Buyer/login.jsp");
+		}
+		
+		// Or if userInfoObj is of type Seller but userType is buyer then login.
+		else if(userInfoObjType != null && userInfoObjType.equals("VO.SellerVO") && uri.indexOf("buyer") > 0){
+			sesh.setAttribute("msg", "Please log in again to continue.");
+			res.sendRedirect(req.getContextPath()+"/Seller_Buyer/login.jsp");
+		}
+		
 		else
 			chain.doFilter(request, response);
 	}

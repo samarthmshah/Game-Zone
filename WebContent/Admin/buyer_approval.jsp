@@ -61,13 +61,13 @@
 										</c:choose>
 										</td>
 										<td>
-											<a href="<%=request.getContextPath()%>/BuyerController?buyer_id=${i.buyer_id }&flag=approve">
+											<a href="<%=request.getContextPath()%>/BuyerController?buyer_id=${i.buyer_id }&flag=approve&url=buyer_approval.jsp">
 												<button type="button" class="btn btn-square btn-basic btn-icon" data-toggle="tooltip" 
 												data-placement="top" data-original-title="Approve">
 													<i class="fa fa-check-square"></i>
 												</button>
 											</a>
-                							<a href="<%=request.getContextPath()%>/BuyerController?buyer_id=${i.buyer_id }&flag=decline">
+                							<a href="<%=request.getContextPath()%>/BuyerController?buyer_id=${i.buyer_id }&flag=decline&url=buyer_approval.jsp">
                 								<button type="button" class="btn btn-square btn-danger btn-icon" data-toggle="tooltip" 
 												data-placement="top" data-original-title="Decline">
                 									<i class="fa fa-remove"></i>

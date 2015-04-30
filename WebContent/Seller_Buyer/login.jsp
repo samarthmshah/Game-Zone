@@ -33,7 +33,7 @@
 						out.println("</p></div>");
 						session.removeAttribute("msg");
 					} 
-					else if (msg.equals("You have logged out successfullyy")) {
+					else if (msg.equals("You have logged out successfully")) {
 						response.setContentType("text/html");
 						out.println("<div class=\"col-md-12\">");
 						out.println("<p class=\"bg-success text-center\">");
@@ -53,12 +53,18 @@
 				session.removeAttribute("msg");
 				String loggedIn = (String) session.getAttribute("loggedIn");
 				if (loggedIn != null && loggedIn.equals("true")) {
-					String firstName = (String) session.getAttribute("firstName");
-					String lastName = (String) session.getAttribute("lastName");
 					out.print("<p class=\"text-primary\">");
-					out.print("You are already logged in, " + firstName + " "
-							+ lastName+". Go ");
-					out.println("<a href=\""+ request.getContextPath() +"/Seller_Buyer/index.jsp\">Home.</a>");
+					
+					if(((String)session.getAttribute("userType")).equals("buyer")){
+						out.print("You are already logged in. Go ");
+						out.println("<a href=\""+ request.getContextPath() +"/Seller_Buyer/buyer_index.jsp\">Home.</a>");
+					}
+					else{
+						out.print("You are already logged in. Go ");
+						out.println("<a href=\""+ request.getContextPath() +"/Seller_Buyer/seller_index.jsp\">Home.</a>");
+					}
+					
+					
 					out.print("</p>");
 				} 
 				else {

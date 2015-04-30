@@ -78,7 +78,7 @@ public class SBLoginServlet extends HttpServlet {
 					
 					if(bvo != null){
 						if(bvo.getStatus() == 1){
-							url = request.getContextPath()+"/Seller_Buyer/index.jsp";
+							url = request.getContextPath()+"/Seller_Buyer/buyer_index.jsp";
 							loggedIn = "true";
 							session.setAttribute("userInfoObj", bvo);
 						}
@@ -102,7 +102,7 @@ public class SBLoginServlet extends HttpServlet {
 					
 					if(svo != null){
 						if(svo.getStatus() == 1){
-							url = request.getContextPath()+"/Seller_Buyer/index.jsp";
+							url = request.getContextPath()+"/Seller_Buyer/seller_index.jsp";
 							loggedIn = "true";
 							session.setAttribute("userInfoObj", svo);
 						}

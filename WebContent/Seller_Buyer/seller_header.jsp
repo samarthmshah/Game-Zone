@@ -7,7 +7,7 @@ String firstname = svo.getFirstname(),
 %>
 <header id="header"  class="sb-slide">
 
-  <div id="logo"><a href="index.jsp"><img src="images/logo.png"/></a></div>
+  <div id="logo"><a href="seller_index.jsp"><img src="images/logo.png"/></a></div>
   <!-- Navigation -->
   <div id="main-menu-button"><a href="#" class="sb-toggle-left"><span class="typcn typcn-th-menu"></span>MAIN MENU</a></div>
   <!-- END Navigation -->
@@ -24,11 +24,11 @@ onblur="if (this.value=='') this.value = this.defaultValue" >
     </div>
 
     <div class="pull-right">
+    <div id="toplinks"></div>
       <div id="toplinks">
         <div class="btn-group hidden-xs"><a href="#" title="Account" class="dropdown-toggle"><span class="typcn typcn-user"></span><%=firstname %> <%=lastname %></a>
           <ul class="dropdown-menu">
             <li><a href="#">My Account</a></li>
-            <li><a href="#">Wishlist</a></li>
             <li><a href="<%=request.getContextPath()%>/SBLogoutServlet">Log Out</a></li>
           </ul>
         </div>

@@ -2,12 +2,14 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%
 BuyerVO bvo = (BuyerVO) session.getAttribute("userInfoObj");
+System.out.println("USerInfo Object type: "+session.getAttribute("userInfoObj").getClass().getName());
+System.out.println("UserType: "+(String) session.getAttribute("userType"));
 String firstname = bvo.getFirstname(),
 	   lastname = bvo.getLastname();
 %>
 <header id="header"  class="sb-slide">
 
-  <div id="logo"><a href="index.jsp"><img src="images/logo.png"/></a></div>
+  <div id="logo"><a href="buyer_index.jsp"><img src="images/logo.png"/></a></div>
   <!-- Navigation -->
   <div id="main-menu-button"><a href="#" class="sb-toggle-left"><span class="typcn typcn-th-menu"></span>MAIN MENU</a></div>
   <!-- END Navigation -->
