@@ -19,6 +19,7 @@
 		<mapping resource="VO/BuyerVO.hbm.xml"></mapping>
 		<mapping resource="VO/SellerVO.hbm.xml"></mapping>
 		<mapping resource="VO/LinkBuyerVO.hbm.xml"></mapping>
+		<mapping resource="VO/LinkSellerVO.hbm.xml"></mapping>
 
 	</session-factory>
 </hibernate-configuration>

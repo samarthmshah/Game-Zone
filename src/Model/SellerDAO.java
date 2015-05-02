@@ -1,6 +1,9 @@
 package Model;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -12,6 +15,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
+import VO.LinkSellerVO;
 import VO.SellerVO;
 
 
@@ -43,10 +47,23 @@ public class SellerDAO {
 		Session session = factory.openSession();
 		Transaction tx = null;
 		List<SellerVO> ls = new ArrayList<SellerVO>();
+		String storedHashedPassword = null;
 		try {
 			tx = session.beginTransaction();
-			Query q = session.createQuery("from SellerVO where username='"+username+"' and password='"+password+"'");
-			ls = q.list();
+			Query getPasswordList = session.createQuery("SELECT password FROM SellerVO where username='"+username+"'");
+			Iterator<String> pwditr = getPasswordList.list().iterator();
+			while(pwditr.hasNext()){
+				storedHashedPassword = pwditr.next();
+				try {
+					if(PasswordHash.validatePassword(password, storedHashedPassword)){
+						Query q = session.createQuery("from SellerVO where username='"+username+"' and password='"+storedHashedPassword+"'");
+						ls = q.list();
+					}
+				} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 			tx.commit();
 		} 
 		catch (HibernateException e) {
@@ -172,6 +189,70 @@ public class SellerDAO {
 		}
 	}
 	
+	// Inserts into the Linksellervo table
+		public static void insert(LinkSellerVO lsvo) {
+			setUp();
+			Session session = factory.openSession();
+			Transaction tx = null;
+			try {
+				tx = session.beginTransaction();
+				session.save(lsvo);
+				tx.commit();
+			} 
+			catch (HibernateException e) {
+				if (tx != null)
+					tx.rollback();
+				e.printStackTrace();
+			} 
+			finally {
+				session.close();
+			}
+		}
+		
+		@SuppressWarnings("unchecked")
+		public static List<LinkSellerVO> getTupleByLink(String link){
+			setUp();
+			Session session = factory.openSession();
+			Transaction tx = null;
+			Query q = null;
+			List<LinkSellerVO> ls = null;
+			try {
+				tx = session.beginTransaction();
+				q = session.createQuery("from LinkSellerVO where link='"+ link +"'");
+				ls = q.list();
+				tx.commit();
+			} 
+			catch (HibernateException e) {
+				if (tx != null)
+					tx.rollback();
+				e.printStackTrace();
+			} 
+			finally {
+				session.close();
+			}
+			return ls;
+		}
+
+		public static void updateLSVOOnActivation(LinkSellerVO lsvo){
+			setUp();
+			Session session = factory.openSession();
+			Transaction tx = null;
+			try {
+				tx = session.beginTransaction();
+				session.saveOrUpdate(lsvo);
+				tx.commit();
+			} 
+			catch (HibernateException e) {
+				if (tx != null)
+					tx.rollback();
+				e.printStackTrace();
+			} 
+			finally {
+				session.close();
+			}
+		}
+		
+		
 	private static void setUp() {
 		try {
 			Configuration configuration = new Configuration();

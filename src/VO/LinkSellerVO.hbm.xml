@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
+
+<hibernate-mapping>
+   <class name="VO.LinkSellerVO" table="linksellervo_dtl">
+      <meta attribute="class-description">
+         This is the detail table for inserting activation link information.
+      </meta>
+      
+      <id name="link_id" type="long" column="link_id">
+         <generator class="increment"/>
+      </id>
+      
+      <property name="dispatchDT" column="dispatchDT" type="long"/>
+      <property name="activationDT" column="activationDT" type="long"/>
+      <property name="link" column="link" type="string"/>
+      <many-to-one name="seller_id" class="VO.SellerVO" column="seller_id" cascade="delete"></many-to-one>
+      <property name="status" column="status" type="int"/>
+   </class>
+</hibernate-mapping>

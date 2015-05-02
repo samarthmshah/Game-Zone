@@ -162,10 +162,4 @@ public class PasswordHash
         else
             return hex;
     }
-
-    /**
-     * Tests the basic functionality of the PasswordHash class
-     *
-     * @param   args        ignored
-     */
-}
+};

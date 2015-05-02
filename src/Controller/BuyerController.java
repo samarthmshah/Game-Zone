@@ -1,7 +1,6 @@
 package Controller;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -102,7 +101,6 @@ public class BuyerController extends HttpServlet {
 					e.printStackTrace();
 				}
 				if(hashedPassword == null) hashedPassword = password;
-				
 				BuyerVO bvo = new BuyerVO(firstName, lastName, username, hashedPassword, email, phNo, dob, address, zip, paypal, 0);
 				BuyerDAO.insert(bvo);
 				sendActivationLink(bvo, request, response);
@@ -195,13 +193,7 @@ public class BuyerController extends HttpServlet {
 	         MimeMessage message = new MimeMessage(session);
 
 	         // Set From: header field of the header.
-	         try {
-				message.setFrom(new InternetAddress(FROM, "Administrator"));
-			} 
-	         catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			message.setFrom(new InternetAddress(FROM));
 
 	         // Set To: header field of the header.
 	         message.setRecipient(Message.RecipientType.TO, new InternetAddress(to));

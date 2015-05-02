@@ -60,7 +60,6 @@ public class GameController extends HttpServlet {
 		HttpSession sess = request.getSession();
 		sess.setAttribute("categoryList", categoryList);
 		sess.setAttribute("subategoryList", subCategoryList);
-		sess.setAttribute("msg", "The game was successfully added to the list of your products");
 		response.sendRedirect(request.getContextPath()+"/Seller_Buyer/seller_addGame.jsp");
 	}
 	
