@@ -25,7 +25,7 @@
 			<%
 				String msg = (String) session.getAttribute("msg");
 				if (msg != null) {
-					if (msg.equals("Account created successfully")) {
+					if (msg.equals("The activation link has been sent to your email")) {
 						response.setContentType("text/html");
 						out.println("<div class=\"col-md-12\">");
 						out.println("<p class=\"bg-success text-center\">");
@@ -34,6 +34,14 @@
 						session.removeAttribute("msg");
 					} 
 					else if (msg.equals("You have logged out successfully")) {
+						response.setContentType("text/html");
+						out.println("<div class=\"col-md-12\">");
+						out.println("<p class=\"bg-success text-center\">");
+						out.println("<strong>" + msg + "</strong>");
+						out.println("</p></div>");
+						session.removeAttribute("msg");
+					} 
+					else if (msg.equals("Account Activated")) {
 						response.setContentType("text/html");
 						out.println("<div class=\"col-md-12\">");
 						out.println("<p class=\"bg-success text-center\">");
