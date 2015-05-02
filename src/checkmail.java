@@ -4,7 +4,7 @@ import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
 
-public class checkmail {
+public class Checkmail {
 	public static void main(String [] args)
 	   {    
 	      final String PASSWORD = "samarthshah";
@@ -13,7 +13,7 @@ public class checkmail {
 	      final String FROM = "developers.gamezone@gmail.com";
 
 	   // Recipient's email ID needs to be mentioned.
-	      String to = "sshah4@albany.edu";
+	      String to = "samarthmshah@gmail.com";
 	      
 	      final String HOST = "smtp.gmail.com";
 	      
@@ -24,6 +24,8 @@ public class checkmail {
 	      properties.put("mail.transport.protocol", "smtp");
 	      properties.put("mail.smtp.auth", "true");
 	      properties.put("mail.smtp.starttls.enable", "true");
+	      
+	      properties.put("mail.store.protocol", "pop3");
 
 	      // Get the default Session object.
 	      Session mailSession = Session.getInstance(properties);

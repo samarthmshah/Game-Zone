@@ -53,7 +53,8 @@ public class BuyerLoginCheckFilter implements Filter {
 				|| uri.contains("/css") 
 				|| uri.contains("/js")
 				|| uri.contains("/images")
-				|| uri.contains("/fonts"))
+				|| uri.contains("/fonts")
+				|| uri.contains("fileUploadTest.jsp"))
 			chain.doFilter(request, response);
 		
 		else if(session == null

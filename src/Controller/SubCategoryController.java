@@ -66,9 +66,6 @@ public class SubCategoryController extends HttpServlet {
 	protected void loadCategories(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		List<GameCategoryVO> ls = AddCategoryDAO.showAll();
-//		request.setAttribute("load", ls);
-//		RequestDispatcher rd = getServletContext().getRequestDispatcher("/Admin/addSubCategory.jsp");
-//		rd.forward(request, response);
 		HttpSession sess = request.getSession();
 		sess.setAttribute("load", ls);
 		response.sendRedirect(request.getContextPath()+"/Admin/addSubCategory.jsp");
