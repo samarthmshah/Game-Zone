@@ -1,7 +1,10 @@
 package Controller;
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,6 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import com.google.gson.Gson;
 
 import Model.AddCategoryDAO;
 import Model.AddSubCategoryDAO;
@@ -39,6 +44,8 @@ public class GameController extends HttpServlet {
 		if(flag != null){
 			if(flag.equals("loadCatAndScat"))
 				loadCatAndScat(request, response);
+			if(flag.equals("loadScatDynamically"))
+				loadScatDynamically(request, response);
 		}
 	}
 
@@ -82,5 +89,34 @@ public class GameController extends HttpServlet {
 		System.out.println(game_stock);
 		System.out.println(game_youtube_url);
 		System.out.println(game_description);
+		/// If gameposter is null then noimagefound
+	}
+	
+	protected void loadScatDynamically(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String jsonString; 
+		long cat_id = Long.parseLong(request.getParameter("cat_id"));
+		List<GameSubCategoryVO> ls = AddSubCategoryDAO.getTuplesByCatID(cat_id);
+		
+		if(!ls.isEmpty()){
+			Iterator<GameSubCategoryVO> itr = ls.iterator();
+			
+			Map<Long, String> subcategories = new LinkedHashMap<Long, String>();	// We need to maintain order.
+			
+			subcategories.put(0L, "Select a subcategory");
+			
+			while(itr.hasNext()){
+				GameSubCategoryVO gscvo = itr.next();
+				subcategories.put(gscvo.getScat_id(), gscvo.getScat_name());
+			}
+			jsonString = new Gson().toJson(subcategories);	// Converts java object to json objects.
+		}
+		else{
+			Map<Long, String> nothing = new LinkedHashMap<Long, String>();	// We need to maintain order.
+			nothing.put(0L, "No subcategories found");
+			jsonString = new Gson().toJson(nothing);
+		}
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().write(jsonString);		// This does all the work
 	}
 };

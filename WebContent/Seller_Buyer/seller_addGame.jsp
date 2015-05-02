@@ -11,7 +11,6 @@
 <title>Game-Zone</title>
 
 <link rel="stylesheet" href="css/bootstrap.min.css">
-<link rel="stylesheet" href="css/bootstrap-select.css">
 <link rel="stylesheet" href="css/slick.css">
 <link rel="stylesheet" href="css/magnific-popup.css">
 <link rel="stylesheet" href="fonts/typicons/typicons.css">
@@ -116,10 +115,7 @@ label.error {
 									<label class="control-label form-label" for="scat_id">Select Subcategory*</label>
 									<div>
 										<select class="selectpicker" data-live-search="true" name="scat_id" id="scat_id" required="required">
-											<option value="-1" disabled="disabled" selected="selected">Subcategory list</option>
-											<c:forEach var="i" items="${sessionScope.subCategoryList }">
-												<option value="${i.scat_id }">${i.scat_name }</option>
-											</c:forEach>
+											<option value="-1" disabled="disabled" selected="selected">Will be loaded dynamically.</option>
 										</select>
 									</div>
 								</div>
@@ -173,7 +169,7 @@ label.error {
 								</div>
 								
 								<input type="hidden" name="flag" value="insert">
-								<button type="submit" class="btn btn-default">Submit</button>
+								<button type="submit" class="btn btn-default">Add to your Products</button>
 								<button type="reset" class="btn btn-light">Reset</button>
 							</form>
 						</div>
@@ -195,43 +191,35 @@ label.error {
 	<script src="js/jquery-1.11.0.min.js"></script>
 	
 	<script src="js/bootstrap.min.js"></script>
- 	<script src="js/moment.min.js"></script>
-	<script src="js/daterangepicker.js"></script>
-	<script src="js/jquery.validate.min.js"></script>
-	<script src="js/jquery.maskedinput.min.js"></script>
-	<script src="js/bootbox.min.js"></script>
-	<script src="js/jquery.bank.js"></script> 
-	
-	<!-- Latest compiled and minified JavaScript -->
 	<script src="js/slick.min.js"></script>
 	<script src='js/jquery.magnific-popup.min.js'></script>
-	<script src='js/jquery.catslider.js'></script>
 	<script src="js/slidebars.min.js"></script>
-	<script src="js/bootstrap-select.min.js"></script>
 	<script src="js/myscript.js"></script>
 	<script src="//code.jquery.com/jquery-1.11.2.min.js"></script> 
-	<script type="text/javascript">
+	<script>
 	$(document).ready(function(){
-		console.log("Hello");
-		$("#addGame").validate({
-			rules: {
-			    'game_price': {
-			        required: true
-			    }
-			},
-			highlight: function(element){
-				$(element).closest('.form-group')
-				.removeClass('success').addClass('error');
-			}, 
-			success: function(element){
-				element
-				.text('OK!').addClass('valid')
-				.closest('.form-group').removeClass('error').addClass('success');
-			}
+		$("#cat_id").change(function(event){
+			var $cat_id = $("#cat_id").val();
+			
+			$.ajax({
+				method: "GET",
+				url: "<%=request.getContextPath()%>/GameController?flag=loadScatDynamically",
+				data: {cat_id: $cat_id},
+				success: function(responseJson){
+					var $select = $("#scat_id");
+					$select.find("option").remove();
+					$.each(responseJson, function(key, value){
+						$("<option>").val(key).text(value).appendTo($select);
+					});
+				},
+				error: function(){
+					console.log("Error!!");
+				}
 			});
+			
+		});
 	});
-		
-	</script>
 	
+	</script>
 </body>
 </html>

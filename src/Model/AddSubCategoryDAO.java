@@ -127,6 +127,29 @@ public class AddSubCategoryDAO {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	public static List<GameSubCategoryVO> getTuplesByCatID(long cat_id){
+		setUp();
+		Session session = factory.openSession();
+		Transaction tx = null;
+		List<GameSubCategoryVO> ls = null;
+		try {
+			tx = session.beginTransaction();
+			Query q = session.createQuery("from GameSubCategoryVO where cat_id="+cat_id);
+			ls = q.list();
+			tx.commit();
+		} 
+		catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} 
+		finally {
+			session.close();
+		}
+		return ls;
+	}
+	
 	private static void setUp() {
 		try {
 			Configuration configuration = new Configuration();
