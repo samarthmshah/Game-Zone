@@ -46,6 +46,7 @@ label.error {
 	<!--  Header -->
 	<%@include file="seller_header.jsp"%>
 	<!--  END Header -->
+
 	<div id="sb-site">
 		<div id="main">
 			<div id="loadergif">
@@ -104,7 +105,8 @@ label.error {
 								%>
 								<div class="form-group">
 									<a href="seller_addGamePoster.jsp" class="ajax-popup-link">
-									<button type="button" class="btn btn-primary">Upload Image</button>
+									<button type="button" class="btn btn-default">Upload Image</button>
+										<!-- <span><strong style="font-size: large">Upload Image</strong></span> -->
 									</a>
 								</div>
 							<%
@@ -190,8 +192,8 @@ label.error {
 								
 								<input type="hidden" name="flag" value="insert">
 								<input type="hidden" name="seller_id" value="<%=seller_id%>">
-								<button type="submit" class="btn btn-lg btn-success">Add to your Products</button>
-								<button type="reset" class="btn btn-lg btn-light">Reset</button>
+								<button type="submit" class="btn btn-default">Add to your Products</button>
+								<button type="reset" class="btn btn-light">Reset</button>
 							</form>
 						</div>
 						<div class="col-md-3"></div>

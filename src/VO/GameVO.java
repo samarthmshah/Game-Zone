@@ -15,11 +15,16 @@ public class GameVO implements Serializable{
 	private int game_stock;
 	private String game_youtube_url;
 	private String game_description;
+	private int game_ratings;
 	
 	public GameVO() {}
 
+	public GameVO(long game_id) {
+		this.game_id = game_id;
+	}
+
 	public GameVO(SellerVO seller_id, String game_poster_name, GameCategoryVO cat_id, GameSubCategoryVO scat_id, String game_console, 
-				  String game_name, double game_price, double game_shipping_charges, int game_stock, String game_youtube_url, String game_description) {
+				  String game_name, double game_price, double game_shipping_charges, int game_stock, String game_youtube_url, String game_description, int game_ratings) {
 		this.seller_id = seller_id;
 		this.game_poster_name = game_poster_name;
 		this.cat_id = cat_id;
@@ -31,6 +36,7 @@ public class GameVO implements Serializable{
 		this.game_stock = game_stock;
 		this.game_youtube_url = game_youtube_url;
 		this.game_description = game_description;
+		this.game_ratings = game_ratings;
 	}
 
 	public long getGame_id() {
@@ -127,5 +133,13 @@ public class GameVO implements Serializable{
 
 	public void setGame_description(String game_description) {
 		this.game_description = game_description;
+	}
+
+	public int getGame_ratings() {
+		return game_ratings;
+	}
+
+	public void setGame_ratings(int game_ratings) {
+		this.game_ratings = game_ratings;
 	}
 };

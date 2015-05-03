@@ -39,6 +39,7 @@ public class SBLogoutServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
 		session.removeAttribute("loggedIn");
+		session.removeAttribute("userInfoObj");
 		session.setAttribute("msg", "You have logged out successfully");
 		response.sendRedirect(request.getContextPath()+"/Seller_Buyer/login.jsp");
 	}

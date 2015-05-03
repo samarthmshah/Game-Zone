@@ -9,6 +9,7 @@
 			<li><a href="page-order-history.html">Order History</a></li>
 			<li><a href="shopping-cart.html">Shopping Cart</a></li>
 			<li><a href="page-checkout.html">Checkout</a></li>
+			<li><a href="<%=request.getContextPath()%>/SellerController?flag=contactSellerThroughEmail">Contact Sellers</a></li>
 			<li><a href="<%=request.getContextPath()%>/SBLogoutServlet">Log Out</a></li>
 		</ul>
 	</nav>

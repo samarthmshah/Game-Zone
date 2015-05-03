@@ -22,5 +22,6 @@
       <property name="game_stock" column="game_stock" type="int"/>
       <property name="game_youtube_url" column="game_youtube_url" type="string"/>
       <property name="game_description" column="game_description" type="string"/>
+      <property name="game_ratings" column="game_ratings" type="int"/>
    </class>
 </hibernate-mapping>

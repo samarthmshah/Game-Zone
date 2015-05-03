@@ -253,6 +253,30 @@ public class BuyerDAO {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	public static List<BuyerVO> getBuyerById(long buyer_id){
+		setUp();
+		Session session = factory.openSession();
+		Transaction tx = null;
+		Query q = null;
+		List<BuyerVO> ls = null;
+		try {
+			tx = session.beginTransaction();
+			q = session.createQuery("from BuyerVO where buyer_id="+ buyer_id);
+			ls = q.list();
+			tx.commit();
+		} 
+		catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} 
+		finally {
+			session.close();
+		}
+		return ls;
+	}
+	
 	private static void setUp() {
 		try {
 			Configuration configuration = new Configuration();

@@ -17,6 +17,10 @@ public class BuyerVO implements Serializable{
 	private int status;
 	
 	public BuyerVO() {}
+
+	public BuyerVO(long buyer_id) {
+		this.buyer_id = buyer_id;
+	}
 	
 	public BuyerVO(String firstname, String lastname, String username, String password, 
 			String email, String phNo, String dob, String address, String zip, String paypal, int status){

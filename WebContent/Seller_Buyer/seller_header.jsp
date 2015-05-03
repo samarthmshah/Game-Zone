@@ -4,6 +4,7 @@
 SellerVO svo = (SellerVO) session.getAttribute("userInfoObj");
 String firstname = svo.getFirstname(),
 	   lastname = svo.getLastname();
+long seller_id = svo.getSeller_id();
 %>
 <header id="header"  class="sb-slide">
 
@@ -28,7 +29,7 @@ onblur="if (this.value=='') this.value = this.defaultValue" >
       <div id="toplinks">
         <div class="btn-group hidden-xs"><a href="#" title="Account" class="dropdown-toggle"><span class="typcn typcn-user"></span><%=firstname %> <%=lastname %></a>
           <ul class="dropdown-menu">
-            <li><a href="#">My Account</a></li>
+            <li><a href="<%=request.getContextPath()%>/SellerController?flag=loadAccountDetails&seller_id=<%=seller_id%>">My Account</a></li>
             <li><a href="<%=request.getContextPath()%>/SBLogoutServlet">Log Out</a></li>
           </ul>
         </div>

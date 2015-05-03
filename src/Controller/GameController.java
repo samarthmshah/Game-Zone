@@ -46,9 +46,17 @@ public class GameController extends HttpServlet {
 		String flag = request.getParameter("flag");
 		if(flag != null){
 			if(flag.equals("loadCatAndScat"))
-				loadCatAndScat(request, response);
-			if(flag.equals("loadScatDynamically"))
-				loadScatDynamically(request, response);
+				loadCategories(request, response);
+			else if(flag.equals("loadScatDynamically"))
+				loadScatDynamically(request, response);	
+			else if(flag.equals("showAllGames"))
+				showAllGames(request, response);
+			else if(flag.equals("productPage"))
+				productPage(request, response);
+			else if(flag.equals("editGame"))
+				editGame(request, response);
+			else if(flag.equals("deleteGame"))
+				deleteGame(request, response);
 		}
 	}
 
@@ -61,15 +69,15 @@ public class GameController extends HttpServlet {
 		if(flag != null){
 			if(flag.equals("insert"))
 				insert(request, response);
+			if(flag.equals("update"))
+				update(request, response);
 		}
 	}
 	
-	protected void loadCatAndScat(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void loadCategories(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<GameCategoryVO> categoryList = AddCategoryDAO.showAll();
-		List<GameSubCategoryVO> subCategoryList = AddSubCategoryDAO.showAll();
 		HttpSession sess = request.getSession();
 		sess.setAttribute("categoryList", categoryList);
-		sess.setAttribute("subategoryList", subCategoryList);
 		response.sendRedirect(request.getContextPath()+"/Seller_Buyer/seller_addGame.jsp");
 	}
 	
@@ -105,7 +113,7 @@ public class GameController extends HttpServlet {
 
 			GameVO gvo = new GameVO(new SellerVO(seller_id), game_poster_name,
 									new GameCategoryVO(cat_id), gscvo, game_console, game_name,
-									game_price, game_shipping_charges, game_stock, game_youtube_url, game_description);
+									game_price, game_shipping_charges, game_stock, game_youtube_url, game_description, 0);
 			GameDAO.insert(gvo);
 			HttpSession session = request.getSession();
 			session.removeAttribute("fileName");
@@ -142,4 +150,91 @@ public class GameController extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write(jsonString);		// This does all the work
 	}
+	
+	protected void showAllGames(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		long seller_id = Long.parseLong(request.getParameter("seller_id"));
+		List<GameVO> gameList = GameDAO.getGamesBySeller_id(seller_id);
+		List<GameCategoryVO> categoryList = AddCategoryDAO.showAll();
+		HttpSession session = request.getSession();
+		session.setAttribute("gameList", gameList);
+		session.setAttribute("categoryList", categoryList);
+		response.sendRedirect(request.getContextPath()+"/Seller_Buyer/seller_viewGames.jsp");
+	}
+	
+	protected void productPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		long game_id = Long.parseLong(request.getParameter("game_id"));
+		List<GameVO> gameInfo = GameDAO.getGameByGame_id(game_id);
+		HttpSession session = request.getSession();
+		session.setAttribute("gameInfo", gameInfo);
+		response.sendRedirect(request.getContextPath()+"/Seller_Buyer/seller_gamePage.jsp");
+	}
+	
+	protected void editGame(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		long game_id = Long.parseLong(request.getParameter("game_id"));
+		List<GameVO> game2bedited = GameDAO.getGameByGame_id(game_id);
+		List<GameCategoryVO> categoryList = AddCategoryDAO.showAll();
+		HttpSession session = request.getSession();
+		session.setAttribute("categoryList", categoryList);
+		session.setAttribute("game2bedited", game2bedited);
+		response.sendRedirect(request.getContextPath()+"/Seller_Buyer/seller_updateGame.jsp");
+	}
+	
+	protected void update(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		long game_id = Long.parseLong(request.getParameter("game_id"));
+		long seller_id = Long.parseLong(request.getParameter("seller_id"));
+		long cat_id = Long.parseLong(request.getParameter("cat_id"));
+
+		long scat_id = Long.parseLong(request.getParameter("scat_id"));
+		GameSubCategoryVO gscvo = null;
+		if (scat_id == 0) { // The user didn't choose
+			HttpSession session = request.getSession();
+			session.setAttribute("msg", "Please choose a subcategory!");
+		} 
+		else {
+			if (scat_id == -1)
+				gscvo = null;
+			else
+				gscvo = new GameSubCategoryVO(scat_id);
+
+			String game_poster_name = request.getParameter("game_poster_name");
+			if (game_poster_name == null) game_poster_name = "no_image_available.png";
+
+			String game_console = request.getParameter("game_console"), 
+				   game_name = request.getParameter("game_name");
+			double game_price = Double.parseDouble(request.getParameter("game_price"));
+			double game_shipping_charges = Double.parseDouble(request.getParameter("game_shipping_charges"));
+			int game_stock = Integer.parseInt(request.getParameter("game_stock"));
+			String game_youtube_url = request.getParameter("game_youtube_url"), 
+				   game_description = request.getParameter("game_description");
+			
+			GameVO gvo = new GameVO();
+			gvo.setGame_id(game_id);
+			gvo.setCat_id(new GameCategoryVO(cat_id));
+			gvo.setGame_console(game_console);
+			gvo.setGame_description(game_description);
+			gvo.setGame_name(game_name);
+			gvo.setGame_poster_name(game_poster_name);
+			gvo.setGame_price(game_price);
+			gvo.setGame_ratings(0);
+			gvo.setGame_shipping_charges(game_shipping_charges);
+			gvo.setGame_stock(game_stock);
+			gvo.setGame_youtube_url(game_youtube_url);
+			gvo.setScat_id(gscvo);
+			gvo.setSeller_id(new SellerVO(seller_id));
+			GameDAO.update(gvo);
+			HttpSession session = request.getSession();
+			session.removeAttribute("fileName");
+			session.setAttribute("msg", "The game was successfully updated");
+		}
+		response.sendRedirect(request.getContextPath()+ "/Seller_Buyer/seller_updateGame.jsp");
+	}
+	
+	protected void deleteGame(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		long game_id = Long.parseLong(request.getParameter("game_id"));
+		GameDAO.delete(game_id);
+		HttpSession session = request.getSession();
+		session.setAttribute("msg", "The Game has been successfully deleted");
+		showAllGames(request, response);
+	}
+		
 };

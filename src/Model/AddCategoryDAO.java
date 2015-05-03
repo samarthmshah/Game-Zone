@@ -1,6 +1,7 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -13,6 +14,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
 import VO.GameCategoryVO;
+import VO.GameSubCategoryVO;
 
 public class AddCategoryDAO {
 	private static SessionFactory factory;
@@ -106,15 +108,27 @@ public class AddCategoryDAO {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static void delete(long cat_id){
 		setUp();
 		Session session = factory.openSession();
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
+			System.out.println("Deleting category with cat_id "+cat_id+". But before that,");
+			// Nw delete all entries in GameSubcategoryVo with cat_id
+			Query query = session.createQuery("from GameSubCategoryVO where cat_id="+new GameCategoryVO(cat_id).getCat_id());
+			Iterator<GameSubCategoryVO> itr_scat2delete = query.list().iterator();
+			while(itr_scat2delete.hasNext()){
+				GameSubCategoryVO gscvo = itr_scat2delete.next();
+				System.out.println("Deleting entry with scat_id: "+gscvo.getScat_id());
+				session.delete(gscvo);
+			}
 			GameCategoryVO gcvo = new GameCategoryVO();
 			gcvo.setCat_id(cat_id);
-			session.delete(gcvo);
+			// After safely removing all entries from subcategories. remove category!
+			GameCategoryVO gcvo2 = (GameCategoryVO)session.merge(gcvo);
+			session.delete(gcvo2);
 			tx.commit();
 		} 
 		catch (HibernateException e) {

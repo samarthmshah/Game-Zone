@@ -19,13 +19,13 @@ public class AddSubCategoryDAO {
 	private static SessionFactory factory;
 	private static ServiceRegistry serviceRegistry;
 
-	public static void insert(GameCategoryVO cat_id, String scat_name, String scat_description) {
+	public static void insert(GameCategoryVO gcvo, String scat_name, String scat_description) {
 		setUp();
 		Session session = factory.openSession();
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
-			session.save(new GameSubCategoryVO(cat_id, scat_name, scat_description));
+			session.save(new GameSubCategoryVO(gcvo, scat_name, scat_description));
 			tx.commit();
 		} catch (HibernateException e) {
 			if (tx != null)
@@ -114,6 +114,25 @@ public class AddSubCategoryDAO {
 			tx = session.beginTransaction();
 			GameSubCategoryVO gscvo = new GameSubCategoryVO();
 			gscvo.setScat_id(scat_id);
+			session.delete(gscvo);
+			tx.commit();
+		} 
+		catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} 
+		finally {
+			session.close();
+		}
+	}
+	
+	public static void delete(GameSubCategoryVO gscvo){
+		setUp();
+		Session session = factory.openSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
 			session.delete(gscvo);
 			tx.commit();
 		} 

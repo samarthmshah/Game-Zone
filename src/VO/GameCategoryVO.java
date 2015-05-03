@@ -9,14 +9,14 @@ public class GameCategoryVO implements Serializable{
 	private String cat_description;
 	
 	public GameCategoryVO() {}
+
+	public GameCategoryVO(long cat_id) {
+		this.cat_id = cat_id;
+	}
 	
 	public GameCategoryVO(String cat_name, String cat_description){
 		this.cat_name = cat_name;
 		this.cat_description = cat_description;
-	}
-	
-	public GameCategoryVO(long cat_id){
-		this.cat_id = cat_id;
 	}
 	
 	public long getCat_id() {

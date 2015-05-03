@@ -29,7 +29,7 @@ public class SellerDAO {
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
-			session.save(svo);
+			session.saveOrUpdate(svo);
 			tx.commit();
 		} 
 		catch (HibernateException e) {
@@ -41,6 +41,7 @@ public class SellerDAO {
 			session.close();
 		}
 	}
+	
 	@SuppressWarnings("unchecked")
 	public static List<SellerVO> checkUsernamePass(String username, String password){
 		setUp();
@@ -252,7 +253,30 @@ public class SellerDAO {
 			}
 		}
 		
-		
+		@SuppressWarnings("unchecked")
+		public static List<SellerVO> getSellerById(long seller_id){
+			setUp();
+			Session session = factory.openSession();
+			Transaction tx = null;
+			Query q = null;
+			List<SellerVO> ls = null;
+			try {
+				tx = session.beginTransaction();
+				q = session.createQuery("from SellerVO where seller_id="+ seller_id);
+				ls = q.list();
+				tx.commit();
+			} 
+			catch (HibernateException e) {
+				if (tx != null)
+					tx.rollback();
+				e.printStackTrace();
+			} 
+			finally {
+				session.close();
+			}
+			return ls;
+		}
+	
 	private static void setUp() {
 		try {
 			Configuration configuration = new Configuration();

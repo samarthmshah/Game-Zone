@@ -23,8 +23,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import Model.BuyerDAO;
 import Model.PasswordHash;
 import Model.SellerDAO;
+import VO.BuyerVO;
 import VO.LinkSellerVO;
 import VO.SellerVO;
 
@@ -56,10 +58,16 @@ public class SellerController extends HttpServlet {
 				approve(request, response);
 			else if(flag.equals("decline"))
 				decline(request, response);
+//			else if(flag.equals("editSellerInfo"))
+//				editSellerInfo(request, response);
 			else if(flag.equals("delete"))
 				deleteSeller(request, response);
 			else if(flag.equals("activation"))
 				activation(request, response);
+			else if(flag.equals("loadAccountDetails"))
+				loadAccountDetails(request, response);
+			else if(flag.equals("contactSellerThroughEmail"))	
+				loadSellerInfo(request, response);
 		}
 	}
 
@@ -74,6 +82,10 @@ public class SellerController extends HttpServlet {
 				insert(request, response);
 			else if(flag.equals("message"))
 				message(request, response);
+			else if(flag.equals("contactSeller"))
+				contactSeller(request, response);
+			else if(flag.equals("update"))
+				update(request, response);
 		}
 	}
 
@@ -172,6 +184,95 @@ public class SellerController extends HttpServlet {
 		}
 		response.sendRedirect(request.getContextPath()+"/Admin/contact_sellers.jsp");
 	}
+	
+	protected void contactSeller(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		if(request.getParameter("seller_id") != null){
+			long seller_id = Long.parseLong(request.getParameter("seller_id"));
+			long buyer_id = Long.parseLong(request.getParameter("buyer_id"));
+			String subject = request.getParameter("subject"),
+				   message = request.getParameter("message");
+			if(subject == null) subject = "";
+			if(message == null) message = "";
+			
+			String seller_username = "",
+				   TO="",
+				   buyer_username="",
+				   buyer_firstname="",
+				   buyer_lastname="",
+				   buyer_email="";
+			
+			Iterator<SellerVO> seller_itr = SellerDAO.getSellerById(seller_id).iterator();
+			while(seller_itr.hasNext()){
+				SellerVO svo = seller_itr.next();
+				seller_username = svo.getUsername();
+				TO = svo.getEmail();
+			}
+			
+			Iterator<BuyerVO> buyer_itr = BuyerDAO.getBuyerById(buyer_id).iterator();
+			while(buyer_itr.hasNext()){
+				BuyerVO bvo = buyer_itr.next();
+				buyer_firstname = bvo.getFirstname();
+				buyer_lastname = bvo.getLastname();
+				buyer_email = bvo.getEmail();
+			}
+			
+			final String FROM = "developers.gamezone@gmail.com";	// Basic details of my account
+		    String USERNAME = "developers.gamezone@gmail.com";
+		    String PASSWORD = "samarthshah";
+		    final String HOST = "smtp.gmail.com";
+
+		    // Get system properties
+	        Properties props = new Properties();
+	        props.put("mail.smtp.auth", "true");
+	        props.put("mail.smtp.starttls.enable", "true");
+	        props.put("mail.smtp.host", HOST);
+	        props.put("mail.smtp.port", "587");
+		    
+	        // Get the default Session object.
+	        Session msg_session = Session.getInstance(props,
+	        		new javax.mail.Authenticator() {
+	      		         protected PasswordAuthentication getPasswordAuthentication() {
+	      		            return new PasswordAuthentication(USERNAME, PASSWORD);
+	      		         }
+		    });
+
+		    try{
+		    	// Create a default MimeMessage object.
+		         MimeMessage msg2buyer = new MimeMessage(msg_session);
+
+		         // Set From: header field of the header.
+				msg2buyer.setFrom(new InternetAddress(FROM, buyer_username));	// Shows that it is sent by sellers username
+
+		         // Set To: header field of the header.
+		         msg2buyer.setRecipient(Message.RecipientType.TO, new InternetAddress(TO));
+			         
+	        	// Set Subject: header field
+		         msg2buyer.setSubject(subject);	// Subject set by the seller.
+		         msg2buyer.setContent("<h1>Dear "+seller_username+",</h1>"
+      								+ "<p>The following message is sent to you by "+buyer_firstname+" "+buyer_lastname+".</p><hr/>"
+      								+ "<p><strong>"+ message +"</strong></p><hr/>"
+      								+ "<p>Please contact him back on "+buyer_email+"</p>"
+      								+ "<br/><p>Happy Gaming.<br/>"
+      								+ "<strong>Game-Zone Team</strong></p>", "text/html");	// The message written by seller.
+		         msg2buyer.saveChanges();
+		         Transport.send(msg2buyer); // Send message
+		         System.out.println("Sent message successfully!");
+		      }
+		    
+		    catch (MessagingException mex) {
+		         mex.printStackTrace();
+		      }
+		    
+			HttpSession session = request.getSession();
+			session.setAttribute("msg", "The message has been sent successfully.");
+		}
+		else{
+			HttpSession session = request.getSession();
+			session.setAttribute("msg", "Please select a seller first!");
+		}
+		response.sendRedirect(request.getContextPath()+"/Seller_Buyer/buyer_messageSeller.jsp");
+	}
+	
 	
 	private void sendEmail(String username,String to,String activationLink, String msg)
 	{    
@@ -296,5 +397,54 @@ public class SellerController extends HttpServlet {
 			else
 				session.setAttribute("msg", "Invalid Activation Code");
 			response.sendRedirect(request.getContextPath()+"/Seller_Buyer/login.jsp");
+		}
+		
+		protected void loadAccountDetails(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+			long seller_id = Long.parseLong(request.getParameter("seller_id"));
+			HttpSession session = request.getSession();
+			session.setAttribute("sellerInfo", SellerDAO.getSellerById(seller_id));
+			response.sendRedirect(request.getContextPath()+"/Seller_Buyer/seller_accountDetails.jsp");
+		}
+		
+		protected void loadSellerInfo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+			List<SellerVO> sellerList = SellerDAO.showAll();
+			HttpSession session = request.getSession();
+			session.setAttribute("sellerList", sellerList);
+			response.sendRedirect(request.getContextPath()+"/Seller_Buyer/buyer_messageSeller.jsp");
+		}
+		
+		protected void update(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+			long seller_id = Long.parseLong(request.getParameter("seller_id"));
+			String companyName = request.getParameter("companyname"),
+				   firstName = request.getParameter("firstname"),
+				   lastName = request.getParameter("lastname"),
+				   email = request.getParameter("email"),
+				   phNo = request.getParameter("phno"),
+				   address = request.getParameter("address"),
+				   zip = request.getParameter("zip"),
+				   routingNumber = request.getParameter("routingnumber"),
+				   accountNumber = request.getParameter("accountnumber"),
+				   paypal = request.getParameter("paypal");
+					
+			if(zip == null) zip = "";
+			
+			SellerVO svo = new SellerVO();
+			svo.setSeller_id(seller_id);
+			svo.setCompanyname(companyName);
+			svo.setFirstname(firstName);
+			svo.setLastname(lastName);
+			svo.setEmail(email);
+			svo.setPhNo(phNo);
+			svo.setAddress(address);
+			svo.setZip(zip);
+			svo.setRoutingNumber(routingNumber);
+			svo.setAccountNumber(accountNumber);
+			svo.setPaypal(paypal);
+			
+			SellerDAO.insert(svo);
+			
+			HttpSession session = request.getSession();
+			session.setAttribute("msg", "The account is updated successfully");
+			loadAccountDetails(request, response);
 		}
 };
