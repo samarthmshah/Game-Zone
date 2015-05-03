@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
+
+<hibernate-mapping>
+   <class name="VO.GameVO" table="gamevo_dtl">
+      <meta attribute="class-description">
+         This is the detail table for Game (as a product) information.
+      </meta>
+      <id name="game_id" type="long" column="game_id">
+         <generator class="increment"/>
+      </id>
+      <many-to-one name="seller_id" cascade="delete" class="VO.SellerVO" column="seller_id" ></many-to-one>
+      <property name="game_poster_name" column="game_poster_name" type="string"/>
+      <many-to-one name="cat_id" cascade="delete" class="VO.GameCategoryVO" column="cat_id" ></many-to-one>
+      <many-to-one name="scat_id" cascade="delete" class="VO.GameSubCategoryVO" column="scat_id" not-null="false"></many-to-one>
+      <property name="game_console" column="game_console" type="string"/>
+      <property name="game_name" column="game_name" type="string"/>
+      <property name="game_price" column="game_price" type="double"/>
+      <property name="game_shipping_charges" column="game_shipping_charges" type="double"/>
+      <property name="game_stock" column="game_stock" type="int"/>
+      <property name="game_youtube_url" column="game_youtube_url" type="string"/>
+      <property name="game_description" column="game_description" type="string"/>
+   </class>
+</hibernate-mapping>

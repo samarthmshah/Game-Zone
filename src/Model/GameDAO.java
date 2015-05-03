@@ -8,20 +8,19 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
-import VO.BuyerKeyVO;
+import VO.GameVO;
 
-
-public class BuyerKeyDAO {
+public class GameDAO {
 	private static SessionFactory factory;
 	private static ServiceRegistry serviceRegistry;
-
-	public static void insert(BuyerKeyVO bkvo) {
+	
+	public static void insert(GameVO gvo) {
 		setUp();
 		Session session = factory.openSession();
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
-			session.save(bkvo);
+			session.save(gvo);
 			tx.commit();
 		} 
 		catch (HibernateException e) {
@@ -33,6 +32,7 @@ public class BuyerKeyDAO {
 			session.close();
 		}
 	}
+	
 	private static void setUp() {
 		try {
 			Configuration configuration = new Configuration();

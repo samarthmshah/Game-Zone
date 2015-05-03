@@ -20,6 +20,10 @@ public class SellerVO implements Serializable{
 	private int status;
 	
 	public SellerVO() {}
+
+	public SellerVO(long seller_id){
+		this.seller_id = seller_id;
+	}
 	
 	public SellerVO(String companyname, String firstname, String lastname, String username, String password, 
 			String email, String phNo, String dob, String address, String zip, String routingNumber, String accountNumber, String paypal, int status){

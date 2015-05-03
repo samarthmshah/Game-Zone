@@ -55,18 +55,9 @@ public class FileUploadController extends HttpServlet {
 		
 		isMultipart = ServletFileUpload.isMultipartContent(request);
 		response.setContentType("text/html");
-		java.io.PrintWriter out = response.getWriter();
-		if (!isMultipart) {
-			out.println("<html>");
-			out.println("<head>");
-			out.println("<title>Servlet upload</title>");
-			out.println("</head>");
-			out.println("<body>");
-			out.println("<p>No file uploaded</p>");
-			out.println("</body>");
-			out.println("</html>");
-			return;
-		}
+
+		if (!isMultipart) return;
+		
 		DiskFileItemFactory factory = new DiskFileItemFactory();
 		// maximum size that will be stored in memory
 		factory.setSizeThreshold(maxMemSize);
@@ -82,11 +73,7 @@ public class FileUploadController extends HttpServlet {
 
 			// Process the uploaded file items
 			Iterator<FileItem> itr = fileItems.iterator();
-			out.println("<html>");
-			out.println("<head>");
-			out.println("<title>Servlet upload</title>");  
-			out.println("</head>");
-			out.println("<body>");
+
 			while(itr.hasNext()){
 				FileItem fi = itr.next();
 				if(! fi.isFormField()){
@@ -114,7 +101,7 @@ public class FileUploadController extends HttpServlet {
 		} 
 		catch (FileUploadException fue) {
 			fue.printStackTrace();
-			System.err.println("");
+			System.err.println("Retry.");
 		}
 		catch(Exception e){
 			e.printStackTrace();

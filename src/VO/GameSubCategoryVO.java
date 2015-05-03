@@ -15,7 +15,11 @@ public class GameSubCategoryVO implements Serializable{
 		this.scat_name = scat_name;
 		this.scat_description = scat_description;
 	}
-
+	
+	public GameSubCategoryVO(long scat_id){
+		this.scat_id = scat_id;
+	}
+	
 	public GameCategoryVO getCat_id() {
 		return cat_id;
 	}

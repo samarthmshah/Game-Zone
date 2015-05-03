@@ -46,6 +46,9 @@ label.error {
 	<!--  Header -->
 	<%@include file="seller_header.jsp"%>
 	<!--  END Header -->
+	<%
+	long seller_id = svo.getSeller_id();
+	%>
 
 	<div id="sb-site">
 		<div id="main">
@@ -62,7 +65,14 @@ label.error {
 								if (msg.equals("The game was successfully added to the list of your products")) {
 									response.setContentType("text/html");
 									out.println("<div class=\"col-md-12\">");
-									out.println("<p class=\"bg-success\">");
+									out.println("<p class=\"text-center bg-success\">");
+									out.println("<strong>"+msg+"</strong>");
+									out.println("</p></div>");
+								}
+								else{
+									response.setContentType("text/html");
+									out.println("<div class=\"col-md-12\">");
+									out.println("<p class=\"text-center bg-danger\">");
 									out.println("<strong>"+msg+"</strong>");
 									out.println("</p></div>");
 								}
@@ -78,6 +88,8 @@ label.error {
 									String fileName = (String) session.getAttribute("fileName");
 									if (isUploaded != null) {
 										if (fileName != null) {
+											System.out.println("isUploaded is "+isUploaded);
+											System.out.println("File name is "+fileName);
 											if (isUploaded.equals("The Image has been uploaded successfully")) {
 												response.setContentType("text/html");
 												out.println("<div class=\"col-md-12\">");
@@ -87,11 +99,17 @@ label.error {
 											}
 											session.removeAttribute("isUploaded");
 										}
-									} else {
+										else{
+											fileName = "no_image_available.png";
+										}
+									} 
+									else {
+										  fileName = "no_image_available.png"; 
 								%>
 								<div class="form-group">
 									<a href="seller_addGamePoster.jsp" class="ajax-popup-link">
-										<span><strong style="font-size: large">Upload Image</strong></span>
+									<button type="button" class="btn btn-default">Upload Image</button>
+										<!-- <span><strong style="font-size: large">Upload Image</strong></span> -->
 									</a>
 								</div>
 							<%
@@ -112,7 +130,7 @@ label.error {
 								</div>
 
 								<div class="form-group">
-									<label class="control-label form-label" for="scat_id">Select Subcategory*</label>
+									<label class="control-label form-label" for="scat_id">Select Subcategory</label>
 									<div>
 										<select class="selectpicker" data-live-search="true" name="scat_id" id="scat_id" required="required">
 											<option value="-1" disabled="disabled" selected="selected">Will be loaded dynamically.</option>
@@ -155,6 +173,13 @@ label.error {
 								</div>
 
 								<div class="form-group">
+									<label class="form-label" for="game_shipping_charges">Shipping Charges*:</label> <input
+										type="text" class="form-control form-control-line"
+										placeholder="Charges for Shipping this product..."
+										name="game_shipping_charges" id="game_shipping_charges" required="required">
+								</div>
+
+								<div class="form-group">
 									<label class="form-label" for="game_youtube_url">Youtube URL:</label> 
 									<input type="text" class="form-control form-control-line"
 										placeholder="Youtube URL of Game..." name="game_youtube_url"
@@ -169,6 +194,7 @@ label.error {
 								</div>
 								
 								<input type="hidden" name="flag" value="insert">
+								<input type="hidden" name="seller_id" value="<%=seller_id%>">
 								<button type="submit" class="btn btn-default">Add to your Products</button>
 								<button type="reset" class="btn btn-light">Reset</button>
 							</form>
@@ -189,6 +215,8 @@ label.error {
 	<!-- End slidebar. -->
 
 	<script src="js/jquery-1.11.0.min.js"></script>
+	<script src="js/jquery.validate.js"></script>
+	<script src="js/jquery.maskedinput.min.js"></script>
 	
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/slick.min.js"></script>
@@ -219,7 +247,25 @@ label.error {
 			
 		});
 	});
-	
+	</script>
+	<script type="text/javascript">
+	$(function(){
+		$("#addGame").validate({
+			rules:{
+				"game_price":{ required: true},
+				"game_stock": {required: true}
+			}, 
+			highlight:function(element){
+				$(element).closest(".form-group")
+				.removeClass("success").addClass("error");
+			}, 
+			success:function(element){
+				element
+				.text("OK!").addClass("valid")
+				.closest(".form-group").removeClass("error").addClass("success");
+			}
+			});
+	});
 	</script>
 </body>
 </html>

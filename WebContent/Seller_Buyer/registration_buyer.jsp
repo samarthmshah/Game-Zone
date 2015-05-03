@@ -184,7 +184,7 @@ label.error {
 	</script>
 	
 	<script type="text/javascript">
-	$().ready(function(){
+	$(document).ready(function(){
 		$('#regform').validate({
 			rules: {
 				'firstname': {required: true},

@@ -17,8 +17,11 @@ import com.google.gson.Gson;
 
 import Model.AddCategoryDAO;
 import Model.AddSubCategoryDAO;
+import Model.GameDAO;
 import VO.GameCategoryVO;
 import VO.GameSubCategoryVO;
+import VO.GameVO;
+import VO.SellerVO;
 
 /**
  * Servlet implementation class GameController
@@ -70,26 +73,46 @@ public class GameController extends HttpServlet {
 		response.sendRedirect(request.getContextPath()+"/Seller_Buyer/seller_addGame.jsp");
 	}
 	
-	protected void insert(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		long cat_id = Long.parseLong(request.getParameter("cat_id")); 
-//		long scat_id = Long.parseLong(request.getParameter("scat_id"));
-		String game_poster_name = request.getParameter("game_poster_name"),
-			   game_console = request.getParameter("game_console"),
-			   game_name = request.getParameter("game_name");
-		long game_price = Long.parseLong(request.getParameter("game_price")),
-			 game_stock = Long.parseLong(request.getParameter("game_stock"));
-		String game_youtube_url = request.getParameter("game_youtube_url"),
-			   game_description = request.getParameter("game_description");
-		System.out.println(cat_id);
-//		System.out.println(scat_id);
-		System.out.println(game_poster_name);
-		System.out.println(game_name);
-		System.out.println(game_console);
-		System.out.println(game_price);
-		System.out.println(game_stock);
-		System.out.println(game_youtube_url);
-		System.out.println(game_description);
-		/// If gameposter is null then noimagefound
+	protected void insert(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		long seller_id = Long.parseLong(request.getParameter("seller_id"));
+		long cat_id = Long.parseLong(request.getParameter("cat_id"));
+
+		long scat_id = Long.parseLong(request.getParameter("scat_id"));
+		GameSubCategoryVO gscvo = null;
+		if (scat_id == 0) { // The user didn't choose
+			HttpSession session = request.getSession();
+			session.setAttribute("msg", "Please choose a subcategory!");
+		} 
+		else {
+			if (scat_id == -1)
+				gscvo = null;
+			else
+				gscvo = new GameSubCategoryVO(scat_id);
+
+			String game_poster_name = request.getParameter("game_poster_name");
+			if (game_poster_name == null)
+				game_poster_name = "no_image_available.png";
+
+			String game_console = request.getParameter("game_console"), game_name = request
+					.getParameter("game_name");
+			double game_price = Double.parseDouble(request.getParameter("game_price"));
+			double game_shipping_charges = Double.parseDouble(request.getParameter("game_shipping_charges"));
+			int game_stock = Integer.parseInt(request.getParameter("game_stock"));
+			String game_youtube_url = request.getParameter("game_youtube_url"), 
+				   game_description = request.getParameter("game_description");
+			
+
+			GameVO gvo = new GameVO(new SellerVO(seller_id), game_poster_name,
+									new GameCategoryVO(cat_id), gscvo, game_console, game_name,
+									game_price, game_shipping_charges, game_stock, game_youtube_url, game_description);
+			GameDAO.insert(gvo);
+			HttpSession session = request.getSession();
+			session.removeAttribute("fileName");
+			session.setAttribute("msg",
+					"The game was successfully added to the list of your products");
+		}
+		response.sendRedirect(request.getContextPath()+ "/Seller_Buyer/seller_addGame.jsp");
 	}
 	
 	protected void loadScatDynamically(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -112,7 +135,7 @@ public class GameController extends HttpServlet {
 		}
 		else{
 			Map<Long, String> nothing = new LinkedHashMap<Long, String>();	// We need to maintain order.
-			nothing.put(0L, "No subcategories found");
+			nothing.put(-1L, "No subcategories found");
 			jsonString = new Gson().toJson(nothing);
 		}
 		response.setContentType("application/json");

@@ -15,6 +15,10 @@ public class GameCategoryVO implements Serializable{
 		this.cat_description = cat_description;
 	}
 	
+	public GameCategoryVO(long cat_id){
+		this.cat_id = cat_id;
+	}
+	
 	public long getCat_id() {
 		return cat_id;
 	}
