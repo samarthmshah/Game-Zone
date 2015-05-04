@@ -37,7 +37,7 @@
       <div class="container">
       
      <!-- <SLIDER> -->
-   	<%@include file="game_slider_index.jsp" %>
+   	<%@include file="buyer_gameslider.jsp" %>
    	<!-- </SLIDER> -->
       </div>
     </div>
@@ -49,7 +49,7 @@
 </div>
 
 <!--  The games in the cart will be showed here. This comes after the sb-site ends. -->
-<%@include file="slidebar_cart.jsp" %>
+<%@include file="buyer_slidebar_cart.jsp" %>
 <!-- End slidebar. -->
 
 <!--  The main menu will be showed here. This comes after the sb-site ends. -->
@@ -66,6 +66,13 @@
 <script src="js/slidebars.min.js"></script> 
 <script src="js/bootstrap-select.min.js"></script> 
 <script src="js/myscript.js"></script>
+<script>
+$("#search").keyup(function(event){
+    if(event.keyCode == 13){
+        $("#search").click();
+    }
+});
+</script>
 </body>
 
 </html>

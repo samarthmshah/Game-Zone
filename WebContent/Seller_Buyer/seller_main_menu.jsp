@@ -11,7 +11,6 @@ long non_duplicate_seller_id = ((SellerVO)session.getAttribute("userInfoObj")).g
 			<li><a href="<%=request.getContextPath()%>/GameController?flag=showAllGames&seller_id=<%=non_duplicate_seller_id%>">View Games</a></li>
 			<li><a href="<%=request.getContextPath()%>/BuyerController?flag=contactBuyerThroughEmail">Contact Buyers</a></li>
 			<li><a href="page-checkout.html">Update Order/ Shipping status</a></li>
-			<li><a href="page-faq.html">My Account</a></li>
 			<li><a href="<%=request.getContextPath()%>/SBLogoutServlet">Log Out</a></li>
 		</ul>
 	</nav>

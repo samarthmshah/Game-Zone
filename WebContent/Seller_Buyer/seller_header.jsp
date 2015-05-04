@@ -18,9 +18,11 @@ long seller_id = svo.getSeller_id();
         <div class="input-group"><span class="input-group-btn">
           <button type="button" class="btn" onClick="window.location.href=window.location.href" ><span class="typcn typcn-zoom-outline"></span></button>
           </span>
-          <input type="text" class="form-control input-search" value="SEARCH" onfocus="if (this.value==this.defaultValue) this.value = ''"
-onblur="if (this.value=='') this.value = this.defaultValue" >
-        </div>
+		  <form action="<%=request.getContextPath()%>/GameController?flag=search&userType=seller" method="post">
+          	 <input type="text" class="form-control input-search" placeholder="Search games..." id="search" name="search"
+          	 onkeyup="if (event.keyCode == 13) document.getElementById('#search').click()">
+    	 </form>        
+    	</div>
       </div>
     </div>
 

@@ -60,7 +60,8 @@ public class BuyerController extends HttpServlet {
 				activation(request, response);
 			else if(flag.equals("contactBuyerThroughEmail"))	
 				loadBuyerInfo(request, response);
-		}
+			else if(flag.equals("loadAccountDetails"))
+				loadAccountDetails(request, response);		}
 	}
 
 	/**
@@ -364,5 +365,12 @@ public class BuyerController extends HttpServlet {
 			HttpSession session = request.getSession();
 			session.setAttribute("buyerList", buyerList);
 			response.sendRedirect(request.getContextPath()+"/Seller_Buyer/seller_messageBuyer.jsp");
+		}
+		
+		protected void loadAccountDetails(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+			long buyer_id = Long.parseLong(request.getParameter("buyer_id"));
+			HttpSession session = request.getSession();
+			session.setAttribute("buyerInfo", BuyerDAO.getBuyerById(buyer_id));
+			response.sendRedirect(request.getContextPath()+"/Seller_Buyer/buyer_accountDetails.jsp");
 		}
 };

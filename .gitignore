@@ -3,7 +3,7 @@ build/
 **/WEB-INF/
 **/css/
 **/js/
-**/img/
+**/images/
 **/fonts/
 *.eot
 *.ttf

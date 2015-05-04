@@ -47,9 +47,6 @@ label.error {
 	<!--  Header -->
 	<%@include file="seller_header.jsp"%>
 	<!--  END Header -->
-	<%
-	long seller_id = svo.getSeller_id();
-	%>
 
 	<div id="sb-site">
 		<div id="main">

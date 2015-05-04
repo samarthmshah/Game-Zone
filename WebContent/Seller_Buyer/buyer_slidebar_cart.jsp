@@ -37,7 +37,7 @@
 
 		<div class="clearfix"></div>
 		<div class="actions">
-			<a href="page-checkout.html" class="btn btn-default" title="Checkout">CHECKOUT</a>
+			<a href="#" class="btn btn-default" title="Checkout">CHECKOUT</a>
 		</div>
 	</div>
 </div>

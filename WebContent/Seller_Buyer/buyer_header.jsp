@@ -6,6 +6,7 @@ System.out.println("USerInfo Object type: "+session.getAttribute("userInfoObj").
 System.out.println("UserType: "+(String) session.getAttribute("userType"));
 String firstname = bvo.getFirstname(),
 	   lastname = bvo.getLastname();
+long buyer_id = bvo.getBuyer_id();
 %>
 <header id="header"  class="sb-slide">
 
@@ -20,8 +21,11 @@ String firstname = bvo.getFirstname(),
         <div class="input-group"><span class="input-group-btn">
           <button type="button" class="btn" onClick="window.location.href=window.location.href" ><span class="typcn typcn-zoom-outline"></span></button>
           </span>
-          <input type="text" class="form-control input-search" value="SEARCH" onfocus="if (this.value==this.defaultValue) this.value = ''"
-onblur="if (this.value=='') this.value = this.defaultValue" >
+          <form action="<%=request.getContextPath()%>/GameController?flag=search&userType=buyer" method="post">
+          	 <input type="text" class="form-control input-search" placeholder="SEARCH FOR GAMES..." id="search" name="search"
+          	 onkeyup="if (event.keyCode == 13) document.getElementById('#search').click()">
+    	 </form>
+         
         </div>
       </div>
     </div>
@@ -30,8 +34,7 @@ onblur="if (this.value=='') this.value = this.defaultValue" >
       <div id="toplinks">
         <div class="btn-group hidden-xs"><a href="#" title="Account" class="dropdown-toggle"><span class="typcn typcn-user"></span><%=firstname %> <%=lastname %></a>
           <ul class="dropdown-menu">
-            <li><a href="#">My Account</a></li>
-            <li><a href="#">Wishlist</a></li>
+            <li><a href="<%=request.getContextPath()%>/BuyerController?flag=loadAccountDetails&buyer_id=<%=buyer_id%>">My Account</a></li>
             <li><a href="<%=request.getContextPath()%>/SBLogoutServlet">Log Out</a></li>
           </ul>
         </div>

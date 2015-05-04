@@ -66,8 +66,8 @@ public class SubCategoryController extends HttpServlet {
 	protected void loadCategories(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		List<GameCategoryVO> ls = AddCategoryDAO.showAll();
-		HttpSession sess = request.getSession();
-		sess.setAttribute("load", ls);
+		HttpSession session = request.getSession();
+		session.setAttribute("load", ls);
 		response.sendRedirect(request.getContextPath()+"/Admin/addSubCategory.jsp");
 	}
 	
@@ -76,8 +76,8 @@ public class SubCategoryController extends HttpServlet {
 		String scat_name = request.getParameter("scat_name");
 		String scat_description = request.getParameter("scat_description");
 		AddSubCategoryDAO.insert(new GameCategoryVO(cat_id), scat_name, scat_description);
-		HttpSession sess = request.getSession();
-		sess.setAttribute("msg", "The subcategory has been added successfully.");
+		HttpSession session = request.getSession();
+		session.setAttribute("msg", "The subcategory has been added successfully.");
 		response.sendRedirect(request.getContextPath()+"/Admin/addSubCategory.jsp");
 	}
 	
@@ -91,8 +91,8 @@ public class SubCategoryController extends HttpServlet {
 			System.out.println(gameSubCategoryVO.getCat_id().getCat_id()+" "+gameSubCategoryVO.getScat_name());
 		}
 */		
-		HttpSession sess = request.getSession();
-		sess.setAttribute("subCategoryList", ls);
+		HttpSession session = request.getSession();
+		session.setAttribute("subCategoryList", ls);
 		response.sendRedirect(request.getContextPath()+"/Admin/editSubCategory.jsp");
 	}
 	

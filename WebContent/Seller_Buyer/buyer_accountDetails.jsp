@@ -11,29 +11,12 @@
 <title>Game-Zone</title>
 
 <link rel="stylesheet" href="css/bootstrap.min.css">
-<link rel="stylesheet" href="css/bootstrap-select.css">
 <link rel="stylesheet" href="css/slick.css">
 <link rel="stylesheet" href="css/magnific-popup.css">
 <link rel="stylesheet" href="fonts/typicons/typicons.css">
 <link rel="stylesheet" href="css/mystyle.css">
 
 <script src="js/modernizr.custom.js"></script>
-<style type="text/css">
-label.valid {
-	width: 24px;
-	height: 24px;
-	background: url(images/valid.png) center center no-repeat;
-	display: inline-block;
-	text-indent: -9999px;
-}
-
-label.error {
-	font-weight: bold;
-	color: red;
-	padding: 2px 8px;
-	margin-top: 2px;
-}
-</style>
 </head>
 
 <body class="off-canvas">
@@ -47,7 +30,6 @@ label.error {
 	<!--  Header -->
 	<%@include file="buyer_header.jsp"%>
 	<!--  END Header -->
-
 	<div id="sb-site">
 		<div id="main">
 			<div id="loadergif">
@@ -56,11 +38,14 @@ label.error {
 
 			<div id="content">
 				<div class="container">
+				<h1>
+					<span>Your Account Information</span>
+				</h1>
 					<div class="row">
 						<%
 							String msg = (String) session.getAttribute("msg");
 							if (msg != null) {
-								if (msg.equals("The message has been sent successfully.")) {
+								if (msg.equals("The account is updated successfully")) {
 									response.setContentType("text/html");
 									out.println("<div class=\"col-md-12\">");
 									out.println("<p class=\"text-center bg-success\">");
@@ -80,41 +65,23 @@ label.error {
 						<div class="col-md-3"></div>
 						
 						<div class="col-md-6">
-						
-							<form action="<%=request.getContextPath()%>/SellerController" method="POST" id="contactSeller">
-								
-								<div class="form-group">
-									<label class="control-label form-label" for="seller_id">Select Seller Entity Name*</label>
-									<div>
-										<select class="selectpicker" data-live-search="true" name="seller_id" id="seller_id" required="required">
-											<option value="-1" disabled="disabled" selected="selected">Name of Sellers</option>
-											<c:forEach var="i" items="${sessionScope.sellerList }">
-												<option value="${i.seller_id }">${i.firstname } ${i.lastname }</option>
-											</c:forEach>
-										</select>
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label class="form-label" for="game_name"><strong>Subject*</strong></label>
-									<input type="text" class="form-control form-control-line"
-										placeholder="Subject of your message..." name="subject"
-										id="subject" required="required">
-								</div>
-
-
-								<div class="form-group">
-									<label class="control-label form-label" for="game_description">Message*</label>
-									<textarea class="form-control form-control-line" rows="2"
-										name="message" id="message"
-										placeholder="Please enter a brief message..."></textarea>
-								</div>
-								
-								<input type="hidden" name="flag" value="contactSeller">
-								<input type="hidden" name="buyer_id" value="<%=buyer_id%>">
-								<button type="submit" class="btn btn-lg btn-success">Send Email</button>
-								<button type="reset" class="btn btn-lg btn-light">Reset</button>
-							</form>
+							<ul class="styled-list text-left">
+							<c:forEach var="i" items="${sessionScope.buyerInfo }">
+								<li><h6>First Name:</h6>	${i.firstname }</li>
+								<li><h6>Last Name:</h6>		${i.lastname }</li>
+								<li><h6>Userame:</h6>		${i.username }</li>
+								<li><h6>Email:</h6>			${i.email }</li>
+								<li><h6>Phone Number:</h6>	${i.phNo }</li>
+								<li><h6>Address:</h6>		${i.address }</li>
+								<li><h6>Zipcode:</h6>		
+								<c:choose>
+									<c:when test=" ${i.zip == \"\"}">Not entered</c:when>
+									<c:otherwise>${i.zip }</c:otherwise>
+								</c:choose>
+								</li>
+								<li><h6>Paypal:</h6>		${i.paypal }</li>
+							</c:forEach>
+							</ul>
 						</div>
 						<div class="col-md-3"></div>
 					</div>
@@ -134,10 +101,31 @@ label.error {
 	<script src="js/jquery-1.11.0.min.js"></script>
 	<script src="js/jquery.validate.js"></script>
 	<script src="js/jquery.maskedinput.min.js"></script>
+	
 	<script src="js/bootstrap.min.js"></script>
-	<script src="js/bootstrap-select.js"></script>
 	<script src="js/slick.min.js"></script>
+	<script src='js/jquery.magnific-popup.min.js'></script>
 	<script src="js/slidebars.min.js"></script>
 	<script src="js/myscript.js"></script>
+	<script src="//code.jquery.com/jquery-1.11.2.min.js"></script> 
+	<script type="text/javascript">
+	$(function(){
+		$("#updateAccount").validate({
+			rules:{
+				"game_price":{ required: true},
+				"game_stock": {required: true}
+			}, 
+			highlight:function(element){
+				$(element).closest(".form-group")
+				.removeClass("success").addClass("error");
+			}, 
+			success:function(element){
+				element
+				.text("OK!").addClass("valid")
+				.closest(".form-group").removeClass("error").addClass("success");
+			}
+			});
+	});
+	</script>
 </body>
 </html>

@@ -83,14 +83,14 @@ public class AdminLoginServlet extends HttpServlet {
 				System.err.println("Unable to close.");
 			}
 		}
-		HttpSession sess = request.getSession(true);
+		HttpSession session = request.getSession(true);
 		
 		if (loggedIn.equals("true")) {
-			sess.setAttribute("adminLoggedIn", "true");
-			sess.setAttribute("firstName", adminInfo.get("firstName"));
-			sess.setAttribute("lastName", adminInfo.get("lastName"));
+			session.setAttribute("adminLoggedIn", "true");
+			session.setAttribute("firstName", adminInfo.get("firstName"));
+			session.setAttribute("lastName", adminInfo.get("lastName"));
 		}
-		sess.setAttribute("msg", msg);
+		session.setAttribute("msg", msg);
 		response.sendRedirect(url);
 	}
 };

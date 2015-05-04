@@ -51,12 +51,16 @@ public class GameController extends HttpServlet {
 				loadScatDynamically(request, response);	
 			else if(flag.equals("showAllGames"))
 				showAllGames(request, response);
+			else if(flag.equals("showGames2Buyer"))
+				showGames2Buyer(request, response);
 			else if(flag.equals("productPage"))
 				productPage(request, response);
 			else if(flag.equals("editGame"))
 				editGame(request, response);
 			else if(flag.equals("deleteGame"))
 				deleteGame(request, response);
+			else if(flag.equals("showGamesByCat"))
+				showGamesByCat(request, response);
 		}
 	}
 
@@ -71,13 +75,15 @@ public class GameController extends HttpServlet {
 				insert(request, response);
 			if(flag.equals("update"))
 				update(request, response);
+			else if(flag.equals("search"))
+				search(request, response);
 		}
 	}
 	
 	protected void loadCategories(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<GameCategoryVO> categoryList = AddCategoryDAO.showAll();
-		HttpSession sess = request.getSession();
-		sess.setAttribute("categoryList", categoryList);
+		HttpSession session = request.getSession();
+		session.setAttribute("categoryList", categoryList);
 		response.sendRedirect(request.getContextPath()+"/Seller_Buyer/seller_addGame.jsp");
 	}
 	
@@ -237,4 +243,49 @@ public class GameController extends HttpServlet {
 		showAllGames(request, response);
 	}
 		
+	protected void showGames2Buyer(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		// All the games
+		List<GameVO> allGames = GameDAO.showAll();
+		List<GameCategoryVO> categoryList = AddCategoryDAO.showAll();
+		HttpSession session = request.getSession();
+		session.setAttribute("categoryList", categoryList);
+		session.setAttribute("allGames", allGames);
+		response.sendRedirect(request.getContextPath()+"/Seller_Buyer/buyer_viewAllGames.jsp");
+	}
+		
+	protected void showGamesByCat(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		long cat_id = Long.parseLong(request.getParameter("cat_id"));
+		List<GameVO> gamesByCat = GameDAO.getGamesByCat_id(cat_id);
+		List<GameCategoryVO> categoryList = AddCategoryDAO.showAll();
+		HttpSession session = request.getSession();
+		session.setAttribute("categoryList", categoryList);
+		session.setAttribute("gamesByCat", gamesByCat);
+		response.sendRedirect(request.getContextPath()+"/Seller_Buyer/buyer_viewGamesByCat.jsp");
+	}
+	
+	protected void search(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String inputString = request.getParameter("search"),
+			   userType = request.getParameter("userType"),
+			   url = "";
+		List<GameVO> searchResults = GameDAO.search(inputString);
+
+		List<GameCategoryVO> categoryList = AddCategoryDAO.showAll();
+		
+		HttpSession session = request.getSession();
+		
+		session.setAttribute("categoryList", categoryList);
+		session.setAttribute("searchResults", searchResults);
+		
+		if(userType.equals("buyer")){
+			url = request.getContextPath()+"/Seller_Buyer/buyer_searchResults.jsp";
+		}
+		else if (userType.equals("seller")) {
+			url = request.getContextPath()+"/Seller_Buyer/seller_searchResults.jsp";
+		}
+		else {
+			url = request.getContextPath()+"/Admin/admin_searchResults.jsp";
+		}
+		response.sendRedirect(url);
+	}
 };

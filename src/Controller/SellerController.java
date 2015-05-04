@@ -58,8 +58,6 @@ public class SellerController extends HttpServlet {
 				approve(request, response);
 			else if(flag.equals("decline"))
 				decline(request, response);
-//			else if(flag.equals("editSellerInfo"))
-//				editSellerInfo(request, response);
 			else if(flag.equals("delete"))
 				deleteSeller(request, response);
 			else if(flag.equals("activation"))
@@ -419,29 +417,16 @@ public class SellerController extends HttpServlet {
 				   firstName = request.getParameter("firstname"),
 				   lastName = request.getParameter("lastname"),
 				   email = request.getParameter("email"),
-				   phNo = request.getParameter("phno"),
+				   phNo = request.getParameter("phNo"),
 				   address = request.getParameter("address"),
 				   zip = request.getParameter("zip"),
-				   routingNumber = request.getParameter("routingnumber"),
-				   accountNumber = request.getParameter("accountnumber"),
+				   routingNumber = request.getParameter("routingNumber"),
+				   accountNumber = request.getParameter("accountNumber"),
 				   paypal = request.getParameter("paypal");
 					
 			if(zip == null) zip = "";
 			
-			SellerVO svo = new SellerVO();
-			svo.setSeller_id(seller_id);
-			svo.setCompanyname(companyName);
-			svo.setFirstname(firstName);
-			svo.setLastname(lastName);
-			svo.setEmail(email);
-			svo.setPhNo(phNo);
-			svo.setAddress(address);
-			svo.setZip(zip);
-			svo.setRoutingNumber(routingNumber);
-			svo.setAccountNumber(accountNumber);
-			svo.setPaypal(paypal);
-			
-			SellerDAO.insert(svo);
+			SellerDAO.update(seller_id, companyName, firstName, lastName, email, phNo, address, zip, routingNumber, accountNumber, paypal);
 			
 			HttpSession session = request.getSession();
 			session.setAttribute("msg", "The account is updated successfully");

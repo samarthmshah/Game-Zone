@@ -60,8 +60,8 @@ public class CategoryController extends HttpServlet {
 	
 	protected void load(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<GameCategoryVO> ls = AddCategoryDAO.showAll();
-		HttpSession sess = request.getSession();
-		sess.setAttribute("categoryList", ls);
+		HttpSession session = request.getSession();
+		session.setAttribute("categoryList", ls);
 		response.sendRedirect(request.getContextPath()+"/Admin/editCategory.jsp");
 	}
 	
@@ -71,8 +71,8 @@ public class CategoryController extends HttpServlet {
 		System.out.println(cat_name);
 		System.out.println(cat_description);
 		AddCategoryDAO.insert(cat_name, cat_description);
-		HttpSession sess = request.getSession(true);
-		sess.setAttribute("msg", "The category has been added successfully.");
+		HttpSession session = request.getSession();
+		session.setAttribute("msg", "The category has been added successfully.");
 		response.sendRedirect(request.getContextPath()+"/Admin/addCategory.jsp");
 	}
 	

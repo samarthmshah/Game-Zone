@@ -49,6 +49,14 @@
 						out.println("</p></div>");
 						session.removeAttribute("msg");
 					} 
+					else if (msg.equals("Account created successfully")) {
+						response.setContentType("text/html");
+						out.println("<div class=\"col-md-12\">");
+						out.println("<p class=\"bg-success text-center\">");
+						out.println("<strong>" + msg + "</strong>");
+						out.println("</p></div>");
+						session.removeAttribute("msg");
+					} 
 					else{
 						response.setContentType("text/html");
 						out.println("<div class=\"col-md-12\">");

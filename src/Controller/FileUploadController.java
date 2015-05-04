@@ -25,8 +25,8 @@ public class FileUploadController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private boolean isMultipart;
     private String folderPath;
-    private int maxFileSize = 100 * 1024;
-    private int maxMemSize = 100 * 1024;
+    private int maxFileSize = 1000 * 1024;
+    private int maxMemSize = 1000 * 1024;
     private File file ;
     private String fileName = null;
     /**
@@ -51,8 +51,7 @@ public class FileUploadController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String absPath = getServletContext().getRealPath(request.getServletPath());
-		folderPath = absPath.substring(0, absPath.indexOf(".metadata")) + "game_zone_v1.0/WebContent/Seller_Buyer/images/posters";
-		
+		folderPath = absPath.substring(0, absPath.lastIndexOf(File.separator)) + "/Seller_Buyer/images/posters";
 		isMultipart = ServletFileUpload.isMultipartContent(request);
 		response.setContentType("text/html");
 
@@ -79,14 +78,11 @@ public class FileUploadController extends HttpServlet {
 				if(! fi.isFormField()){
 					// Get the uploaded file parameters
 		            String file_name = fi.getName();
-		            System.out.println("The file name is "+file_name);
 		            
 		            // Write the file
 		            if( file_name.lastIndexOf(File.separator) >= 0 ){
 		            	String pathToStoreImg = folderPath + File.separator + file_name.substring( file_name.lastIndexOf(File.separator));
-		            	System.out.println("Full Path to store image "+pathToStoreImg);
 		               file = new File(pathToStoreImg) ;
-		               System.out.println("Abs path of stored file "+file.getAbsolutePath());
 		            }
 		            else{
 		            	String pathToStoreImg = folderPath + File.separator + file_name.substring(file_name.lastIndexOf(File.separator)+1);
