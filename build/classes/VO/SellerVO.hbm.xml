@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
+
+<hibernate-mapping>
+   <class name="VO.SellerVO" table="sellervo_dtl">
+      <meta attribute="class-description">
+         This is the detail table for Seller information.
+      </meta>
+      <id name="seller_id" type="long" column="seller_id">
+         <generator class="increment"/>
+      </id>
+      <property name="companyname" column="companyname" type="string"/>
+      <property name="firstname" column="firstname" type="string"/>
+      <property name="lastname" column="lastname" type="string"/>
+      <property name="username" column="username" type="string"/>
+      <property name="password" column="password" type="string"/>
+      <property name="email" column="email" type="string"/>
+      <property name="phNo" column="phNo" type="string"/>
+      <property name="dob" column="dob" type="string"/>
+      <property name="address" column="address" type="string"/>
+      <property name="zip" column="zip" type="string"/>
+      <property name="routingNumber" column="routingNumber" type="string"/>
+      <property name="accountNumber" column="accountNumber" type="string"/>
+      <property name="paypal" column="paypal" type="string"/>
+      <property name="status" column="status" type="int"/>
+   </class>
+</hibernate-mapping>
