@@ -111,9 +111,12 @@ label.error {
 									<div>
 										<select class="selectpicker" name="game_console"
 											id="game_console" required="required">
-											<option value="pc">PC</option>
-											<option value="xbox">XBox</option>
-											<option value="ps">PlayStation</option>
+											<option value="PC">PC</option>
+											<option value="XBox">XBox</option>
+											<option value="PlayStation">PlayStation</option>
+											<option value="Wii U">Wii U</option>
+											<option value="Ps Vita">Ps Vita</option>
+											<option value="Nintendo">Ninetendo 3DS</option>
 										</select>
 									</div>
 								</div>

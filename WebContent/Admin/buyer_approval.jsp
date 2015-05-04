@@ -84,6 +84,7 @@
 			</div>
 		</div>
 	</div>
+		<%@include file="footer.jsp" %>
 </div>
 <!-- </CONTENT> -->
 <script type="text/javascript" src="js/jquery.min.js"></script>

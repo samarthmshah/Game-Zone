@@ -5,11 +5,11 @@
 		<button title="Close (Esc)" type="button" class="mfp-close sb-close">×</button>
 
 		<ul class="mtree mtree-simple">
-			<li><a href="<%=request.getContextPath()%>/GameController?flag=showGames2Buyer">View Games</a></li>
-			<li><a href="#">Rate </a></li>
-			<li><a href="#">Order History</a></li>
-			<li><a href="#">Shopping Cart</a></li>
-			<li><a href="#">Checkout</a></li>
+			<li><a href="<%=request.getContextPath()%>/GameController?flag=showAllGames&userType=buyer">View Games</a></li>
+			<!-- <li><a href="#">Rate </a></li> -->
+			<!-- <li><a href="#">Order History</a></li> -->
+			<!-- <li><a href="#">Shopping Cart</a></li> -->
+			<!-- <li><a href="#">Checkout</a></li> -->
 			<li><a href="<%=request.getContextPath()%>/SellerController?flag=contactSellerThroughEmail">Contact Sellers</a></li>
 			<li><a href="<%=request.getContextPath()%>/SBLogoutServlet">Log Out</a></li>
 		</ul>

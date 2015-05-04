@@ -49,7 +49,7 @@
 						out.println("</p></div>");
 						session.removeAttribute("msg");
 					} 
-					else if (msg.equals("Account created successfully")) {
+					else if (msg.equals("Account created successfully. An activation link has been sent to your email")) {
 						response.setContentType("text/html");
 						out.println("<div class=\"col-md-12\">");
 						out.println("<p class=\"bg-success text-center\">");

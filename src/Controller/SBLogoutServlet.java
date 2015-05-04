@@ -40,8 +40,7 @@ public class SBLogoutServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		session.removeAttribute("loggedIn");
 		session.removeAttribute("userInfoObj");
-		session.invalidate();
-		session.setAttribute("msg", "You have logged out successfully");
+		session.setAttribute("msg", "You have logged out successfully");	// change sesh to session
 		response.sendRedirect(request.getContextPath()+"/Seller_Buyer/login.jsp");
 	}
 };

@@ -94,6 +94,10 @@
 		</div>
 	</div>
 
+<!--  The games in the cart will be showed here. This comes after the sb-site ends. -->
+<%@include file="buyer_slidebar_cart.jsp" %>
+<!-- End slidebar. -->
+
 	<!--  The main menu will be showed here. This comes after the sb-site ends. -->
 	<%@include file="buyer_main_menu.jsp"%>
 	<!-- End slidebar. -->

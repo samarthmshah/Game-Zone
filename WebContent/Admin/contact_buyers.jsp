@@ -11,7 +11,7 @@
 			<%
 				String msg = (String) session.getAttribute("msg");
 				if (msg != null) {
-					if (msg.equals("The message has been sent successfully.")) {
+					if (msg.equals("The message has been sent successfully")) {
 						response.setContentType("text/html");
 						out.println("<div class=\"col-md-12\">");
 						out.println("<p class=\"bg-success\">");
@@ -44,7 +44,7 @@
 					<div class="panel-body">
 						<form action="<%=request.getContextPath()%>/BuyerController" method="POST">
 							<div class="form-group">
-								<label class="control-label form-label" for="seller_id">Choose Buyer:</label>
+								<label class="control-label form-label" for="buyer_id">Choose Buyer:</label>
 								<div>
 									<select class="selectpicker" data-live-search="true"
 										name="buyer_id" id="buyer_id" required="required">
@@ -67,8 +67,8 @@
 									name="message" id="message"
 									placeholder="Enter message here..."></textarea>
 							</div>
-							<input type="hidden" name="flag" value="message">
-							<button type="submit" class="btn btn-default">Submit</button>
+							<input type="hidden" name="flag" value="messageBuyer4mAdmin">
+							<button type="submit" class="btn btn-default">Send Message</button>
 							<button type="reset" class="btn">Reset</button>
 						</form>
 					</div>
@@ -76,6 +76,7 @@
 			</div>
 		</div>
 	</div>
+		<%@include file="footer.jsp" %>
 </div>
 
 <!-- </CONTENT> -->

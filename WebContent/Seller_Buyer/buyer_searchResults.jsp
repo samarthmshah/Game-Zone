@@ -89,9 +89,11 @@
             <div class="block shop-by">
               <h3 class="block-title">CATEGORY</h3>
               <div class="block-content">
-                <ul class="mtree mtree-simple">
+                 <ul class="mtree mtree-simple">
+                  	 <li><a href="<%=request.getContextPath()%>/GameController?flag=showAllGames&userType=buyer">ALL</a></li>
+                
                 	<c:forEach var="i" items="${sessionScope.categoryList }">
-                 	 <li><a href="#">${i.cat_name }</a></li>
+                 	 <li><a href="<%=request.getContextPath()%>/GameController?flag=showGamesByCat&cat_id=${i.cat_id}&userType=buyer">${i.cat_name }</a></li>
                 	</c:forEach>
                	<%session.removeAttribute("categoryList"); %>
                 </ul>
@@ -107,9 +109,12 @@
 			<!-- END Footer -->
 		</div>
 	</div>
+<!--  The games in the cart will be showed here. This comes after the sb-site ends. -->
+<%@include file="buyer_slidebar_cart.jsp" %>
+<!-- End slidebar. -->
 
 	<!--  The main menu will be showed here. This comes after the sb-site ends. -->
-	<%@include file="seller_main_menu.jsp"%>
+	<%@include file="buyer_main_menu.jsp"%>
 	<!-- End slidebar. -->
 
 	<script src="js/jquery-1.11.0.min.js"></script> 

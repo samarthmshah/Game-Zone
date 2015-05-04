@@ -1,15 +1,6 @@
 build/
 **/META-INF/
 **/WEB-INF/
-**/css/
-**/js/
-**/images/
-**/fonts/
-*.eot
-*.ttf
-*.svg
-*.woff
-*.woff2
 *.html
 *.class
 *.jar

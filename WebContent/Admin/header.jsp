@@ -10,6 +10,22 @@
 <title>Game-Zone</title>
 
 <link href="css/root.css" rel="stylesheet">
+<style type="text/css">
+label.valid {
+	width: 24px;
+	height: 24px;
+	background: url(img/valid.png) center center no-repeat;
+	display: inline-block;
+	text-indent: -9999px;
+}
+
+label.error {
+	font-weight: bold;
+	color: red;
+	padding: 2px 8px;
+	margin-top: 2px;
+}
+</style>
 
 </head>
 <body>

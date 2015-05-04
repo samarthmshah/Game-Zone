@@ -22,9 +22,9 @@
 						class="fa fa-bars"></i></span>Games<span class="caret"></span></a>
 				<ul>
 					<li><span class="icon color7"><i class="fa fa-circle-o"></i></span><a
-						href="editProducts.jsp">Edit Products</a></li>
+						href="<%=request.getContextPath()%>/GameController?flag=showAllGames&userType=admin">Edit Games</a></li>
 					<li><span class="icon color7"><i class="fa fa-circle-o"></i></span><a
-						href="deleteProducts.jsp">Delete Products</a></li>
+						href="deleteProducts.jsp">Delete Games</a></li>
 				</ul></li>
 			<li><a href="#"><span class="icon color7"><i
 						class="fa fa-bars"></i></span>Sellers<span class="caret"></span></a>

@@ -46,7 +46,7 @@
           <div class="col-sm-8 col-md-9 col-lg-9" id="content-center">
             <div class="category-info text-center">
               <h1><span>Buy Games</span></h1>
-              <p>Shwoing all the games. Please click on a Category to filter results.</p>
+              <p>Showing All the games. Please click on a Category to filter results.</p>
             </div>
             <!-- Filters -->
             <div class="filters-panel">
@@ -56,25 +56,7 @@
             
             <!-- Listing products -->
             <div class="row products-grid show-2 products-list-in-row">
-								<%
-									String msg = (String) session.getAttribute("msg");
-									if (msg != null) {
-										if (msg.equals("n")) {
-											response.setContentType("text/html");
-											out.println("<div class=\"col-md-12\">");
-											out.println("<p class=\"text-center bg-success\">");
-											out.println("<strong>" + msg + "</strong>");
-											out.println("</p></div>");
-										} else {
-											response.setContentType("text/html");
-											out.println("<div class=\"col-md-12\">");
-											out.println("<p class=\"text-center bg-danger\">");
-											out.println("<strong>" + msg + "</strong>");
-											out.println("</p></div>");
-										}
-										session.removeAttribute("msg");
-									}
-								%>
+								
 				<c:forEach var="i" items="${sessionScope.allGames}">
               <div class="product">
                 <a href="<%=request.getContextPath()%>/GameController?flag=productPage&game_id=${i.game_id}" class="product-image">
@@ -106,8 +88,10 @@
               <h3 class="block-title">CATEGORY</h3>
               <div class="block-content">
                 <ul class="mtree mtree-simple">
+                  	 <li><a href="<%=request.getContextPath()%>/GameController?flag=showAllGames&userType=buyer">ALL</a></li>
+                
                 	<c:forEach var="i" items="${sessionScope.categoryList }">
-                 	 <li><a href="<%=request.getContextPath()%>/GameController?flag=showGamesByCat&cat_id=${i.cat_id}">${i.cat_name }</a></li>
+                 	 <li><a href="<%=request.getContextPath()%>/GameController?flag=showGamesByCat&cat_id=${i.cat_id}&userType=buyer">${i.cat_name }</a></li>
                 	</c:forEach>
                	<%session.removeAttribute("categoryList"); %>
                 </ul>
@@ -123,6 +107,9 @@
 			<!-- END Footer -->
 		</div>
 	</div>
+<!--  The games in the cart will be showed here. This comes after the sb-site ends. -->
+<%@include file="buyer_slidebar_cart.jsp" %>
+<!-- End slidebar. -->
 
 	<!--  The main menu will be showed here. This comes after the sb-site ends. -->
 	<%@include file="buyer_main_menu.jsp"%>

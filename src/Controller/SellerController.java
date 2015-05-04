@@ -78,8 +78,8 @@ public class SellerController extends HttpServlet {
 		if(flag != null){
 			if(flag.equals("insert"))
 				insert(request, response);
-			else if(flag.equals("message"))
-				message(request, response);
+			else if(flag.equals("messageSeller4mAdmin"))
+				messageSeller4mAdmin(request, response);
 			else if(flag.equals("contactSeller"))
 				contactSeller(request, response);
 			else if(flag.equals("update"))
@@ -122,7 +122,7 @@ public class SellerController extends HttpServlet {
 										routingNumber, accountNumber, paypal, 0);
 			SellerDAO.insert(svo);
 			sendActivationLink(svo, request, response);
-			msg = "Account created successfully";
+			msg = "Account created successfully. An activation link has been sent to your email";
 			url = "/Seller_Buyer/login.jsp";
 		}
 		else
@@ -164,17 +164,72 @@ public class SellerController extends HttpServlet {
 		load(request, response);
 	}
 	
-	protected void message(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void messageSeller4mAdmin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(request.getParameter("seller_id") != null){
 			long seller_id = Long.parseLong(request.getParameter("seller_id"));
 			String subject = request.getParameter("subject"),
 				   message = request.getParameter("message");
+			if(subject == null) subject = "";
+			if(message == null) message = "";
 			
-			System.out.println("ID "+seller_id);
-			System.out.println("Subject "+subject);
-			System.out.println("Message "+message);
+			String seller_username = "",
+				   TO="";
+			
+			Iterator<SellerVO> seller_itr = SellerDAO.getSellerById(seller_id).iterator();
+			while(seller_itr.hasNext()){
+				SellerVO svo = seller_itr.next();
+				seller_username = svo.getUsername();
+				TO = svo.getEmail();
+			}
+			
+			final String FROM = "developers.gamezone@gmail.com";	// Basic details of my account
+		    String USERNAME = "developers.gamezone@gmail.com";
+		    String PASSWORD = "samarthshah";
+		    final String HOST = "smtp.gmail.com";
+
+		    // Get system properties
+	        Properties props = new Properties();
+	        props.put("mail.smtp.auth", "true");
+	        props.put("mail.smtp.starttls.enable", "true");
+	        props.put("mail.smtp.host", HOST);
+	        props.put("mail.smtp.port", "587");
+		    
+	        // Get the default Session object.
+	        Session msg_session = Session.getInstance(props,
+	        		new javax.mail.Authenticator() {
+	      		         protected PasswordAuthentication getPasswordAuthentication() {
+	      		            return new PasswordAuthentication(USERNAME, PASSWORD);
+	      		         }
+		    });
+
+		    try{
+		    	// Create a default MimeMessage object.
+		         MimeMessage msg2buyer = new MimeMessage(msg_session);
+
+		         // Set From: header field of the header.
+				msg2buyer.setFrom(new InternetAddress(FROM, "Administrator"));	// Shows that it is sent by sellers username
+
+		         // Set To: header field of the header.
+		         msg2buyer.setRecipient(Message.RecipientType.TO, new InternetAddress(TO));
+			         
+	        	// Set Subject: header field
+		         msg2buyer.setSubject(subject);	// Subject set by the seller.
+		         msg2buyer.setContent("<h1>Dear "+seller_username+",</h1>"
+      								+ "<p>The following message is sent to you by the Administrator.</p><hr/>"
+      								+ "<p><strong>"+ message +"</strong></p><hr/>"
+      								+ "<p>Please contact him back on developers.gamezone@gmail.com</p>"
+      								+ "<br/><p>Happy Gaming.<br/>"
+      								+ "<strong>Game-Zone Team</strong></p>", "text/html");	// The message written by Admin.
+		         msg2buyer.saveChanges();
+		         Transport.send(msg2buyer); // Send message
+		      }
+		    
+		    catch (MessagingException mex) {
+		         mex.printStackTrace();
+		      }
+		    
 			HttpSession session = request.getSession();
-			session.setAttribute("msg", "The message has been sent successfully.");
+			session.setAttribute("msg", "The message has been sent successfully");
 		}
 		else{
 			HttpSession session = request.getSession();

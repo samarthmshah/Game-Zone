@@ -56,26 +56,8 @@
             
             <!-- Listing products -->
             <div class="row products-grid show-2 products-list-in-row">
-								<%
-									String msg = (String) session.getAttribute("msg");
-									if (msg != null) {
-										if (msg.equals("The Game has been successfully deleted")) {
-											response.setContentType("text/html");
-											out.println("<div class=\"col-md-12\">");
-											out.println("<p class=\"text-center bg-success\">");
-											out.println("<strong>" + msg + "</strong>");
-											out.println("</p></div>");
-										} else {
-											response.setContentType("text/html");
-											out.println("<div class=\"col-md-12\">");
-											out.println("<p class=\"text-center bg-danger\">");
-											out.println("<strong>" + msg + "</strong>");
-											out.println("</p></div>");
-										}
-										session.removeAttribute("msg");
-									}
-								%>
-				<c:forEach var="i" items="${sessionScope.gameList}">
+								
+				<c:forEach var="i" items="${sessionScope.gamesByCat}">
               <div class="product">
                 <a href="<%=request.getContextPath()%>/GameController?flag=productPage&game_id=${i.game_id}" class="product-image">
                 	<img src="images/posters/${i.game_poster_name }" style="height: 225px; width:225px"/>
@@ -92,12 +74,17 @@
                   </span> 
                   <span class="price"><span class="currency">Price: $</span>${i.game_price }</span>
                   <div class="description in-row">Description: ${i.game_description }</div>
-                  <div class="description in-row"><a href="<%=request.getContextPath()%>/GameController?flag=editGame&game_id=${i.game_id}"><button type="button" class="btn btn-md btn-warning">Update</button></a></div>
-                  <div class="description in-row"><a href="<%=request.getContextPath()%>/GameController?flag=deleteGame&seller_id=${i.seller_id.getSeller_id() }&game_id=${i.game_id}"><button type="button" class="btn btn-md btn-danger">!!DELETE GAME!!</button></a></div>
+                  <c:set var="sellerID" value="${i.seller_id.getSeller_id() }"/>
+                  <%
+                  if(seller_id == ((Long)pageContext.getAttribute("sellerID"))){
+                  %>
+                  <div class="description in-row"><a href="<%=request.getContextPath()%>/GameController?flag=editGame&game_id=${i.game_id}&userType=seller"><button type="button" class="btn btn-md btn-warning">Update</button></a></div>
+                  <div class="description in-row"><a href="<%=request.getContextPath()%>/GameController?flag=deleteGame&seller_id=<%=seller_id %>&game_id=${i.game_id}&userType=seller"><button type="button" class="btn btn-md btn-danger">!!DELETE GAME!!</button></a></div>
+                  <%} %>
                 </div>
               </div>
               </c:forEach>
-              <%session.removeAttribute("gameList"); %>
+              <%session.removeAttribute("gamesByCat"); %>
             </div>
             <!-- END Listing products -->
              </div>
@@ -107,8 +94,10 @@
               <h3 class="block-title">CATEGORY</h3>
               <div class="block-content">
                 <ul class="mtree mtree-simple">
+                
+                 	 <li><a href="<%=request.getContextPath()%>/GameController?flag=showAllGames&userType=seller">ALL</a></li>
                 	<c:forEach var="i" items="${sessionScope.categoryList }">
-                 	 <li><a href="#">${i.cat_name }</a></li>
+                 	 <li><a href="<%=request.getContextPath()%>/GameController?flag=showGamesByCat&cat_id=${i.cat_id}&userType=seller">${i.cat_name }</a></li>
                 	</c:forEach>
                	<%session.removeAttribute("categoryList"); %>
                 </ul>

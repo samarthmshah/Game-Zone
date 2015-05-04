@@ -1,0 +1,37 @@
+@CHARSET "UTF-8";
+.navbar-custom-font {
+    color: #C2C2C2;
+}
+
+.navbar-custom-brand{
+    float: left;
+    height: 50px;
+    padding: 15px 15px;
+    font-size: 18px;
+    line-height: 20px;
+    color: #C2C2C2;
+}
+
+.glyphicon-custom{
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    color: rgb(252, 2, 2);
+}
+
+.navbar-nav-custom {
+  float: left;
+  margin: 0;
+}
+
+.navbar-custom-font .navbar-nav-custom>li>a {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    color: rgb(252, 2, 2);
+}
+

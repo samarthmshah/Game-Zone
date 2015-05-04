@@ -11,7 +11,7 @@
 			<%
 				String msg = (String) session.getAttribute("msg");
 				if (msg != null) {
-					if (msg.equals("The message has been sent successfully.")) {
+					if (msg.equals("The message has been sent successfully")) {
 						response.setContentType("text/html");
 						out.println("<div class=\"col-md-12\">");
 						out.println("<p class=\"bg-success\">");
@@ -67,8 +67,8 @@
 									name="message" id="message"
 									placeholder="Enter message here..."></textarea>
 							</div>
-							<input type="hidden" name="flag" value="message">
-							<button type="submit" class="btn btn-default">Submit</button>
+							<input type="hidden" name="flag" value="messageSeller4mAdmin">
+							<button type="submit" class="btn btn-default">Send Message</button>
 							<button type="reset" class="btn">Reset</button>
 						</form>
 					</div>
@@ -76,6 +76,7 @@
 			</div>
 		</div>
 	</div>
+		<%@include file="footer.jsp" %>
 </div>
 
 <!-- </CONTENT> -->
