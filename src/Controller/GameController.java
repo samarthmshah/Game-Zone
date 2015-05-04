@@ -86,6 +86,48 @@ public class GameController extends HttpServlet {
 		session.setAttribute("categoryList", categoryList);
 		response.sendRedirect(request.getContextPath()+"/Seller_Buyer/seller_addGame.jsp");
 	}
+//	
+//	protected void insert(HttpServletRequest request,
+//			HttpServletResponse response) throws ServletException, IOException {
+//		long seller_id = Long.parseLong(request.getParameter("seller_id"));
+//		long cat_id = Long.parseLong(request.getParameter("cat_id"));
+//
+//		long scat_id = Long.parseLong(request.getParameter("scat_id"));
+//		GameSubCategoryVO gscvo = null;
+//		if (scat_id == 0) { // The user didn't choose
+//			HttpSession session = request.getSession();
+//			session.setAttribute("msg", "Please choose a subcategory!");
+//		} 
+//		else {
+//			if (scat_id == -1)
+//				gscvo = null;
+//			else
+//				gscvo = new GameSubCategoryVO(scat_id);
+//
+//			String game_poster_name = request.getParameter("game_poster_name");
+//			if (game_poster_name == null)
+//				game_poster_name = "no_image_available.png";
+//
+//			String game_console = request.getParameter("game_console"), game_name = request
+//					.getParameter("game_name");
+//			double game_price = Double.parseDouble(request.getParameter("game_price"));
+//			double game_shipping_charges = Double.parseDouble(request.getParameter("game_shipping_charges"));
+//			int game_stock = Integer.parseInt(request.getParameter("game_stock"));
+//			String game_youtube_url = request.getParameter("game_youtube_url"), 
+//				   game_description = request.getParameter("game_description");
+//			
+//
+//			GameVO gvo = new GameVO(new SellerVO(seller_id), game_poster_name,
+//									new GameCategoryVO(cat_id), gscvo, game_console, game_name,
+//									game_price, game_shipping_charges, game_stock, game_youtube_url, game_description, 0);
+//			GameDAO.insert(gvo);
+//			HttpSession session = request.getSession();
+//			session.removeAttribute("fileName");
+//			session.setAttribute("msg",
+//					"The game was successfully added to the list of your products");
+//		}
+//		response.sendRedirect(request.getContextPath()+ "/Seller_Buyer/seller_addGame.jsp");
+//	}
 	
 	protected void insert(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
@@ -108,23 +150,65 @@ public class GameController extends HttpServlet {
 			if (game_poster_name == null)
 				game_poster_name = "no_image_available.png";
 
-			String game_console = request.getParameter("game_console"), game_name = request
-					.getParameter("game_name");
-			double game_price = Double.parseDouble(request.getParameter("game_price"));
-			double game_shipping_charges = Double.parseDouble(request.getParameter("game_shipping_charges"));
-			int game_stock = Integer.parseInt(request.getParameter("game_stock"));
+			String game_console = request.getParameter("game_console"), 
+					game_name = request.getParameter("game_name");
+			
+			HttpSession session = request.getSession();
+			String message = new String();
+			double game_price = 0;
+			int game_price_flag = 0;
+			try{
+				game_price = Double.parseDouble(request.getParameter("game_price"));
+				game_price_flag = 1;
+				session.setAttribute("game_price", game_price);
+			}
+			catch(NumberFormatException exception)
+			{
+				if(message.equals(""))
+						message ="Please Enter Numerical Price";
+				else message+= ", Numerical Price";
+			}
+			
+			int game_stock =0;
+			int game_stock_flag =0;
+			try{
+				game_stock = Integer.parseInt(request.getParameter("game_stock"));
+				game_stock_flag = 1;
+			}
+			catch(NumberFormatException exception)
+			{
+				if(message.equals(""))
+					message ="Please Enter Numerical Stock";
+				else message+= ", Numerical Stock";
+			}
+			
+			double game_shipping_charges = 0;
+			int game_shipping_charges_flag = 0;
+			try{
+				game_shipping_charges = Double.parseDouble(request.getParameter("game_shipping_charges"));
+				game_shipping_charges_flag = 1;
+			}
+			catch(NumberFormatException exception)
+			{
+				if(message.equals(""))
+					message ="Please Enter Numerical Shipping Charges";
+				else message+= ", Numerical Shipping Charges";
+			}
+			
 			String game_youtube_url = request.getParameter("game_youtube_url"), 
 				   game_description = request.getParameter("game_description");
 			
-
-			GameVO gvo = new GameVO(new SellerVO(seller_id), game_poster_name,
+			if(game_price_flag == 1 && game_shipping_charges_flag == 1 && game_stock_flag == 1)
+			{
+				GameVO gvo = new GameVO(new SellerVO(seller_id), game_poster_name,
 									new GameCategoryVO(cat_id), gscvo, game_console, game_name,
 									game_price, game_shipping_charges, game_stock, game_youtube_url, game_description, 0);
-			GameDAO.insert(gvo);
-			HttpSession session = request.getSession();
+				GameDAO.insert(gvo);
+				message = "The game was successfully added to the list of your products";
+			}
+			
 			session.removeAttribute("fileName");
-			session.setAttribute("msg",
-					"The game was successfully added to the list of your products");
+			session.setAttribute("msg", message);
 		}
 		response.sendRedirect(request.getContextPath()+ "/Seller_Buyer/seller_addGame.jsp");
 	}
