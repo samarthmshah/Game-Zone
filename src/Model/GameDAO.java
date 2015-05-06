@@ -258,6 +258,34 @@ public class GameDAO {
 		return searchResults;
 	}
 	
+	public static void reduceStock(long game_id, int amount) {
+		setUp();
+		Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			System.out.println("(SETUP) Cant get current session so opening new one.");
+			session = factory.openSession();
+		}
+		Transaction tx = null;
+		int current_stock;
+		try {
+			tx = session.beginTransaction();
+			current_stock = (Integer) session.createQuery("SELECT game_stock FROM GameVO WHERE game_id="+game_id).uniqueResult();
+			session.createQuery("UPDATE GameVO SET game_stock="+(current_stock-amount)).executeUpdate();
+			tx.commit();
+		} 
+		catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} 
+		finally {
+			session.close();
+		}
+	}
+	
 	private static void setUp() {
 		try {
 			Configuration configuration = new Configuration();

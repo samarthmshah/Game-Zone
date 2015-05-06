@@ -45,7 +45,7 @@
           String msg = (String) session.getAttribute("msg");
 			if (msg != null) {
 				if (msg.equals("The Game has been successfully added to your shopping cart")
-					|| msg.equals("The Game has been successfully updated in your shopping cart")) {
+					|| msg.equals("The Game has been successfully updated in your shopping cart")){
 					response.setContentType("text/html");
 					out.println("<div class=\"col-md-12\">");
 					out.println("<p class=\"text-center bg-success\">");

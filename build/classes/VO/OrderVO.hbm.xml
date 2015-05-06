@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
+
+<hibernate-mapping>
+   <class name="VO.OrderVO" table="ordervo_dtl">
+      <meta attribute="class-description">
+         This is the detail table for Order information.
+      </meta>
+      <id name="order_id" type="long" column="order_id">
+         <generator class="increment"/>
+      </id>
+      <many-to-one name="buyer_id" cascade="delete" class="VO.BuyerVO" column="buyer_id" />
+      <many-to-one name="game_id" cascade="delete" class="VO.GameVO" column="game_id" />
+      <property name="quantity" column="quantity" type="int"/>
+      <property name="orderDT" column="orderDT" type="string"/>
+      <property name="shippingDT" column="shippingDT" type="string"/>
+      <property name="order_status" column="order_status" type="int"/>
+      <property name="order_total_cost" column="order_total_cost" type="double"/>
+      <property name="order_shipping_address" column="order_shipping_address" type="string"/>
+   </class>
+</hibernate-mapping>

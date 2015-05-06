@@ -24,6 +24,7 @@
 		<mapping resource="VO/LinkSellerVO.hbm.xml"></mapping>
 		<mapping resource="VO/GameVO.hbm.xml"></mapping>
 		<mapping resource="VO/CartVO.hbm.xml"></mapping>
+		<mapping resource="VO/OrderVO.hbm.xml"></mapping>
 
 	</session-factory>
 </hibernate-configuration>

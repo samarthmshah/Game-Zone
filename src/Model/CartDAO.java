@@ -97,6 +97,31 @@ public class CartDAO {
 		}
 	}
 	
+	public static void deleteByBuyerID(long buyer_id) {
+		setUp();
+		Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			System.out.println("(SETUP) Cant get current session so opening new one.");
+			session = factory.openSession();
+		}
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			session.createQuery("DELETE FROM CartVO WHERE buyer_id="+buyer_id).executeUpdate();
+			tx.commit();
+		} 
+		catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} 
+		finally {
+			session.close();
+		}
+	}
 	@SuppressWarnings({ "rawtypes" })
 	public static List loadCart(long buyer_id) {
 		setUp();
@@ -142,6 +167,35 @@ public class CartDAO {
 		try {
 			tx = session.beginTransaction();
 			ls = session.createQuery("from CartVO WHERE cart_id="+cart_id).list();
+			tx.commit();
+		} 
+		catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} 
+		finally {
+			session.close();
+		}
+		return ls;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<CartVO> getCartByBuyerID(long buyer_id) {
+		setUp();
+		Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			System.out.println("(SETUP) Cant get current session so opening new one.");
+			session = factory.openSession();
+		}
+		Transaction tx = null;
+		List<CartVO> ls = null;
+		try {
+			tx = session.beginTransaction();
+			ls = session.createQuery("from CartVO WHERE buyer_id="+buyer_id).list();
 			tx.commit();
 		} 
 		catch (HibernateException e) {

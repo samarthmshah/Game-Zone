@@ -1,6 +1,7 @@
 package Controller;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -202,7 +203,7 @@ public class GameController extends HttpServlet {
 			{
 				GameVO gvo = new GameVO(new SellerVO(seller_id), game_poster_name,
 									new GameCategoryVO(cat_id), gscvo, game_console, game_name,
-									game_price, game_shipping_charges, game_stock, game_youtube_url, game_description, 0);
+									game_price, game_shipping_charges, game_stock, game_youtube_url, game_description, 0, new Date().getTime());
 				GameDAO.insert(gvo);
 				message = "The game was successfully added to the list of your products";
 			}

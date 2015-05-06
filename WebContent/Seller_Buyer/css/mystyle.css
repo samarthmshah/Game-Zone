@@ -3427,7 +3427,7 @@ ul.mtree.mtree-simple li ul ul ul ul ul li a {
 .checkout-tab .nav-tabs {
   display: block;
   position: relative;
-  width: 100%;
+  width: 200%;
   border-bottom: 0;
   margin: 0;
   padding: 0;
@@ -3492,7 +3492,7 @@ ul.mtree.mtree-simple li ul ul ul ul ul li a {
 .checkout-tab .nav-tabs > li.active > a:hover,
 .checkout-tab .nav-tabs > li.active > a:focus {
   color: #fff;
-  background-color: #b09d6e;
+  background-color: #676767;
   border: none;
   border-left: 1px solid #e3e3e1;
 }
@@ -4087,7 +4087,6 @@ html.sb-active #sb-site,
 /* 8. INFOGRAPHIC
 -------------------------------------------------------------- */
 .rect {
-  border: 1px solid #fff;
   margin-bottom: 10px;
   padding: 30px 30px 25px;
 }
@@ -4496,7 +4495,7 @@ span.icon-circle {
 }
 
 .table-lined {
-  font-size: 1.083em;
+  font-size: 1.15em;
   width: 100%;
 }
 @media (max-width: 479px) {

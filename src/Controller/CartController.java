@@ -43,6 +43,8 @@ public class CartController extends HttpServlet {
 				deleteFromCart(request, response);
 			if(flag.equals("loadCart"))
 				loadCart(request, response);
+			if(flag.equals("clearCart"))
+				clearCart(request, response);
 		}
 	}
 
@@ -113,6 +115,14 @@ public class CartController extends HttpServlet {
 		CartDAO.update(cart_id, game_quantity);
 		HttpSession session = request.getSession();
 		session.setAttribute("msg", "The cart has been updated successfully");
+		loadCart(request, response);
+	}
+	
+	protected void clearCart(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		long buyer_id = Long.parseLong(request.getParameter("buyer_id"));
+		CartDAO.deleteByBuyerID(buyer_id);
+		HttpSession session = request.getSession();
+		session.setAttribute("msg", "Cart successfully cleared");
 		loadCart(request, response);
 	}
 };

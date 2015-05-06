@@ -1,4 +1,5 @@
 <!doctype html>
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="java.util.List"%>
 <html>
 <head>
@@ -8,7 +9,6 @@
 <!-- As in slidebar -->
 
 <%@taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
-
 <title>Game-Zone</title>
 
 <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -30,7 +30,6 @@
 	<!--  Header -->
 	<%@include file="buyer_header.jsp"%>
 	<!--  END Header -->
-
 	<div id="sb-site">
 		<div id="main">
 			<div id="loadergif">
@@ -43,7 +42,8 @@
           String msg = (String) session.getAttribute("msg");
 			if (msg != null) {
 				if (msg.equals("The Game has been successfully removed from your shopping cart") 
-					|| msg.equals("The cart has been updated successfully")) {
+					|| msg.equals("The cart has been updated successfully")
+					|| msg.equals("Cart successfully cleared")) {
 					response.setContentType("text/html");
 					out.println("<div class=\"col-md-12\">");
 					out.println("<p class=\"bg-success text-center\">");
@@ -57,6 +57,10 @@
 	 	@SuppressWarnings("unchecked")
 	 	List<Object> mycart = (List<Object>)session.getAttribute("myCart");
 	 	if(mycart != null && mycart.size() != 0){
+        	double total_game_amt = 0d,	// Initialize this.
+        			total_shipping_amt=0d,
+        			total_overall_amt=0d;
+        %>
 	 %>
       <div class="container">
         <section id="shopping-cart-section">
@@ -72,7 +76,13 @@
                     <c:forEach var="i" items="${sessionScope.myCart }">
                     <c:set var="cartvo" value="${i[0] }"></c:set>
                     <c:set var="gamevo" value="${i[1] }"></c:set>
-                    <c:set var="total_cost" value="${cartvo.game_quantity * gamevo.game_price }"></c:set>
+                    <c:set var="game_cost" value="${cartvo.game_quantity * gamevo.game_price }"></c:set>
+                    <c:set var="shipping_cost" value="${gamevo.game_shipping_charges }"></c:set>
+                    <% 
+                    	total_game_amt += (Double)pageContext.getAttribute("game_cost");
+                    	total_shipping_amt += (Double)pageContext.getAttribute("shipping_cost");
+                    	total_overall_amt += (Double)pageContext.getAttribute("game_cost") + (Double)pageContext.getAttribute("shipping_cost");
+                    %>
                       <tr>
                         <td class="product-image">
                         <a href="#"><img src="images/posters/${gamevo.game_poster_name }" alt=""></a>
@@ -98,11 +108,12 @@
                     </tbody>
                   </table>
                   
-                  <div class="clearfix"> <a href="<%=request.getContextPath()%>/GameController?flag=showAllGames&userType=buyer" class="btn btn-primary pull-left">CONTINUE SHOPPING</a> 
+                  <div class="clearfix"> <a href="<%=request.getContextPath()%>/GameController?flag=showAllGames&userType=buyer" class="btn btn-primary pull-left"
+                  style="margin-left: 100px;">CONTINUE SHOPPING</a> 
                   <span class="pull-left btn-space">&nbsp;</span > 
-                  <a href="<%=request.getContextPath()%>/CartController?flag=clearCart&buyer_id=buyer_id" class="btn  btn-primary pull-left">CLEAR SHOPPING CART</a>
-                    <div class="divider divider-sm visible-xs"></div>
-                    <a href="<%=request.getContextPath()%>/CartController?flag=updateCart&buyer_id=buyer_id" class="btn  btn-primary pull-right">UPDATE CART</a></div>
+                  <a href="<%=request.getContextPath()%>/CartController?flag=clearCart&buyer_id=<%=buyer_id%>" 
+                  style="margin-left: 100px;" class="btn  btn-danger pull-left">CLEAR SHOPPING CART</a>
+                    </div>
                 </div>
               </div>
             </div>
@@ -127,26 +138,32 @@
                   <tr>
                     <th class="text-right">Subtotal</th>
                     <th class="td-divider"></th>
-                    <th> $ ${total_cost }</th>
+                    <th> $ <%=total_game_amt %></th>
+                  </tr>
+                  <tr>
+                    <th class="text-right">Shipping Costs</th>
+                    <th class="td-divider"></th>
+                    <th> $ <%=total_shipping_amt %></th>
                   </tr>
                   <tr>
                     <th class="text-right">Tax</th>
                     <th class="td-divider"></th>
                     <th>+ 8%</th>
                   </tr>
-                  <tr>
-                    <th class="text-right">Shipping Cost:</th>
-                    <th class="td-divider"></th>
-                    <th>+ 8%</th>
-                  </tr>
+                  
                   <tr style="border-top-style: groove;">
-                    <th class="text-right">TOTAL (with taxes and shipping.)</th>
+                    <th class="text-right">TOTAL (Inc. Taxes and Shipping.)</th>
                     <th class="td-divider"></th>
-                    <th>$ ${total_cost * 1.08}</th>
+                    <th>$ <%=new DecimalFormat("#.##").format(total_overall_amt * 1.08) %></th>
                   </tr>
                 </table>
                 <div class="text-center">
-                  <button class="btn btn-success btn-lg fullwidth" type="submit"> CHECKOUT</button>
+                <form action="<%=request.getContextPath()%>/OrderController" method="post">
+	                <input type="hidden" name="flag" value="loadCheckout">
+	                <input type="hidden" name="buyer_id" value="<%=buyer_id%>">
+	                <input type="hidden" name="total_overall_cost" value="<%=total_overall_amt * 1.08%>">
+	                <button class="btn btn-success btn-lg fullwidth" type="submit"> CHECKOUT</button>
+                </form>
                   <div class="space space-lg"></div>
                 </div>
               </div>
@@ -174,7 +191,6 @@
 	 	}
       %>
     </div>
-    
     
 			<!--  Footer -->
 			<%@include file="footer.jsp"%>
