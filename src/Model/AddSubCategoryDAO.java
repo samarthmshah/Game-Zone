@@ -21,7 +21,14 @@ public class AddSubCategoryDAO {
 
 	public static void insert(GameCategoryVO gcvo, String scat_name, String scat_description) {
 		setUp();
-		Session session = factory.openSession();
+		Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			System.out.println("(SETUP) Cant get current session so opening new one.");
+			session = factory.openSession();
+		}
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
@@ -39,7 +46,14 @@ public class AddSubCategoryDAO {
 	@SuppressWarnings("unchecked")
 	public static List<GameSubCategoryVO> showAll(){
 		setUp();
-		Session session = factory.openSession();
+		Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			System.out.println("(SETUP) Cant get current session so opening new one.");
+			session = factory.openSession();
+		}
 		Transaction tx = null;
 		List<GameSubCategoryVO> ls = new ArrayList<GameSubCategoryVO>();
 		try {
@@ -62,7 +76,14 @@ public class AddSubCategoryDAO {
 	@SuppressWarnings("unchecked")
 	public static List<GameSubCategoryVO> edit(long scat_id){
 		setUp();
-		Session session = factory.openSession();
+		Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			System.out.println("(SETUP) Cant get current session so opening new one.");
+			session = factory.openSession();
+		}
 		Transaction tx = null;
 		List<GameSubCategoryVO> ls = null;
 		try {
@@ -84,7 +105,14 @@ public class AddSubCategoryDAO {
 	
 	public static void update(GameCategoryVO cat_id, long scat_id, String scat_name, String scat_description) {
 		setUp();
-		Session session = factory.openSession();
+		Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			System.out.println("(SETUP) Cant get current session so opening new one.");
+			session = factory.openSession();
+		}
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
@@ -108,7 +136,14 @@ public class AddSubCategoryDAO {
 	
 	public static void delete(long scat_id){
 		setUp();
-		Session session = factory.openSession();
+		Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			System.out.println("(SETUP) Cant get current session so opening new one.");
+			session = factory.openSession();
+		}
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
@@ -129,7 +164,14 @@ public class AddSubCategoryDAO {
 	
 	public static void delete(GameSubCategoryVO gscvo){
 		setUp();
-		Session session = factory.openSession();
+		Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			System.out.println("(SETUP) Cant get current session so opening new one.");
+			session = factory.openSession();
+		}
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
@@ -149,7 +191,14 @@ public class AddSubCategoryDAO {
 	@SuppressWarnings("unchecked")
 	public static List<GameSubCategoryVO> getTuplesByCatID(long cat_id){
 		setUp();
-		Session session = factory.openSession();
+		Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			System.out.println("(SETUP) Cant get current session so opening new one.");
+			session = factory.openSession();
+		}
 		Transaction tx = null;
 		List<GameSubCategoryVO> ls = null;
 		try {

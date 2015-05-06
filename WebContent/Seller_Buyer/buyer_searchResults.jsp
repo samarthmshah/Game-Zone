@@ -60,25 +60,7 @@
             <div class="row products-grid show-2 products-list-in-row">
 							
 				<c:forEach var="i" items="${sessionScope.searchResults}">
-              <div class="product">
-                <a href="<%=request.getContextPath()%>/GameController?flag=productPage&game_id=${i.game_id}" class="product-image">
-                	<img src="images/posters/${i.game_poster_name }" style="height: 225px; width:225px"/>
-                </a>
-                <div class="info">
-                  <span class="title">
-                  <a href="#">${i.game_name }</a> <strong>By ${i.seller_id.getCompanyname() }</strong></span> 
-                  	<span class="product-rating in-row">
-                  	<span class="typcn typcn-star"></span>
-                  	<span class="typcn typcn-star"></span>
-                  	<span class="typcn typcn-star"></span>
-                  	<span class="typcn typcn-star"></span>
-                  	<span class="typcn typcn-star"></span>
-                  </span> 
-                  <span class="price"><span class="currency">Price: $</span>${i.game_price }</span>
-                  <div class="description in-row">Description: ${i.game_description }</div>
-                  <div class="description in-row"><a href="<%=request.getContextPath()%>/GameController?"><button type="button" class="btn btn-md btn-danger">Add to Cart</button></a></div>
-                </div>
-              </div>
+               <%@include file="buyer_insideForEachLoop.jsp" %>
               </c:forEach>
               <%session.removeAttribute("searchResults"); %>
             </div>

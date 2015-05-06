@@ -26,7 +26,14 @@ public class SellerDAO {
 
 	public static void insert(SellerVO svo) {
 		setUp();
-		Session session = factory.openSession();
+		Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			System.out.println("(SETUP) Cant get current session so opening new one.");
+			session = factory.openSession();
+		}
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
@@ -48,7 +55,14 @@ public class SellerDAO {
 							  String email, String phNo, String address, String zip, String routingNumber, 
 							  String accountNumber, String paypal) {
 		setUp();
-		Session session = factory.openSession();
+		Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			System.out.println("(SETUP) Cant get current session so opening new one.");
+			session = factory.openSession();
+		}
 		Transaction tx = null;
 		String username = "", password = "", dob = "";
 		int status = 0;
@@ -96,7 +110,14 @@ public class SellerDAO {
 	@SuppressWarnings("unchecked")
 	public static List<SellerVO> checkUsernamePass(String username, String password){
 		setUp();
-		Session session = factory.openSession();
+		Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			System.out.println("(SETUP) Cant get current session so opening new one.");
+			session = factory.openSession();
+		}
 		Transaction tx = null;
 		List<SellerVO> ls = new ArrayList<SellerVO>();
 		String storedHashedPassword = null;
@@ -131,7 +152,14 @@ public class SellerDAO {
 	
 	public static boolean checkUsernameAvailability(String username) {
 		setUp();
-		Session session = factory.openSession();
+		Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			System.out.println("(SETUP) Cant get current session so opening new one.");
+			session = factory.openSession();
+		}
 		Transaction tx = null;
 		boolean isAvail = false,
 				conflictWithSeller = true,
@@ -176,7 +204,14 @@ public class SellerDAO {
 	@SuppressWarnings("unchecked")
 	public static List<SellerVO> showAll(){
 		setUp();
-		Session session = factory.openSession();
+		Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			System.out.println("(SETUP) Cant get current session so opening new one.");
+			session = factory.openSession();
+		}
 		Transaction tx = null;
 		List<SellerVO> ls = new ArrayList<SellerVO>();
 		try {
@@ -198,7 +233,14 @@ public class SellerDAO {
 	
 	public static void updateStatus(long seller_id, String action){
 		setUp();
-		Session session = factory.openSession();
+		Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			System.out.println("(SETUP) Cant get current session so opening new one.");
+			session = factory.openSession();
+		}
 		Transaction tx = null;
 		Query q = null;
 		try {
@@ -223,7 +265,14 @@ public class SellerDAO {
 	@SuppressWarnings("unchecked")
 	public static void deleteSeller(long seller_id){
 		setUp();
-		Session session = factory.openSession();
+		Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			System.out.println("(SETUP) Cant get current session so opening new one.");
+			session = factory.openSession();
+		}
 		Transaction tx = null;
 		System.out.println("deleting seller with seller_id "+seller_id+". But before that,");
 		try {
@@ -260,7 +309,14 @@ public class SellerDAO {
 	// Inserts into the Linksellervo table
 		public static void insert(LinkSellerVO lsvo) {
 			setUp();
-			Session session = factory.openSession();
+			Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			System.out.println("(SETUP) Cant get current session so opening new one.");
+			session = factory.openSession();
+		}
 			Transaction tx = null;
 			try {
 				tx = session.beginTransaction();
@@ -280,7 +336,14 @@ public class SellerDAO {
 		@SuppressWarnings("unchecked")
 		public static List<LinkSellerVO> getTupleByLink(String link){
 			setUp();
-			Session session = factory.openSession();
+			Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			System.out.println("(SETUP) Cant get current session so opening new one.");
+			session = factory.openSession();
+		}
 			Transaction tx = null;
 			Query q = null;
 			List<LinkSellerVO> ls = null;
@@ -303,7 +366,14 @@ public class SellerDAO {
 
 		public static void updateLSVOOnActivation(LinkSellerVO lsvo){
 			setUp();
-			Session session = factory.openSession();
+			Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			System.out.println("(SETUP) Cant get current session so opening new one.");
+			session = factory.openSession();
+		}
 			Transaction tx = null;
 			try {
 				tx = session.beginTransaction();
@@ -323,7 +393,14 @@ public class SellerDAO {
 		@SuppressWarnings("unchecked")
 		public static List<SellerVO> getSellerById(long seller_id){
 			setUp();
-			Session session = factory.openSession();
+			Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			System.out.println("(SETUP) Cant get current session so opening new one.");
+			session = factory.openSession();
+		}
 			Transaction tx = null;
 			Query q = null;
 			List<SellerVO> ls = null;

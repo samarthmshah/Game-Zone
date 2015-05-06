@@ -155,7 +155,7 @@ public class GameController extends HttpServlet {
 			
 			HttpSession session = request.getSession();
 			String message = new String();
-			double game_price = 0;
+			double game_price = 0d;
 			int game_price_flag = 0;
 			try{
 				game_price = Double.parseDouble(request.getParameter("game_price"));
@@ -182,7 +182,7 @@ public class GameController extends HttpServlet {
 				else message+= ", Numerical Stock";
 			}
 			
-			double game_shipping_charges = 0;
+			double game_shipping_charges = 0d;
 			int game_shipping_charges_flag = 0;
 			try{
 				game_shipping_charges = Double.parseDouble(request.getParameter("game_shipping_charges"));

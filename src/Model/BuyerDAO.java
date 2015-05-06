@@ -25,8 +25,14 @@ public class BuyerDAO {
 
 	public static void insert(BuyerVO bvo) {
 		setUp();
-		Session session = factory.openSession();
-		Transaction tx = null;
+		Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			session = factory.openSession();
+		}
+			Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
 			session.save(bvo);
@@ -45,7 +51,13 @@ public class BuyerDAO {
 	@SuppressWarnings("unchecked")
 	public static List<BuyerVO> checkUsernamePass(String username, String password){
 		setUp();
-		Session session = factory.openSession();
+		Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			session = factory.openSession();
+		}
 		Transaction tx = null;
 		List<BuyerVO> ls = new ArrayList<BuyerVO>();
 		String storedHashedPassword = null;
@@ -80,7 +92,13 @@ public class BuyerDAO {
 	
 	public static boolean checkUsernameAvailability(String username) {
 		setUp();
-		Session session = factory.openSession();
+		Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			session = factory.openSession();
+		}
 		Transaction tx = null;
 		boolean isAvail = false,
 				conflictWithBuyer = true,
@@ -125,7 +143,13 @@ public class BuyerDAO {
 	@SuppressWarnings("unchecked")
 	public static List<BuyerVO> showAll(){
 		setUp();
-		Session session = factory.openSession();
+		Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			session = factory.openSession();
+		}
 		Transaction tx = null;
 		List<BuyerVO> ls = new ArrayList<BuyerVO>();
 		try {
@@ -147,7 +171,13 @@ public class BuyerDAO {
 	
 	public static void updateStatus(long buyer_id, String action){
 		setUp();
-		Session session = factory.openSession();
+		Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			session = factory.openSession();
+		}
 		Transaction tx = null;
 		Query q = null;
 		try {
@@ -171,7 +201,13 @@ public class BuyerDAO {
 	
 	public static void deleteBuyer(long buyer_id){
 		setUp();
-		Session session = factory.openSession();
+		Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			session = factory.openSession();
+		}
 		Transaction tx = null;
 		BuyerVO bvo = new BuyerVO();
 		bvo.setBuyer_id(buyer_id);
@@ -193,7 +229,13 @@ public class BuyerDAO {
 	// Inserts into the Linkbuyervo table
 	public static void insert(LinkBuyerVO lbvo) {
 		setUp();
-		Session session = factory.openSession();
+		Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			session = factory.openSession();
+		}
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
@@ -213,7 +255,13 @@ public class BuyerDAO {
 	@SuppressWarnings("unchecked")
 	public static List<LinkBuyerVO> getTupleByLink(String link){
 		setUp();
-		Session session = factory.openSession();
+		Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			session = factory.openSession();
+		}
 		Transaction tx = null;
 		Query q = null;
 		List<LinkBuyerVO> ls = null;
@@ -236,7 +284,13 @@ public class BuyerDAO {
 	
 	public static void updateLBVOOnActivation(LinkBuyerVO lbvo){
 		setUp();
-		Session session = factory.openSession();
+		Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			session = factory.openSession();
+		}
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
@@ -256,7 +310,14 @@ public class BuyerDAO {
 	@SuppressWarnings("unchecked")
 	public static List<BuyerVO> getBuyerById(long buyer_id){
 		setUp();
-		Session session = factory.openSession();
+		Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			System.out.println("(SETUP) Cant get current session so opening new one.");
+			session = factory.openSession();
+		}
 		Transaction tx = null;
 		Query q = null;
 		List<BuyerVO> ls = null;
@@ -284,8 +345,9 @@ public class BuyerDAO {
 			serviceRegistry = new StandardServiceRegistryBuilder()
 					.applySettings(configuration.getProperties()).build();
 			factory = configuration.buildSessionFactory(serviceRegistry);
+			System.out.println("(SETUP) New Factory is created");
 		} catch (Throwable t) {
-			System.err.println("Unable to create the sessionFactory Object!");
+			System.err.println("(SETUP) Unable to create the sessionFactory Object!");
 			t.printStackTrace();
 			throw new ExceptionInInitializerError(t);
 		}

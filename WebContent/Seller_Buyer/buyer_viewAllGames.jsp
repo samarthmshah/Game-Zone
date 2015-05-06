@@ -41,7 +41,27 @@
       <!-- Two columns content -->
       <div class="container">
         <div class="row"> 
-          
+          <%
+          String msg = (String) session.getAttribute("msg");
+			if (msg != null) {
+				if (msg.equals("The Game has been successfully added to your shopping cart")
+					|| msg.equals("The Game has been successfully updated in your shopping cart")) {
+					response.setContentType("text/html");
+					out.println("<div class=\"col-md-12\">");
+					out.println("<p class=\"text-center bg-success\">");
+					out.println("<strong>"+msg+"</strong>");
+					out.println("</p></div>");
+				}
+				else{
+					response.setContentType("text/html");
+					out.println("<div class=\"col-md-12\">");
+					out.println("<p class=\"text-center bg-danger\">");
+					out.println("<strong>"+msg+"</strong>");
+					out.println("</p></div>");
+				}
+				session.removeAttribute("msg");
+			}
+          %>
           <!-- Center column -->
           <div class="col-sm-8 col-md-9 col-lg-9" id="content-center">
             <div class="category-info text-center">
@@ -57,26 +77,8 @@
             <!-- Listing products -->
             <div class="row products-grid show-2 products-list-in-row">
 								
-				<c:forEach var="i" items="${sessionScope.allGames}">
-              <div class="product">
-                <a href="<%=request.getContextPath()%>/GameController?flag=productPage&game_id=${i.game_id}" class="product-image">
-                	<img src="images/posters/${i.game_poster_name }" style="height: 225px; width:225px"/>
-                </a>
-                <div class="info">
-                  <span class="title">
-                  <a href="#">${i.game_name }</a></span> 
-                  	<span class="product-rating in-row">
-                  	<!--  Logic to iterate the span statement n times if game_ratings is n-->
-                  	<span class="typcn typcn-star"></span>
-                  	<span class="typcn typcn-star"></span>
-                  	<span class="typcn typcn-star"></span>
-                  	<span class="typcn typcn-star"></span>
-                  	<span class="typcn typcn-star"></span>
-                  </span> 
-                  <span class="price"><span class="currency">Price: $</span>${i.game_price }</span>
-                  <div class="description in-row">Description: ${i.game_description }</div>
-                </div>
-              </div>
+			  <c:forEach var="i" items="${sessionScope.allGames}">
+             	 <%@include file="buyer_insideForEachLoop.jsp" %>
               </c:forEach>
                	<%session.removeAttribute("allGames"); %>
             </div>

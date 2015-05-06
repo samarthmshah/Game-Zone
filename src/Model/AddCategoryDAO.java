@@ -23,7 +23,14 @@ public class AddCategoryDAO {
 
 	public static void insert(String cat_name, String cat_description) {
 		setUp();
-		Session session = factory.openSession();
+		Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			System.out.println("(SETUP) Cant get current session so opening new one.");
+			session = factory.openSession();
+		}
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
@@ -43,7 +50,14 @@ public class AddCategoryDAO {
 	@SuppressWarnings("unchecked")
 	public static List<GameCategoryVO> showAll(){
 		setUp();
-		Session session = factory.openSession();
+		Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			System.out.println("(SETUP) Cant get current session so opening new one.");
+			session = factory.openSession();
+		}
 		Transaction tx = null;
 		List<GameCategoryVO> ls = new ArrayList<GameCategoryVO>();
 		try {
@@ -66,7 +80,14 @@ public class AddCategoryDAO {
 	@SuppressWarnings("unchecked")
 	public static List<GameCategoryVO> edit(long cat_id){
 		setUp();
-		Session session = factory.openSession();
+		Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			System.out.println("(SETUP) Cant get current session so opening new one.");
+			session = factory.openSession();
+		}
 		Transaction tx = null;
 		List<GameCategoryVO> ls = null;
 		try {
@@ -88,7 +109,14 @@ public class AddCategoryDAO {
 	
 	public static void update(long cat_id, String cat_name, String cat_description) {
 		setUp();
-		Session session = factory.openSession();
+		Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			System.out.println("(SETUP) Cant get current session so opening new one.");
+			session = factory.openSession();
+		}
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
@@ -112,7 +140,14 @@ public class AddCategoryDAO {
 	@SuppressWarnings("unchecked")
 	public static void delete(long cat_id){
 		setUp();
-		Session session = factory.openSession();
+		Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			System.out.println("(SETUP) Cant get current session so opening new one.");
+			session = factory.openSession();
+		}
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();

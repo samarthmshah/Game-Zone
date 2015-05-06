@@ -1162,7 +1162,7 @@ div.lazy.lazy-loaded {
   height: 90px;
 }
 
-/*top navigation*/
+/*top navigation for Buyer*/
 #top-nav {
   position: absolute;
   width: 100%;
@@ -1170,6 +1170,16 @@ div.lazy.lazy-loaded {
   left: 0;
   top: 27px;
 }
+
+/*top navigation for Seller*/
+#top-nav-seller {
+  position: absolute;
+  width: 100%;
+  padding: 0 15px 0 240px;
+  left: 0;
+  top: 27px;
+}
+
 @media (max-width: 1199px) {
   #top-nav {
     padding: 0 32px;
@@ -2537,7 +2547,7 @@ ul.mtree.mtree-simple li ul ul ul ul ul li a {
 .product .info {
   text-align: center;
   /* color: #b09d6e; */
-  font-size: 1.083em;
+  font-size: 1.05em;
 }
 .product .info a {
   /* color: #b09d6e; */
@@ -2659,8 +2669,8 @@ ul.mtree.mtree-simple li ul ul ul ul ul li a {
 .products-list-in-row .product .description {
   color: #494949;
   text-transform: none;
-  line-height: 1.5em;
-  margin-bottom: 15px;
+  line-height: 1em;
+  margin-bottom: 10px;
 }
 .products-list-in-row .product .product-hover {
   display: none;
@@ -4025,7 +4035,6 @@ html.sb-active #sb-site,
 }
 #shopping-cart-section .table-products .product-delete a {
   text-decoration: none;
-  color: #b00;
   -webkit-transition: all 200ms ease;
   -moz-transition: all 200ms ease;
   -ms-transition: all 200ms ease;
@@ -4054,7 +4063,7 @@ html.sb-active #sb-site,
   border: none;
   text-align: left;
   margin-bottom: 20px;
-  font-size: 1.167em;
+  font-size: 1.1em;
   text-transform: uppercase;
 }
 #shopping-cart-section table.table-total h2 {

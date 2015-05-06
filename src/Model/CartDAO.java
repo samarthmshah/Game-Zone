@@ -2,7 +2,6 @@ package Model;
 
 import java.util.List;
 
-import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -10,17 +9,15 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.service.ServiceRegistry;
 
-import VO.GameVO;
+import VO.CartVO;
 
-public class GameDAO {
+public class CartDAO {
 	private static SessionFactory factory;
 	private static ServiceRegistry serviceRegistry;
 	
-	public static void insert(GameVO gvo) {
+	public static void insert(CartVO cvo) {
 		setUp();
 		Session session;
 		try{
@@ -33,7 +30,7 @@ public class GameDAO {
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
-			session.save(gvo);
+			session.save(cvo);
 			tx.commit();
 		} 
 		catch (HibernateException e) {
@@ -46,8 +43,35 @@ public class GameDAO {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static List<GameVO> getGamesBySeller_id(long seller_id) {
+	public static void update(long cart_id, int game_quantity) {
+		setUp();
+		Session session;
+		Query query;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			System.out.println("(SETUP) Cant get current session so opening new one.");
+			session = factory.openSession();
+		}
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			query = session.createQuery("UPDATE CartVO SET game_quantity="+game_quantity+" WHERE cart_id="+cart_id);
+			query.executeUpdate();
+			tx.commit();
+		} 
+		catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} 
+		finally {
+			session.close();
+		}
+	}
+	
+	public static void delete(CartVO cvo) {
 		setUp();
 		Session session;
 		try{
@@ -58,12 +82,37 @@ public class GameDAO {
 			session = factory.openSession();
 		}
 		Transaction tx = null;
-		Query query;
-		List<GameVO> ls = null;
 		try {
 			tx = session.beginTransaction();
-			query = session.createQuery("from GameVO WHERE seller_id="+seller_id);
-			ls = query.list();
+			session.delete(cvo);
+			tx.commit();
+		} 
+		catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} 
+		finally {
+			session.close();
+		}
+	}
+	
+	@SuppressWarnings({ "rawtypes" })
+	public static List loadCart(long buyer_id) {
+		setUp();
+		Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			System.out.println("(SETUP) Cant get current session so opening new one.");
+			session = factory.openSession();
+		}
+		Transaction tx = null;
+		List ls = null;
+		try {
+			tx = session.beginTransaction();
+			ls = session.createQuery("from CartVO as cvo INNER JOIN cvo.game_id WHERE cvo.buyer_id="+buyer_id).list();
 			tx.commit();
 		} 
 		catch (HibernateException e) {
@@ -78,7 +127,7 @@ public class GameDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static List<GameVO> getGameByGame_id(long game_id) {
+	public static List<CartVO> getCartByID(long cart_id) {
 		setUp();
 		Session session;
 		try{
@@ -89,12 +138,10 @@ public class GameDAO {
 			session = factory.openSession();
 		}
 		Transaction tx = null;
-		Query query;
-		List<GameVO> ls = null;
+		List<CartVO> ls = null;
 		try {
 			tx = session.beginTransaction();
-			query = session.createQuery("from GameVO WHERE game_id="+game_id);
-			ls = query.list();
+			ls = session.createQuery("from CartVO WHERE cart_id="+cart_id).list();
 			tx.commit();
 		} 
 		catch (HibernateException e) {
@@ -109,7 +156,7 @@ public class GameDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static List<GameVO> getGamesByCat_id(long cat_id) {
+	public static List<CartVO> checkIfGameAlreadyInCart(long buyer_id, long game_id) {
 		setUp();
 		Session session;
 		try{
@@ -120,12 +167,10 @@ public class GameDAO {
 			session = factory.openSession();
 		}
 		Transaction tx = null;
-		Query query;
-		List<GameVO> ls = null;
+		List<CartVO> ls = null;
 		try {
 			tx = session.beginTransaction();
-			query = session.createQuery("from GameVO WHERE cat_id="+cat_id);
-			ls = query.list();
+			ls = session.createQuery("from CartVO WHERE game_id="+game_id+" AND buyer_id="+buyer_id).list();
 			tx.commit();
 		} 
 		catch (HibernateException e) {
@@ -137,125 +182,6 @@ public class GameDAO {
 			session.close();
 		}
 		return ls;
-	}
-	
-	
-	public static void update(GameVO gvo) {
-		setUp();
-		Session session;
-		try{
-			session = factory.getCurrentSession();
-		}
-		catch(Exception e){
-			System.out.println("(SETUP) Cant get current session so opening new one.");
-			session = factory.openSession();
-		}
-		Transaction tx = null;
-		try {
-			tx = session.beginTransaction();
-			session.saveOrUpdate(gvo);
-			tx.commit();
-		} 
-		catch (HibernateException e) {
-			if (tx != null)
-				tx.rollback();
-			e.printStackTrace();
-		} 
-		finally {
-			session.close();
-		}
-	}
-	
-	public static void delete(long game_id) {
-		setUp();
-		Session session;
-		try{
-			session = factory.getCurrentSession();
-		}
-		catch(Exception e){
-			System.out.println("(SETUP) Cant get current session so opening new one.");
-			session = factory.openSession();
-		}
-		Transaction tx = null;
-		try {
-			tx = session.beginTransaction();
-			GameVO gvo = new GameVO(game_id);
-			session.delete(gvo);
-			tx.commit();
-		} 
-		catch (HibernateException e) {
-			if (tx != null)
-				tx.rollback();
-			e.printStackTrace();
-		} 
-		finally {
-			session.close();
-		}
-	}
-	
-	@SuppressWarnings("unchecked")
-	public static List<GameVO> showAll() {
-		setUp();
-		Session session;
-		try{
-			session = factory.getCurrentSession();
-		}
-		catch(Exception e){
-			System.out.println("(SETUP) Cant get current session so opening new one.");
-			session = factory.openSession();
-		}
-		Transaction tx = null;
-		Query query;
-		List<GameVO> ls = null;
-		try {
-			tx = session.beginTransaction();
-			query = session.createQuery("from GameVO");
-			ls = query.list();
-			tx.commit();
-		} 
-		catch (HibernateException e) {
-			if (tx != null)
-				tx.rollback();
-			e.printStackTrace();
-		} 
-		finally {
-			session.close();
-		}
-		return ls;
-	}
-	
-	@SuppressWarnings("unchecked")
-	public static List<GameVO> search(String inputString) {
-		setUp();
-		Session session;
-		try{
-			session = factory.getCurrentSession();
-		}
-		catch(Exception e){
-			System.out.println("(SETUP) Cant get current session so opening new one.");
-			session = factory.openSession();
-		}
-		Transaction tx = null;
-		List<GameVO> searchResults = null;
-		try {
-			tx = session.beginTransaction();
-			Criteria criteria = session.createCriteria(GameVO.class);
-			Criterion c1 = Restrictions.ilike("game_name", "%"+inputString+"%");
-			Criterion c2 = Restrictions.ilike("game_description", "%"+inputString+"%");
-			searchResults = criteria.add(Restrictions.or(c1, c2)).list();
-			
-			if(searchResults == null) System.out.println("No pattern matching search");
-			tx.commit();
-		} 
-		catch (HibernateException e) {
-			if (tx != null)
-				tx.rollback();
-			e.printStackTrace();
-		} 
-		finally {
-			session.close();
-		}
-		return searchResults;
 	}
 	
 	private static void setUp() {

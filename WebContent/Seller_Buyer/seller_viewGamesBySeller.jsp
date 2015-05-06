@@ -56,26 +56,83 @@
             
             <!-- Listing products -->
             <div class="row products-grid show-2 products-list-in-row">
-								
+				<%
+							String msg = (String) session.getAttribute("msg");
+							if (msg != null) {
+								if (msg.equals("The Game has been successfully deleted")) {
+									response.setContentType("text/html");
+									out.println("<div class=\"col-md-12\">");
+									out.println("<p class=\"text-center bg-success\">");
+									out.println("<strong>"+msg+"</strong>");
+									out.println("</p></div>");
+								}
+								else{
+									response.setContentType("text/html");
+									out.println("<div class=\"col-md-12\">");
+									out.println("<p class=\"text-center bg-danger\">");
+									out.println("<strong>"+msg+"</strong>");
+									out.println("</p></div>");
+								}
+								session.removeAttribute("msg");
+							}
+						%>			
 				<c:forEach var="i" items="${sessionScope.gameList}">
-              <div class="product">
+              	<div class="product">
                 <a href="<%=request.getContextPath()%>/GameController?flag=productPage&game_id=${i.game_id}" class="product-image">
                 	<img src="images/posters/${i.game_poster_name }" style="height: 225px; width:225px"/>
                 </a>
                 <div class="info">
-                  <span class="title">
-                  <a href="#">${i.game_name }</a></span> 
-                  	<span class="product-rating in-row">
-                  	<span class="typcn typcn-star"></span>
-                  	<span class="typcn typcn-star"></span>
-                  	<span class="typcn typcn-star"></span>
-                  	<span class="typcn typcn-star"></span>
-                  	<span class="typcn typcn-star"></span>
-                  </span> 
-                  <span class="price"><span class="currency">Price: $</span>${i.game_price }</span>
-                  <div class="description in-row">Description: ${i.game_description }</div>
-                  <div class="description in-row"><a href="<%=request.getContextPath()%>/GameController?flag=editGame&game_id=${i.game_id}&userType=seller"><button type="button" class="btn btn-md btn-warning">Update</button></a></div>
-                  <div class="description in-row"><a href="<%=request.getContextPath()%>/GameController?flag=deleteGame&seller_id=${i.seller_id.getSeller_id() }&game_id=${i.game_id}&userType=seller"><button type="button" class="btn btn-md btn-danger">!!DELETE GAME!!</button></a></div>
+                  <h5>
+					<span class="title"> 
+					<a href="<%=request.getContextPath()%>/GameController?flag=productPage&game_id=${i.game_id}">${i.game_name }</a>
+					</span>
+				 </h5>
+					<div class="description in-row">
+						<strong>By You</strong>
+					</div>
+                  <div class="description in-row">
+					<strong>Price: </strong> $ ${i.game_price }
+			      </div>
+				<div class="description in-row">
+					<strong>Console Type: </strong> ${i.game_console }
+				</div>
+				<div class="description in-row">
+					<strong>Ratings: </strong> ${i.game_ratings } out of 5
+				</div>
+				<div class="description in-row">
+					<strong>Genre: </strong> ${i.cat_id.getCat_name() }
+				</div>
+				<c:set var="scat_id" value="${i.scat_id.getScat_id() }"></c:set>
+				<%
+                  Long scatID = (Long) pageContext.getAttribute("scat_id");
+                  if(scatID != null){
+                  %>
+				<div class="description in-row">
+					<strong>Sub-category: </strong> ${i.scat_id.getScat_name() }
+				</div>
+				<%} %>
+				
+                  <div class="description in-row">
+					<strong>Description:</strong> ${i.game_description }
+				</div>
+                 <c:set var="game_stock" value="${i.game_stock }"></c:set>
+                  <c:choose>
+                  	<c:when test="${game_stock > 0}">
+                  	<c:choose>
+                  		<c:when test="${game_stock < 10 }">
+                  			<div class="description in-row"><strong>Refill the stock! Only ${game_stock } left!</strong></div>
+                  		</c:when>
+                  		<c:otherwise>
+                  			<div class="description in-row"><strong>${game_stock } left!</strong></div>
+                  		</c:otherwise>
+                  	</c:choose>
+                  	</c:when>
+                  	<c:otherwise>
+                  		<div class="description in-row"><strong>Out of stock!</strong></div>
+                  	</c:otherwise>
+                  </c:choose>
+                  <div class="description in-row" style="float:left"><a href="<%=request.getContextPath()%>/GameController?flag=editGame&game_id=${i.game_id}&userType=seller"><button type="button" class="btn btn-md btn-warning">Update</button></a></div>
+                  <div class="description in-row"><a href="<%=request.getContextPath()%>/GameController?flag=deleteGame&seller_id=<%=seller_id %>&game_id=${i.game_id}&userType=seller"><button type="button" class="btn btn-md btn-danger">DELETE</button></a></div>
                 </div>
               </div>
               </c:forEach>
