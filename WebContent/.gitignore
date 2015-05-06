@@ -1,6 +1,19 @@
+*.project
+**/css/
+**/build/
+**/META-INF
+**/WEB-INF
+**/js/
+**/images/
+**/fonts/
+*.eot
+*.ttf
+*.svg
+*.woff
+*.woff2
 #project files
 #######
-**/*/.classpath
+*.classpath
 *.css
 *.js
 **/fonts/*
