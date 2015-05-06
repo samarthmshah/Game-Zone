@@ -71,6 +71,91 @@ public class OrderDAO {
 		return ls;
 	}
 	
+	@SuppressWarnings({ "rawtypes" })
+	public static List getOrdersBySellerID(long seller_id) {
+		setUp();
+		Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			System.out.println("(SETUP) Cant get current session so opening new one.");
+			session = factory.openSession();
+		}
+		List ls = null;
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			ls = session.createQuery("from OrderVO AS ovo INNER JOIN ovo.game_id WHERE seller_id="+seller_id).list();
+			tx.commit();
+		} 
+		catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} 
+		finally {
+			session.close();
+		}
+		return ls;
+	}
+	
+	public static int cancelOrder(long order_id) {
+		setUp();
+		Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			System.out.println("(SETUP) Cant get current session so opening new one.");
+			session = factory.openSession();
+		}
+		int result = 0;
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			result = session.createQuery("UPDATE OrderVO SET order_status=-1 WHERE order_id="+order_id).executeUpdate();
+			tx.commit();
+		} 
+		catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} 
+		finally {
+			session.close();
+		}
+		return result;
+	}
+	
+	public static int setShipped(long order_id) {
+		setUp();
+		Session session;
+		try{
+			session = factory.getCurrentSession();
+		}
+		catch(Exception e){
+			System.out.println("(SETUP) Cant get current session so opening new one.");
+			session = factory.openSession();
+		}
+		int result = 0;
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			result = session.createQuery("UPDATE OrderVO SET order_status=1 WHERE order_id="+order_id).executeUpdate();
+			tx.commit();
+		} 
+		catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} 
+		finally {
+			session.close();
+		}
+		return result;
+	}
+	
 	private static void setUp() {
 		try {
 			Configuration configuration = new Configuration();

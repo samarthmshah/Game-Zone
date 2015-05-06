@@ -29,7 +29,7 @@
 
 
 	<!--  Header -->
-	<%@include file="buyer_header.jsp"%>
+	<%@include file="seller_header.jsp"%>
 	<!--  END Header -->
 	<div id="sb-site">
 		<div id="main">
@@ -49,7 +49,8 @@
         <%
         String msg = (String) session.getAttribute("msg");
 		if (msg != null) {
-			if (msg.equals("Your order has been placed successfully")) {
+			if (msg.equals("Order cancelled successfully")
+					|| msg.equals("Order shipped successfully")) {
 				response.setContentType("text/html");
 				out.println("<div class=\"col-md-12\">");
 				out.println("<p class=\"text-center bg-success\">");
@@ -73,26 +74,31 @@
                 <thead>
                   <tr>
                     <th class="text-center">Order date</th>
-                    <th class="text-center"> Game</th>
-                    <th class="text-center"> Quantity </th>
+                    <th class="text-center">Game</th>
+                    <th class="text-center">Quantity </th>
+                    <th class="text-center">EmailID </th>
                     <th class="text-center">Status</th>
                     <th class="text-center">Cost</th>
-                    <th class="text-center">Cancel Order</th>
+                    <th class="text-center">Stock Remaining</th>
+                    <th class="text-center">Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="i" items="${sessionScope.myOrders }">
+                <c:forEach var="i" items="${sessionScope.sellerOrders }">
+                <c:set var="ovo" value="${i[0] }"></c:set>
+                <c:set var="gvo" value="${i[1] }"></c:set>
                   <tr>
-                    <td class="text-center">${i.orderDT } </td>
-                    <td class="text-center">${i.game_id.getGame_name() }</td>
-                    <td class="text-center">${i.quantity }</td>
+                    <td class="text-center">${ovo.orderDT } </td>
+                    <td class="text-center">${gvo.game_name }</td>
+                    <td class="text-center">${ovo.quantity }</td>
+                    <td class="text-center">${ovo.buyer_id.getEmail() }</td>
                     <c:choose>
-                    	<c:when test="${i.order_status == 0}">
+                    	<c:when test="${ovo.order_status == 0}">
                     		<td class="text-center">Not Shipped</td>
                     	</c:when>
                     	<c:otherwise>
                     		<c:choose>
-                    			<c:when test="${i.order_status == -1}">
+                    			<c:when test="${ovo.order_status == -1}">
                     				<td class="text-center">Cancelled</td>
                     			</c:when>
                     			<c:otherwise>
@@ -101,9 +107,16 @@
                     		</c:choose>
                     	</c:otherwise>
                     </c:choose>
-                    <td class="text-center">${i.order_total_cost }</td>
+                    <td class="text-center">${ovo.order_total_cost }</td>
+                    <td class="text-center">${gvo.game_stock}</td>
                     <td class="text-center">
-                    	<a href="<%=request.getContextPath()%>/OrderController?order_id=${i.order_id }&flag=cancel&buyer_id=<%=buyer_id%>&userType=buyer">
+                    	<a href="<%=request.getContextPath()%>/OrderController?order_id=${ovo.order_id}&flag=setShipped&seller_id=<%=seller_id%>">
+							<button type="button" class="btn btn-info" data-toggle="tooltip" 
+								data-placement="top" data-original-title="Set Shipped">
+								<i class="typcn typcn-plane"></i>
+							</button>
+						</a>
+                    	<a href="<%=request.getContextPath()%>/OrderController?order_id=${ovo.order_id}&flag=cancel&seller_id=<%=seller_id%>&userType=seller">
 							<button type="button" class="btn btn-danger" data-toggle="tooltip" 
 								data-placement="top" data-original-title="Cancel">
 								<i class="typcn typcn-times"></i>
@@ -112,7 +125,7 @@
                     </td>
                   </tr>
                   </c:forEach>
-                  <%session.removeAttribute("myOrders"); %>
+                  <%session.removeAttribute("sellerOrders"); %>
                 </tbody>
               </table>
             </div>
@@ -126,12 +139,9 @@
 			<!-- END Footer -->
 		</div>
 	</div>
-<!--  The games in the cart will be showed here. This comes after the sb-site ends. -->
-<%@include file="buyer_slidebar_cart.jsp" %>
-<!-- End slidebar. -->
 
 	<!--  The main menu will be showed here. This comes after the sb-site ends. -->
-	<%@include file="buyer_main_menu.jsp"%>
+	<%@include file="seller_main_menu.jsp"%>
 	<!-- End slidebar. -->
 
 	<script src="js/jquery-1.11.0.min.js"></script> 

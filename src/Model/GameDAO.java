@@ -273,7 +273,7 @@ public class GameDAO {
 		try {
 			tx = session.beginTransaction();
 			current_stock = (Integer) session.createQuery("SELECT game_stock FROM GameVO WHERE game_id="+game_id).uniqueResult();
-			session.createQuery("UPDATE GameVO SET game_stock="+(current_stock-amount)).executeUpdate();
+			session.createQuery("UPDATE GameVO SET game_stock="+(current_stock-amount)+" WHERE game_id="+game_id).executeUpdate();
 			tx.commit();
 		} 
 		catch (HibernateException e) {

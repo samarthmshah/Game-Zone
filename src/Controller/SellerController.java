@@ -66,6 +66,8 @@ public class SellerController extends HttpServlet {
 				loadAccountDetails(request, response);
 			else if(flag.equals("contactSellerThroughEmail"))	
 				loadSellerInfo(request, response);
+			else if(flag.equals("deactivate"))	
+				deactivate(request, response);
 		}
 	}
 
@@ -486,5 +488,12 @@ public class SellerController extends HttpServlet {
 			HttpSession session = request.getSession();
 			session.setAttribute("msg", "The account is updated successfully");
 			loadAccountDetails(request, response);
+		}
+		
+		protected void deactivate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+			long seller_id = Long.parseLong(request.getParameter("seller_id"));
+			SellerDAO.deactivate(seller_id);
+			request.getSession().setAttribute("loggedIn", "false");
+			response.sendRedirect(request.getContextPath()+"/Seller_Buyer/seller_index.jsp");
 		}
 };

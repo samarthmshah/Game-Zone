@@ -421,6 +421,32 @@ public class SellerDAO {
 			return ls;
 		}
 	
+		public static void deactivate(long seller_id) {
+			setUp();
+			Session session;
+			try{
+				session = factory.getCurrentSession();
+			}
+			catch(Exception e){
+				System.out.println("(SETUP) Cant get current session so opening new one.");
+				session = factory.openSession();
+			}
+			Transaction tx = null;
+			try {
+				tx = session.beginTransaction();
+				session.createQuery("UPDATE SellerVO SET status=0 WHERE seller_id="+seller_id).executeUpdate();
+				tx.commit();
+			} 
+			catch (HibernateException e) {
+				if (tx != null)
+					tx.rollback();
+				e.printStackTrace();
+			} 
+			finally {
+				session.close();
+			}
+		}
+		
 	private static void setUp() {
 		try {
 			Configuration configuration = new Configuration();

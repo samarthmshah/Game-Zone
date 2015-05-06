@@ -83,7 +83,10 @@
 								<li><h6>Account Number:</h6>${i.accountNumber }</li>
 								<li><h6>Paypal:</h6>		${i.paypal }</li>
 								<a href="seller_updateAccountDetails.jsp">
-								<button type="button" class="btn btn-lg btn-warning">Update Account Information</button>
+								<button type="button" class="btn btn-md btn-warning">Update Account Information</button>
+								</a>
+								<a href="<%=request.getContextPath()%>/SellerController?flag=deactivate&seller_id=${i.seller_id}">
+								<button type="button" class="btn btn-md btn-danger">DEACTIVATE THIS ACCOUNT</button>
 								</a>
 							</c:forEach>
 							</ul>
