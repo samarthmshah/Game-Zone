@@ -3,7 +3,7 @@
 
 	<div class="category new-category">
 		<div class="product">
-			<a href="product.html" title="lectus ipsum" class="product-image"><img src='images/posters/gta5.jpg' style="height:340px"/></a>
+			<a href="#" title="lectus ipsum" class="product-image"><img src='images/posters/gta5.jpg' style="height:340px"/></a>
 			<div class="info">
 				<div class="product-hover">
 					<a href="buyer_quickview.jsp" class="ajax-popup-link quick-view"><span>Quick View</span></a>
@@ -23,7 +23,7 @@
 
 	<div class="category best-category">
 		<div class="product">
-			<a href="product.html" title="lectus ipsum" class="product-image"><img src='images/posters/farcry.jpg' style="height:340px"/></a>
+			<a href="#" title="lectus ipsum" class="product-image"><img src='images/posters/farcry.jpg' style="height:340px"/></a>
 			<div class="info">
 				<div class="product-hover">
 					<a href="buyer_quickview.jsp" class="ajax-popup-link quick-view"><span>Quick View</span></a>

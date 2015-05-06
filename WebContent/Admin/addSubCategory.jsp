@@ -10,15 +10,25 @@
 			<!-- <MESSAGE> -->
 			<%
 				String msg = (String) session.getAttribute("msg");
-				if (msg != null
-						&& (msg.equals("The subcategory has been added successfully.") || msg
-								.equals("The subcategory is successfully updated."))) {
+				if (msg != null){
+					if(msg.equals("The subcategory has been added successfully.") 
+					 	|| msg.equals("The subcategory is successfully updated.")){
 					response.setContentType("text/html");
 					out.println("<div class=\"col-md-12\">");
 					out.println("<p class=\"bg-success\">");
 					out.println(msg);
 					out.println("</p></div>");
 					session.removeAttribute("msg");
+				}
+					else{
+					response.setContentType("text/html");
+					out.println("<div class=\"col-md-12\">");
+					out.println("<p class=\"bg-danger\">");
+					out.println(msg);
+					out.println("</p></div>");
+					session.removeAttribute("msg");
+						
+					}
 				}
 			%>
 			<!-- </MESSAGE> -->

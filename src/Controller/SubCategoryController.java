@@ -72,12 +72,17 @@ public class SubCategoryController extends HttpServlet {
 	}
 	
 	protected void insert(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		long cat_id = Long.parseLong(request.getParameter("cat_id"));
-		String scat_name = request.getParameter("scat_name");
-		String scat_description = request.getParameter("scat_description");
-		AddSubCategoryDAO.insert(new GameCategoryVO(cat_id), scat_name, scat_description);
 		HttpSession session = request.getSession();
-		session.setAttribute("msg", "The subcategory has been added successfully.");
+		if(request.getParameter("cat_id") != null){
+			long cat_id = Long.parseLong(request.getParameter("cat_id"));
+			String scat_name = request.getParameter("scat_name");
+			String scat_description = request.getParameter("scat_description");
+			AddSubCategoryDAO.insert(new GameCategoryVO(cat_id), scat_name, scat_description);
+			session.setAttribute("msg", "The subcategory has been added successfully.");
+		}
+		else{
+			session.setAttribute("msg", "Please select the category.");
+		}
 		response.sendRedirect(request.getContextPath()+"/Admin/addSubCategory.jsp");
 	}
 	

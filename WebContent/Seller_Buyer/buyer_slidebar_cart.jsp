@@ -9,15 +9,15 @@
 		<p class="title">Item(s) in your cart</p>
 		
 		<%
-		@SuppressWarnings("unchecked")
-		List<Object> universal_mycart = CartDAO.loadCart(((BuyerVO)session.getAttribute("userInfoObj")).getBuyer_id()); // every time.
+		@SuppressWarnings("rawtypes")
+		List universal_mycart = CartDAO.loadCart(((BuyerVO)session.getAttribute("userInfoObj")).getBuyer_id()); // every fkn time.
 	 	if(universal_mycart != null && universal_mycart.size() > 0){
+	 		pageContext.setAttribute("universal_mycart", universal_mycart);
 	 %>
 	 <ul class="mini-products-list">
-			 <c:forEach var="i" items="${sessionScope.universalCart }">
+			 <c:forEach var="i" items="${universal_mycart }">
              <c:set var="universalCartvo" value="${i[0] }"></c:set>
              <c:set var="universalGamevo" value="${i[1] }"></c:set>
-             <c:out value="The quanity shows to be ${universalCartvo.game_quantity }"></c:out>
              <c:set var="total_cost" value="${universalCartvo.game_quantity * universalGamevo.game_price }"></c:set>
 			<li class="item"><a href="#" class="product-image"><img
 					class="img-responsive" src="images/posters/${universalGamevo.game_poster_name }"></a>
@@ -33,7 +33,7 @@
 				</div>
 			</li>
 			</c:forEach>
-			<%session.removeAttribute("universalCart"); %>
+			<%pageContext.removeAttribute("universal_mycart"); %>
 		</ul>
 
 		<!-- Total amt -->

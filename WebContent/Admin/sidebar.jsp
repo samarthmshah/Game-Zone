@@ -24,7 +24,7 @@
 					<li><span class="icon color7"><i class="fa fa-circle-o"></i></span><a
 						href="<%=request.getContextPath()%>/GameController?flag=showAllGames&userType=admin">Edit Games</a></li>
 					<li><span class="icon color7"><i class="fa fa-circle-o"></i></span><a
-						href="deleteProducts.jsp">Delete Games</a></li>
+						href="#">Delete Games</a></li>
 				</ul></li>
 			<li><a href="#"><span class="icon color7"><i
 						class="fa fa-bars"></i></span>Sellers<span class="caret"></span></a>
@@ -45,12 +45,6 @@
 						href="<%=request.getContextPath()%>/BuyerController?flag=load&url=view_buyers.jsp">View Buyers</a></li>
 					<li><span class="icon color7"><i class="fa fa-circle-o"></i></span><a
 						href="<%=request.getContextPath()%>/BuyerController?flag=load&url=contact_buyers.jsp">Contact Buyers</a></li>
-				</ul></li>
-			<li><a href="#"><span class="icon color7"><i
-						class="fa fa-bars"></i></span>Orders<span class="caret"></span></a>
-				<ul>
-					<li><span class="icon color7"><i class="fa fa-circle-o"></i></span><a
-						href="viewOrders.jsp">View Orders</a></li>
 				</ul></li>
 		</ul>
 	</div>

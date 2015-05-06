@@ -3,7 +3,7 @@
 
 <div class="product">
 	<a
-		href="<%=request.getContextPath()%>/GameController?flag=productPage&game_id=${i.game_id}"
+		href="#"
 		class="product-image"> <img
 		src="images/posters/${i.game_poster_name }"
 		style="height: 225px; width: 225px" />
@@ -11,7 +11,7 @@
 	<div class="info">
 		<h5>
 			<span class="title"> <a
-				href="<%=request.getContextPath()%>/GameController?flag=productPage&game_id=${i.game_id}">${i.game_name }</a>
+				href="#">${i.game_name }</a>
 			</span>
 		</h5>
 		<c:set var="seller_name" value="${i.seller_id.getCompanyname() }"></c:set>
@@ -57,7 +57,7 @@
 					<div class="form-group">
 							<input type="number" class="form-control form-control-line"
 							placeholder="Quantity" name="game_quantity" min="1" max="${i.game_stock }"
-							id="game_quantity" required="required" value="1">
+							id="game_quantity" required="required" value="1" style="width: 40px;">
 					</div>
 					<input type="hidden" name="flag" value="insert">
 					<input type="hidden" name="buyer_id" value="<%= ((BuyerVO)session.getAttribute("userInfoObj")).getBuyer_id()%>">
@@ -70,8 +70,7 @@
 				<div class="description in-row">
 					<h5>Sorry! Out of Stock!</h5>
 					<a
-						href="<%=request.getContextPath()%>/SellerController?flag=contactSellerThroughEmail">Message
-						${seller_name } about Re-stocking.</a>
+						href="<%=request.getContextPath()%>/SellerController?flag=contactSellerThroughEmail">Message ${seller_name } about Re-stocking.</a>
 				</div>
 			</c:otherwise>
 		</c:choose>
